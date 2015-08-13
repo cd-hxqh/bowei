@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">博维航空</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="log">北京博维航空设施管理有限公司</string>
+    <string name="please_userid">用户名</string>
+    <string name="please_password">密  码</string>
+    <string name="remenber_pass">记住密码</string>
+    <string name="login">登录</string>
+    <string name="login_loging">登录中...</string>
+    <!--主界面-->
+    <string name="maintenance">维保工单</string>
+    <string name="maintain">维修工单</string>
+    <string name="service">服务工单</string>
+    <string name="order">工单管理</string>
+    <string name="property">资产查询</string>
+    <string name="inventory">库存查询</string>
+    <string name="knowledge">知识库</string>
+    <string name="download">下载</string>
+    <string name="setting">设置</string>
+    <string name="out">退出</string>
+
+</resources>

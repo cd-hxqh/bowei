@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/order"
+            android:icon="@drawable/order_ico"
+            android:title="Home"/>
+        <item
+            android:id="@+id/property"
+            android:icon="@drawable/property_ico"
+            android:title="Messages"/>
+        <item
+            android:id="@+id/inventory"
+            android:icon="@drawable/inventory_ico"
+            android:title="Friends"/>
+        <item
+            android:id="@+id/knowledge"
+            android:icon="@drawable/knowledge_ico"
+            android:title="Discussion"/>
+        <item
+            android:id="@+id/download"
+            android:icon="@drawable/download_ico"
+            android:title="Discussion"/>
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/setting_ico"
+            android:title="Discussion"/>
+        <item
+            android:id="@+id/out"
+            android:icon="@drawable/out_ico"
+            android:title="Discussion"/>
+    </group>
+</menu>

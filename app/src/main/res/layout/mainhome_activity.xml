@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <Button
+        android:id="@+id/maintenance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:drawableTop="@drawable/maintenance_ico"
+        android:text="@string/maintenance"
+        android:textSize="18sp"
+        android:textColor="@color/gray"
+        android:layout_margin="15dp"
+        android:background="@color/white"/>
+    <Button
+        android:id="@+id/serve"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:drawableTop="@drawable/serve_ico"
+        android:text="@string/maintain"
+        android:textSize="18sp"
+        android:textColor="@color/gray"
+        android:layout_margin="15dp"
+        android:background="@color/white"/>
+    <Button
+        android:id="@+id/service"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:drawableTop="@drawable/service_ico"
+        android:text="@string/service"
+        android:textSize="16sp"
+        android:textColor="@color/gray"
+        android:layout_margin="18dp"
+        android:background="@color/white"/>
+</LinearLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="left_list">
+    <item>工单管理</item>
+    <item>资产查询</item>
+    <item>库存查询</item>
+    <item>知识库</item>
+    <item>下载</item>
+    <item>设置</item>
+    <item>退出</item>
+</string-array>
+    
+</resources>
