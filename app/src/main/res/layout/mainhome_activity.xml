@@ -13,7 +13,7 @@
         android:text="@string/maintenance"
         android:textSize="18sp"
         android:textColor="@color/gray"
-        android:layout_margin="15dp"
+        android:layout_margin="20dp"
         android:background="@color/white"/>
     <Button
         android:id="@+id/serve"
@@ -24,7 +24,7 @@
         android:text="@string/maintain"
         android:textSize="18sp"
         android:textColor="@color/gray"
-        android:layout_margin="15dp"
+        android:layout_margin="20dp"
         android:background="@color/white"/>
     <Button
         android:id="@+id/service"
@@ -35,6 +35,6 @@
         android:text="@string/service"
         android:textSize="16sp"
         android:textColor="@color/gray"
-        android:layout_margin="18dp"
+        android:layout_margin="20dp"
         android:background="@color/white"/>
 </LinearLayout>

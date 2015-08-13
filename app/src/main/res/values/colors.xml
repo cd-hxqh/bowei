@@ -6,6 +6,7 @@
     <color name="transparent_1">#e0000000</color>
     <color name="black">#000000</color><!--黑色 -->
     <color name="gray">#aaa</color>
+    <color name="light_gray">#EEEEEE</color><!--淡灰色 -->
     <color name="end_back_color">#0399F0</color><!--淡青色-->
     <color name="blue_dark">#0492E4</color>
     <color name="title">#00A2FF</color>

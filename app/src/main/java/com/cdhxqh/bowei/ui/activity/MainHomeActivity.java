@@ -7,10 +7,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class MainHomeActivity extends BaseActivity {
     private Button service;
     private ListView mLvLeftMenu;
     private DrawerLayout mDrawerLayout;
+    private ImageView maintitleimg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainHomeActivity extends BaseActivity {
         initView();
     }
 
+
     @Override
     protected void findViewById() {
         maintenance = (Button) findViewById(R.id.maintenance);
@@ -45,28 +49,24 @@ public class MainHomeActivity extends BaseActivity {
         service = (Button) findViewById(R.id.service);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawer_layout);
         mLvLeftMenu = (ListView) findViewById(R.id.left_menu);
+        maintitleimg = (ImageView) findViewById(R.id.main_title);
     }
 
     @Override
     protected void initView() {
-        ActionBar actionBar = getSupportActionBar();
-        ActionBar.LayoutParams lp =new ActionBar.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View titleView = inflater.inflate(R.layout.title_layout, null);
-        actionBar.setCustomView(titleView, lp);
-
-        actionBar.setDisplayShowHomeEnabled(false);//去掉导航
-        actionBar.setDisplayShowTitleEnabled(false);//去掉标题
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
         setUpDrawer();
         maintenance.setOnClickListener(buttonclick);
         serve.setOnClickListener(buttonclick);
         service.setOnClickListener(buttonclick);
         mLvLeftMenu.setOnItemClickListener(leftmenulistener);
+        maintitleimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
     }
 
     private void setUpDrawer()
@@ -79,7 +79,6 @@ public class MainHomeActivity extends BaseActivity {
     private View.OnClickListener buttonclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(MainHomeActivity.this,""+v.getId(),Toast.LENGTH_SHORT).show();
             switch (v.getId()){
                 case R.id.maintenance://跳转到维保工单页面
                     break;
@@ -94,13 +93,14 @@ public class MainHomeActivity extends BaseActivity {
     private ListView.OnItemClickListener leftmenulistener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
             Intent intent = new Intent();
             switch (position){
-                case 1://跳转工单管理页面(刷新页面)
-//                    onCreate(null);
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                case 1://跳转工单管理页面
                     break;
                 case 2://跳转资产查询页面
+                    intent.setClass(MainHomeActivity.this,LoginActivity.class);//测试跳转
+                    startActivity(intent);
                     break;
                 case 3://跳转库存查询页面
                     break;
@@ -109,4 +109,16 @@ public class MainHomeActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            //do something...
+            exit(this);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
