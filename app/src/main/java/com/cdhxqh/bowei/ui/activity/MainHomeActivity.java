@@ -85,8 +85,12 @@ public class MainHomeActivity extends BaseActivity {
                     startActivity(intent);
                     break;
                 case R.id.serve://跳转到维修工单页面
+                    intent.setClass(MainHomeActivity.this,ServeActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.service://跳转到服务工单页面
+                    intent.setClass(MainHomeActivity.this,ServiceActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

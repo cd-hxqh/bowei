@@ -13,9 +13,9 @@
         android:layout_centerVertical="true"
         android:src="@drawable/back_ico"/>
     <TextView
+        android:id="@+id/title_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/maintenance_name"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_centerHorizontal="true"

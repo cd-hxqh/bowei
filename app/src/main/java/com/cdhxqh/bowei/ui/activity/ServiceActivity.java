@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,15 +13,14 @@ import android.widget.TextView;
 import com.cdhxqh.bowei.R;
 
 /**
- * Created by think on 2015/8/13.
+ * Created by think on 2015/8/14.
  */
-public class MaintenanceActivity extends BaseActivity{
+public class ServiceActivity extends BaseActivity {
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
     private Button chooseitembtn;
     RecyclerView recyclerView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,19 +41,18 @@ public class MaintenanceActivity extends BaseActivity{
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.maintenance));
+        titlename.setText(getResources().getString(R.string.service));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MaintenanceActivity.this,MainHomeActivity.class);
+                intent.setClass(ServiceActivity.this, MainHomeActivity.class);
                 startActivity(intent);
                 finish();
             }
