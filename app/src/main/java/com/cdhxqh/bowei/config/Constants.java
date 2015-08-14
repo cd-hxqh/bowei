@@ -1,17 +1,12 @@
 package com.cdhxqh.bowei.config;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
-/**
- * Created by think on 2015/8/11.
- */
 public class Constants {
     public static String URL = "";
-    public static final String USER_INFO = "userinfo";//±£¥Êµƒ’À∫≈key
-    public static final String NAME_KEY = "name_key";//’À∫≈”√ªßkey
-    public static final String PASS_KEY = "pass_key";//’À∫≈√‹¬Îkey
-    public static final String ISREMENBER = "isRemenber";//’À∫≈ «∑Òº«◊°√‹¬Î◊¥Ã¨key
+    public static final String USER_INFO = "userinfo";
+    public static final String NAME_KEY = "name_key";
+    public static final String PASS_KEY = "pass_key";
+    public static final String ISREMENBER = "isRemenber";
     public static String getWsUrl(Context context){
         return URL;
     }

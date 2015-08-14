@@ -21,4 +21,7 @@
     <string name="setting">设置</string>
     <string name="out">退出</string>
 
+    <string name="maintenance_name">维保工单</string>
+    <string name="choose_item">选择班组</string>
+
 </resources>

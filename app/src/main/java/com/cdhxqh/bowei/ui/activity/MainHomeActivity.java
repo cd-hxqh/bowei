@@ -1,11 +1,8 @@
 package com.cdhxqh.bowei.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
@@ -31,6 +27,9 @@ public class MainHomeActivity extends BaseActivity {
     private ListView mLvLeftMenu;
     private DrawerLayout mDrawerLayout;
     private ImageView maintitleimg;
+
+    private Intent intent;//页面跳转
+    private Intent leftmenuintent;//导航栏跳转
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +78,11 @@ public class MainHomeActivity extends BaseActivity {
     private View.OnClickListener buttonclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            intent = new Intent();
             switch (v.getId()){
                 case R.id.maintenance://跳转到维保工单页面
+                    intent.setClass(MainHomeActivity.this,MaintenanceActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.serve://跳转到维修工单页面
                     break;
@@ -94,12 +96,12 @@ public class MainHomeActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            Intent intent = new Intent();
+            leftmenuintent = new Intent();
             switch (position){
                 case 1://跳转工单管理页面
                     break;
                 case 2://跳转资产查询页面
-                    intent.setClass(MainHomeActivity.this,LoginActivity.class);//测试跳转
+                    leftmenuintent.setClass(MainHomeActivity.this,LoginActivity.class);//测试跳转
                     startActivity(intent);
                     break;
                 case 3://跳转库存查询页面

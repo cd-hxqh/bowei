@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="drawer_icon_size">24dp</dimen>
+    <dimen name="title_heiht_size">50dp</dimen>
 
 </resources>

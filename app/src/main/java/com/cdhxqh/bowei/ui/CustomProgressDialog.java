@@ -46,26 +46,12 @@ public class CustomProgressDialog extends Dialog {
 //        animationDrawable.start();
     }
 
-    /**
-     *
-     * [Summary]
-     *       setTitile 标题
-     * @param strTitle
-     * @return
-     *
-     */
+
     public CustomProgressDialog setTitile(String strTitle){
         return customProgressDialog;
     }
 
-    /**
-     *
-     * [Summary]
-     *       setMessage 提示内容
-     * @param strMessage
-     * @return
-     *
-     */
+
     public CustomProgressDialog setMessage(String strMessage){
         TextView tvMsg = (TextView)customProgressDialog.findViewById(R.id.id_tv_loadingmsg);
 
