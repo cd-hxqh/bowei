@@ -102,7 +102,7 @@ public class MainHomeActivity extends BaseActivity {
                     break;
                 case 2://跳转资产查询页面
                     leftmenuintent.setClass(MainHomeActivity.this,LoginActivity.class);//测试跳转
-                    startActivity(intent);
+                    startActivity(leftmenuintent);
                     break;
                 case 3://跳转库存查询页面
                     break;
