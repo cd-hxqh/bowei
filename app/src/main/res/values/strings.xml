@@ -22,6 +22,63 @@
     <string name="out">退出</string>
 
     <string name="maintenance_name">维保工单</string>
+    <string name="maintenance_add_new">新建维保工单</string>
     <string name="choose_item">选择班组</string>
+    <string name="order_number">编号</string>
+    <string name="order_describe">描述</string>
+    <string name="order_task">工单任务</string>
+    <string name="task_list">任务列表</string>
+    <string name="task">任务</string>
+    <string name="digest">摘要</string>
+    <string name="choose_batch">批量选择(执行人/检查人)</string>
+    <string name="real_info">实际信息</string>
+    <string name="real_info_1">员工</string>
+        <string name="worker_info_add_new">员工新建</string>
+        <string name="worker_info_number">员工编号</string>
+        <string name="worker_info_name">名称</string>
+        <string name="worker_info_start_date">开始日期</string>
+        <string name="worker_info_stop_date">结束日期</string>
+        <string name="worker_info_start_time">开始时间</string>
+        <string name="worker_info_stop_time">结束时间</string>
+        <string name="worker_info_work_time">工时</string>
+    <string name="real_info_2">发放物料</string>
+        <string name="give_material_add_new">发放物料新建</string>
+        <string name="material_number">物料编号</string>
+        <string name="material_name">物料名称</string>
+        <string name="material_size">物料数量</string>
+    <string name="real_info_3">消耗物料</string>
+        <string name="consume_material_add_new">消耗物料新建</string>
+    <string name="real_info_4">捷运备件</string>
+        <string name="jieyun_add_new">捷运备件新建</string>
+    <string name="real_info_5">领料消耗</string>
+        <string name="material_consume_add_new">领料消耗新建</string>
+
+    <!--工单详情-->
+    <string name="order_detail_number">工单编号</string>
+    <string name="order_detail_describe">工单描述</string>
+    <string name="order_detail_palce">位置</string>
+    <string name="order_detail_property">资产</string>
+    <string name="order_detail_worktype">工作类型</string>
+    <string name="order_detail_reality_worktype">实际工作类型</string>
+    <string name="order_detail_applyunit">申请单位</string>
+    <string name="order_detail_major">专业</string>
+    <string name="order_detail_reality_item">实际班组</string>
+    <string name="order_detail_state">状态</string>
+    <string name="order_detail_reportdate">汇报日期</string>
+    <string name="order_detail_workplan">作业计划</string>
+    <string name="order_detail_reality_starttime">实际开始时间</string>
+    <string name="order_detail_reality_stoptime">实际完成时间</string>
+    <string name="order_detail_employeeID">录入人工号</string>
+    <string name="order_detail_questiontogether">问题汇总</string>
+    <string name="order_detail_ratinghours">额定工时</string>
+    <string name="order_detail_pm">PM</string>
+    <string name="order_detail_notinspection_device">未巡检设备</string>
+    <string name="order_detail_inspect_result">检查结果</string>
+    <string name="order_detail_faultclass">故障类</string>
+    <string name="order_detail_error_coding">问题代码</string>
+    <string name="order_detail_fault_rank">故障等级</string>
+    <string name="order_detail_reporttime">汇报时间</string>
+    <string name="order_detail_starttime">开始时间</string>
+    <string name="order_detail_input">提交</string>
 
 </resources>

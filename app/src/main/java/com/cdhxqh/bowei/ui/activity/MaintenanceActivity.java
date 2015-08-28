@@ -6,22 +6,28 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
+
+import java.util.ArrayList;
 
 /**
- * Created by think on 2015/8/13.
+ * Created by think on 2015/8/13.维保工单
  */
 public class MaintenanceActivity extends BaseActivity{
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
     private Button chooseitembtn;
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
+    private OrderMaintenanceAdapter orderMainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +55,42 @@ public class MaintenanceActivity extends BaseActivity{
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        orderMainAdapter = new OrderMaintenanceAdapter(this);
+        recyclerView.setAdapter(orderMainAdapter);
+        addimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MaintenanceActivity.this,AddOrderMaintenanceActivity.class);
+                startActivityForResult(intent,1);
+            }
+        });
+        addData();
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MaintenanceActivity.this,MainHomeActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 0:
+                break;
+        }
+    }
+    private void addData() {
+        ArrayList<OrderMain> list = new ArrayList<OrderMain>();
+        for (int i = 0; i < 3; i++) {
+            OrderMain orderMain = new OrderMain();
+            orderMain.setNumber(103882549+i);
+            orderMain.setDescribe("TT2分拣机" + (i + 1) + "日检");
+            orderMain.setPlace("SQWES");
+            orderMain.setProperty("01002");
+            list.add(i, orderMain);
+        }
+        orderMainAdapter.update(list, true);
+    }
+
 }

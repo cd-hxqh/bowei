@@ -5,4 +5,9 @@
     <dimen name="drawer_icon_size">24dp</dimen>
     <dimen name="title_heiht_size">50dp</dimen>
 
+    <dimen name="rdo1">0dp</dimen>
+    <dimen name="rdo2">100dp</dimen>
+    <dimen name="rdo3">200dp</dimen>
+    <dimen name="rdo4">300dp</dimen>
+    <dimen name="rdo5">400dp</dimen>
 </resources>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/order_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/order_info_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/worker_info_number"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/worker_info_number"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/content_bg01"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:textColor="@color/gray"
+            android:textCursorDrawable="@null"
+            android:textSize="14dp"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/worker_info_name"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/worker_info_name"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/content_bg01"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:textColor="@color/gray"
+            android:textCursorDrawable="@null"
+            android:textSize="14dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/order_layout_background"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/worker_info_start_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_bg02"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worker_info_start_date"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/ico_in1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/in_ico" />
+
+                <TextView
+                    android:id="@+id/worker_info_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/ico_in1"
+                    android:textColor="@color/gray" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/worker_info_stop_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_bg02"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worker_info_stop_date"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/ico_in2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/in_ico" />
+
+                <TextView
+                    android:id="@+id/worker_info_stop_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/ico_in2"
+                    android:textColor="@color/gray" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/worker_info_start_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_bg02"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worker_info_start_time"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/ico_in3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/in_ico" />
+
+                <TextView
+                    android:id="@+id/worker_info_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/ico_in3"
+                    android:textColor="@color/gray" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/worker_info_stop_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/content_bg02"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worker_info_stop_time"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/ico_in4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/in_ico" />
+
+                <TextView
+                    android:id="@+id/worker_info_stop_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/ico_in4"
+                    android:textColor="@color/gray" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/worker_info_work_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/content_bg02"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/worker_info_work_time"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/ico_in5"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/in_ico" />
+
+            <TextView
+                android:id="@+id/worker_info_work_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/ico_in5"
+                android:textColor="@color/gray" />
+
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/info_input"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="25dp"
+            android:background="@color/start_back_color"
+            android:text="@string/order_detail_input"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>

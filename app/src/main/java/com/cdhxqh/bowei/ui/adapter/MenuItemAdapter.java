@@ -38,13 +38,13 @@ public class MenuItemAdapter extends BaseAdapter{
 
     private List<LvMenuItem> mItems = new ArrayList<LvMenuItem>(
             Arrays.asList(
-                    new LvMenuItem(R.drawable.order_ico, "¹¤µ¥¹ÜÀí"),
-                    new LvMenuItem(R.drawable.property_ico, "×Ê²ú²éÑ¯"),
-                    new LvMenuItem(R.drawable.inventory_ico, "¿â´æ²éÑ¯"),
-                    new LvMenuItem(R.drawable.knowledge_ico, "ÖªÊ¶¿â"),
-                    new LvMenuItem(R.drawable.download_ico, "ÏÂÔØ"),
-                    new LvMenuItem(R.drawable.setting_ico, "ÉèÖÃ"),
-                    new LvMenuItem(R.drawable.out_ico, "ÍË³ö")
+                    new LvMenuItem(R.drawable.order_ico, "å·¥å•ç®¡ç†"),
+                    new LvMenuItem(R.drawable.property_ico, "èµ„äº§æŸ¥è¯¢"),
+                    new LvMenuItem(R.drawable.inventory_ico, "åº“å­˜æŸ¥è¯¢"),
+                    new LvMenuItem(R.drawable.knowledge_ico, "çŸ¥è¯†åº“"),
+                    new LvMenuItem(R.drawable.download_ico, "ä¸‹è½½"),
+                    new LvMenuItem(R.drawable.setting_ico, "è®¾ç½®"),
+                    new LvMenuItem(R.drawable.out_ico, "é€€å‡º")
             ));
 
 

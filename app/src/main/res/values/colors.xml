@@ -10,4 +10,9 @@
     <color name="end_back_color">#0399F0</color><!--淡青色-->
     <color name="blue_dark">#0492E4</color>
     <color name="title">#00A2FF</color>
+    <color name="order_background">#E7EEF1</color><!--工单详情背景色-->
+    <color name="order_layout_background">#F0EFEF</color><!--工单详情布局内背景色-->
+
+    <color name="radiobg_press">#43859d</color>
+    <color name="radiobg_normal">#555555</color>
 </resources>

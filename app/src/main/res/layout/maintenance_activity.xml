@@ -6,7 +6,6 @@
 
         <include layout="@layout/maintenance_title"/>
     <android.support.v4.widget.SwipeRefreshLayout
-        android:paddingTop="@dimen/title_heiht_size"
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

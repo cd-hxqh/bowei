@@ -11,6 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.OrderServe;
+import com.cdhxqh.bowei.bean.OrderService;
+import com.cdhxqh.bowei.ui.adapter.OrderServeAdapter;
+import com.cdhxqh.bowei.ui.adapter.OrderServiceAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by think on 2015/8/14.
@@ -21,6 +27,7 @@ public class ServiceActivity extends BaseActivity {
     private TextView titlename;
     private Button chooseitembtn;
     RecyclerView recyclerView;
+    private OrderServiceAdapter orderServiceAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +54,9 @@ public class ServiceActivity extends BaseActivity {
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        orderServiceAdapter = new OrderServiceAdapter(this);
+        recyclerView.setAdapter(orderServiceAdapter);
+        addData();
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,5 +67,16 @@ public class ServiceActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    private void addData() {
+        ArrayList<OrderService> list = new ArrayList<OrderService>();
+        for (int i = 0; i < 3; i++) {
+            OrderService orderService = new OrderService();
+            orderService.setNumber(103882549);
+            orderService.setDescribe("TT2分拣机4日检");
+            list.add(i,orderService);
+        }
+        orderServiceAdapter.update(list, true);
     }
 }

@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +23,13 @@ import com.cdhxqh.bowei.application.BaseApplication;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.CustomProgressDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
 
 public class LoginActivity extends BaseActivity {
 
@@ -30,6 +41,27 @@ public class LoginActivity extends BaseActivity {
     private Button login;
 
     private CustomProgressDialog progressDialog = null;
+
+    protected static final int S = 0;
+    protected static final int F = 1;
+    private String result;
+    String json = "{woNum:'1000',description:'xxxx'}";
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case S:
+                    break;
+                case F:
+                    if(result!=null){
+                        Toast.makeText(LoginActivity.this,result,Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +114,12 @@ public class LoginActivity extends BaseActivity {
         intent.setClass(this,MainHomeActivity.class);
         startActivity(intent);
         finish();
+//        new AsyncTask<String, String, String>() {
+//            @Override
+//            protected String doInBackground(String... params) {((BaseApplication)LoginActivity.this.getApplication()).getWsService().InsertWO(json);
+//              return "";
+//            }
+//        }.execute();
     }
 
     @Override

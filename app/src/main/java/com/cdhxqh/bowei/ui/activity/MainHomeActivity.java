@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -8,12 +9,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
+import com.cdhxqh.bowei.ui.fragment.OrderFragment;
 
 /**
  * Created by think on 2015/8/11.
@@ -21,15 +23,14 @@ import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
 public class MainHomeActivity extends BaseActivity {
     public static final String TAG = "MainHomeActivity";
 
-    private Button maintenance;
-    private Button serve;
-    private Button service;
+
     private ListView mLvLeftMenu;
     private DrawerLayout mDrawerLayout;
     private ImageView maintitleimg;
+    private TextView titlename;
+    private FragmentTransaction fragmentTransaction;
+    private OrderFragment orderFragment = new OrderFragment();
 
-    private Intent intent;//Ò³ÃæÌø×ª
-    private Intent leftmenuintent;//µ¼º½À¸Ìø×ª
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +44,25 @@ public class MainHomeActivity extends BaseActivity {
 
     @Override
     protected void findViewById() {
-        maintenance = (Button) findViewById(R.id.maintenance);
-        serve = (Button) findViewById(R.id.serve);
-        service = (Button) findViewById(R.id.service);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawer_layout);
         mLvLeftMenu = (ListView) findViewById(R.id.left_menu);
         maintitleimg = (ImageView) findViewById(R.id.main_title);
+        titlename = (TextView) findViewById(R.id.title_activity_name);
     }
 
     @Override
     protected void initView() {
         setUpDrawer();
-        maintenance.setOnClickListener(buttonclick);
-        serve.setOnClickListener(buttonclick);
-        service.setOnClickListener(buttonclick);
+        invalidateOptionsMenu();
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.replace(R.id.container,orderFragment);
+        fragmentTransaction.commit();
         mLvLeftMenu.setOnItemClickListener(leftmenulistener);
         maintitleimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             }
@@ -75,42 +76,30 @@ public class MainHomeActivity extends BaseActivity {
         mLvLeftMenu.setAdapter(new MenuItemAdapter(this));
     }
 
-    private View.OnClickListener buttonclick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            intent = new Intent();
-            switch (v.getId()){
-                case R.id.maintenance://Ìø×ªµ½Î¬±£¹¤µ¥Ò³Ãæ
-                    intent.setClass(MainHomeActivity.this,MaintenanceActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.serve://Ìø×ªµ½Î¬ĞŞ¹¤µ¥Ò³Ãæ
-                    intent.setClass(MainHomeActivity.this,ServeActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.service://Ìø×ªµ½·şÎñ¹¤µ¥Ò³Ãæ
-                    intent.setClass(MainHomeActivity.this,ServiceActivity.class);
-                    startActivity(intent);
-                    break;
-            }
-        }
-    };
-
     private ListView.OnItemClickListener leftmenulistener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            leftmenuintent = new Intent();
             switch (position){
-                case 1://Ìø×ª¹¤µ¥¹ÜÀíÒ³Ãæ
+                case 1://å·¥å•ç®¡ç†
+                    titlename.setText(getResources().getString(R.string.order));
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,orderFragment);
+                    fragmentTransaction.commit();
                     break;
-                case 2://Ìø×ª×Ê²ú²éÑ¯Ò³Ãæ
-                    leftmenuintent.setClass(MainHomeActivity.this,LoginActivity.class);//²âÊÔÌø×ª
-                    startActivity(leftmenuintent);
+                case 2://èµ„äº§æŸ¥è¯¢
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,orderFragment);
+                    fragmentTransaction.commit();
+                    titlename.setText(getResources().getString(R.string.property));
                     break;
-                case 3://Ìø×ª¿â´æ²éÑ¯Ò³Ãæ
+                case 3://åº“å­˜æŸ¥è¯¢
+                    titlename.setText(getResources().getString(R.string.inventory));
                     break;
-                case 4://Ìø×ªÖªÊ¶¿âÒ³Ãæ
+                case 4://çŸ¥è¯†åº“
+                    titlename.setText(getResources().getString(R.string.knowledge));
                     break;
             }
         }
