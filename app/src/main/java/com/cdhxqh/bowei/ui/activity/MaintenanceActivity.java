@@ -19,15 +19,20 @@ import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by think on 2015/8/13.维保工单
+ * Created by think on 2015/8/13.
  */
 public class MaintenanceActivity extends BaseActivity{
+
+    public static final String TAG = "MaintenanceActivity";
+
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
     private Button chooseitembtn;
+    LinearLayoutManager layoutManager;
     public RecyclerView recyclerView;
     private OrderMaintenanceAdapter orderMainAdapter;
+    private ArrayList<OrderMain> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,12 @@ public class MaintenanceActivity extends BaseActivity{
     @Override
     protected void initView() {
         titlename.setText(getResources().getString(R.string.maintenance));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        orderMainAdapter = new OrderMaintenanceAdapter(this);
+        orderMainAdapter = new OrderMaintenanceAdapter(this,this);
         recyclerView.setAdapter(orderMainAdapter);
         addimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +80,13 @@ public class MaintenanceActivity extends BaseActivity{
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        OrderMain orderMain;
         switch (resultCode) {
             case 0:
+                break;
+            case 1:
+                orderMain = (OrderMain) data.getSerializableExtra("orderMain");
+                adddata(orderMain);
                 break;
         }
     }
@@ -91,6 +101,19 @@ public class MaintenanceActivity extends BaseActivity{
             list.add(i, orderMain);
         }
         orderMainAdapter.update(list, true);
+    }
+
+    private void adddata(OrderMain orderMain){
+        ArrayList<OrderMain> list = new ArrayList<OrderMain>();
+        list.add(0,orderMain);
+        orderMainAdapter.update(list,true);
+    }
+
+    public void changeitem(){
+        for(int i = 0;i<orderMainAdapter.getItemCount();i++){
+            layoutManager.findViewByPosition(i).findViewById(R.id.order_main_in).setVisibility(View.GONE);
+            layoutManager.findViewByPosition(i).findViewById(R.id.order_checkbox).setVisibility(View.VISIBLE);
+        }
     }
 
 }

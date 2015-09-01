@@ -92,7 +92,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this);
+                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this,getResources().getString(R.string.maintenance));
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });

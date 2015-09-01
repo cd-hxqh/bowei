@@ -13,7 +13,8 @@ import android.widget.PopupWindow;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.ui.activity.OrderTaskActivity;
-import com.cdhxqh.bowei.ui.activity.RealInfoActivity;
+import com.cdhxqh.bowei.ui.activity.MaintenanceRealInfoActivity;
+import com.cdhxqh.bowei.ui.activity.ServeRealInfoActivity;
 
 /**
  * Created by think on 2015/8/20.
@@ -21,7 +22,7 @@ import com.cdhxqh.bowei.ui.activity.RealInfoActivity;
 public class OrderMorePopuowindow extends PopupWindow {
     private View conentView;
 
-    public OrderMorePopuowindow(final Activity context) {
+    public OrderMorePopuowindow(final Activity context, final String fromname) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         conentView = inflater.inflate(R.layout.popup_order_more, null);
@@ -65,8 +66,16 @@ public class OrderMorePopuowindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow.this.dismiss();
-                Intent intent = new Intent(context, RealInfoActivity.class);
-                context.startActivity(intent);
+                if (fromname.equals(context.getResources().getString(R.string.maintenance))) {
+                    Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
+                    context.startActivity(intent);
+                }else if(fromname.equals(context.getResources().getString(R.string.serve))){
+                    Intent intent = new Intent(context, ServeRealInfoActivity.class);
+                    context.startActivity(intent);
+                }else if(fromname.equals(context.getResources().getString(R.string.service))){
+                    Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
     }

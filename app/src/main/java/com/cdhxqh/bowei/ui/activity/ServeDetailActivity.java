@@ -54,7 +54,7 @@ public class ServeDetailActivity extends BaseActivity {
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this);
+                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this,getResources().getString(R.string.serve));
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });

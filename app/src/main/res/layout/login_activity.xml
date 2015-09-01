@@ -74,7 +74,7 @@
             android:textCursorDrawable="@drawable/color_cursor"
             android:drawableLeft="@drawable/password_ico"
             android:hint="@string/please_password"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:textColorHint="@android:color/darker_gray"/>
 
 

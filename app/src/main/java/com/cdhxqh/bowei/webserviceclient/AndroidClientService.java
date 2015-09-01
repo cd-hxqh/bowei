@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class AndroidClientService {
     private static final String TAG = "AndroidClientService";
-    public String NAMESPACE = "http://www.ibm.com/maximo";
+    public String NAMESPACE = "http://www.ibm.com/maximo/wsdl/CUWO";
     public String url = "http://182.92.8.94:7001/meaweb/wsdl/cuwo.wsdl";
     public int timeOut = 60000;
 
@@ -40,7 +40,7 @@ public class AndroidClientService {
 
     public String InsertWO(String s) {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(
-                SoapEnvelope.VER11);
+                SoapEnvelope.VER12);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
@@ -52,9 +52,13 @@ public class AndroidClientService {
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }
-        Object retObj = soapEnvelope.bodyIn;
-//        Log.i(TAG, retObj.toString());
-//        return retObj.toString();
-        return "";
+//        Log.i(TAG, soapEnvelope.bodyIn.toString());
+        try {
+            Object retObj = soapEnvelope.getResponse();
+            return retObj.toString()+"sss";
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return "xxx";
     }
 }

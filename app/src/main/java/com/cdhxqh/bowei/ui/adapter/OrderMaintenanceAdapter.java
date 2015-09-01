@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.ui.activity.MaintenanceActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
 
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ import java.util.ArrayList;
  */
 public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenanceAdapter.ViewHolder> {
     Context mContext;
+    MaintenanceActivity activity;
     ArrayList<OrderMain> list=new ArrayList<OrderMain>();
-    public OrderMaintenanceAdapter(Context context){
+    public OrderMaintenanceAdapter(Context context,MaintenanceActivity activity){
         this.mContext = context;
+        this.activity = activity;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,9 +57,10 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
         holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                holder.imageView.setVisibility(View.GONE);
-                holder.checkBox.setVisibility(View.VISIBLE);
-                notifyDataSetChanged();
+//                holder.imageView.setVisibility(View.GONE);
+//                holder.checkBox.setVisibility(View.VISIBLE);
+//                notifyDataSetChanged();
+                activity.changeitem();
                 return true;
             }
         });

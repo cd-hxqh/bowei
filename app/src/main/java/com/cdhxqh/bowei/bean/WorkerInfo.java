@@ -64,4 +64,12 @@ public class WorkerInfo implements Serializable {
     public void setStoptime(String stoptime) {
         this.stoptime = stoptime;
     }
+
+    public int getWorktime() {
+        return worktime;
+    }
+
+    public void setWorktime(int worktime) {
+        this.worktime = worktime;
+    }
 }

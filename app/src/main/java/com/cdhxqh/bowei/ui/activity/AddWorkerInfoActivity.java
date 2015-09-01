@@ -1,6 +1,7 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
@@ -38,7 +40,10 @@ public class AddWorkerInfoActivity extends BaseActivity {
     private Button inputbtn;
     private Intent intent;
     private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
     private int layoutnum = 0;
+    private long start;
+    private long stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class AddWorkerInfoActivity extends BaseActivity {
     @Override
     protected void initView() {
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
+        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         titlename.setText(getResources().getString(R.string.worker_info_add_new));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,24 +89,36 @@ public class AddWorkerInfoActivity extends BaseActivity {
         inputbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent();
-                WorkerInfo workerInfo = new WorkerInfo();
-                workerInfo.setNumber(Integer.parseInt(workernum.getText().toString()));
-                workerInfo.setName(workername.getText().toString());
-                workerInfo.setStartdate(startdate.getText().toString());
-                workerInfo.setStopdate(stopdate.getText().toString());
-                workerInfo.setStarttime(starttime.getText().toString());
-                workerInfo.setStoptime(stoptime.getText().toString());
-                intent.putExtra("workinfo", workerInfo);
-                AddWorkerInfoActivity.this.setResult(1, intent);
-                finish();
+                if (workernum.getText().equals("") || workername.getText().equals("")
+                        || startdate.getText().equals("") || stopdate.getText().equals("")
+                        || starttime.getText().equals("") || stoptime.getText().equals("")
+                        || worktime.getText().equals("")) {
+                    Toast.makeText(AddWorkerInfoActivity.this, "请输入完整信息", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (Integer.parseInt(worktime.getText().toString()) < 0) {
+                        Toast.makeText(AddWorkerInfoActivity.this, "请输入正确起止时间", Toast.LENGTH_SHORT).show();
+                    } else {
+                        intent = new Intent();
+                        WorkerInfo workerInfo = new WorkerInfo();
+                        workerInfo.setNumber(Integer.parseInt(workernum.getText().toString()));
+                        workerInfo.setName(workername.getText().toString());
+                        workerInfo.setStartdate(startdate.getText().toString());
+                        workerInfo.setStopdate(stopdate.getText().toString());
+                        workerInfo.setStarttime(starttime.getText().toString());
+                        workerInfo.setStoptime(stoptime.getText().toString());
+                        workerInfo.setWorktime(Integer.parseInt(worktime.getText().toString()));
+                        intent.putExtra("workinfo", workerInfo);
+                        AddWorkerInfoActivity.this.setResult(1, intent);
+                        finish();
+                    }
+                }
             }
         });
 
         startdate_layout.setOnClickListener(dateOnClicklistener);
         stopdate_layout.setOnClickListener(dateOnClicklistener);
-        starttime_layout.setOnClickListener(dateOnClicklistener);
-        stoptime_layout.setOnClickListener(dateOnClicklistener);
+        starttime_layout.setOnClickListener(timeOnClicklistener);
+        stoptime_layout.setOnClickListener(timeOnClicklistener);
     }
 
     private View.OnClickListener dateOnClicklistener = new View.OnClickListener() {
@@ -108,6 +126,13 @@ public class AddWorkerInfoActivity extends BaseActivity {
         public void onClick(View v) {
             layoutnum = v.getId();
             datePickerDialog.show();
+        }
+    };
+    private View.OnClickListener timeOnClicklistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            layoutnum = view.getId();
+            timePickerDialog.show();
         }
     };
 
@@ -119,25 +144,71 @@ public class AddWorkerInfoActivity extends BaseActivity {
                 startdate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             } else if (layoutnum == stopdate_layout.getId()) {
                 stopdate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-            } else if (layoutnum == starttime_layout.getId()) {
-                starttime.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            }
+            getWorkHours();
+        }
+    }
+
+    private class timelistener implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            if (layoutnum == starttime_layout.getId()) {
+                start = i * 60 * 60 * 1000 + i1 * 60 * 1000;
+                starttime.setText(setTimeText(i, i1));
             } else if (layoutnum == stoptime_layout.getId()) {
-                stoptime.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                stop = i * 60 * 60 * 1000 + i1 * 60 * 1000;
+                stoptime.setText(setTimeText(i, i1));
             }
-            if(starttime.getText()!=""&&stoptime.getText()!=""){
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                long to = 0;
-                long from = 0;
-                try {
-                    to = df.parse(stoptime.getText().toString()).getTime();
-                    from = df.parse(starttime.getText().toString()).getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            getWorkHours();
+        }
+    }
+
+    /**
+     * 得到00:00格式的时间
+     *
+     * @param hour
+     * @param minute
+     * @return
+     */
+    private String setTimeText(int hour, int minute) {
+        String h;
+        String m;
+        if (hour < 10) {
+            h = "0" + hour;
+        } else {
+            h = hour + "";
+        }
+        if (minute < 10) {
+            m = "0" + minute;
+        } else {
+            m = minute + "";
+        }
+        return h + ":" + m;
+    }
+
+    /**
+     * 计算工时
+     */
+    private void getWorkHours() {
+        if (starttime.getText() != "" && stoptime.getText() != ""
+                && startdate.getText() != null && stopdate.getText() != null) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            long to = 0;
+            long from = 0;
+            try {
+                to = df.parse(stopdate.getText().toString()).getTime();
+                from = df.parse(startdate.getText().toString()).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (start > stop) {
+                worktime.setText(((to - from) / (1000 * 60 * 60) - (start - stop) / (1000 * 60 * 60)) + "");
+            } else {
+                worktime.setText(((to - from) / (1000 * 60 * 60) + (stop - start) / (1000 * 60 * 60)) + "");
+            }
 //                Toast.makeText(AddWorkerInfoActivity.this,(to - from) / (1000 * 60 * 60 * 24)+"",Toast.LENGTH_SHORT).show();
-                worktime.setText((to - from) / (1000 * 60 * 60 * 24)+"");
+//            worktime.setText((to - from) / (1000 * 60 * 60 * 24)+"");
 //                System.out.println((to - from) / (1000 * 60 * 60 * 24));
-            }
         }
     }
 }

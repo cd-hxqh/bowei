@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/real_info_1"
+            android:text="@string/worker_info"
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView

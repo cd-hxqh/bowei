@@ -32,7 +32,7 @@
     <string name="digest">摘要</string>
     <string name="choose_batch">批量选择(执行人/检查人)</string>
     <string name="real_info">实际信息</string>
-    <string name="real_info_1">员工</string>
+    <string name="worker_info">员工信息</string>
         <string name="worker_info_add_new">员工新建</string>
         <string name="worker_info_number">员工编号</string>
         <string name="worker_info_name">名称</string>
@@ -41,12 +41,12 @@
         <string name="worker_info_start_time">开始时间</string>
         <string name="worker_info_stop_time">结束时间</string>
         <string name="worker_info_work_time">工时</string>
-    <string name="real_info_2">发放物料</string>
+    <string name="plan_material">计划物料消耗</string>
         <string name="give_material_add_new">发放物料新建</string>
         <string name="material_number">物料编号</string>
         <string name="material_name">物料名称</string>
         <string name="material_size">物料数量</string>
-    <string name="real_info_3">消耗物料</string>
+    <string name="real_material">实际物料消耗</string>
         <string name="consume_material_add_new">消耗物料新建</string>
     <string name="real_info_4">捷运备件</string>
         <string name="jieyun_add_new">捷运备件新建</string>
@@ -80,5 +80,6 @@
     <string name="order_detail_reporttime">汇报时间</string>
     <string name="order_detail_starttime">开始时间</string>
     <string name="order_detail_input">提交</string>
+    <string name="OK">确定</string>
 
 </resources>

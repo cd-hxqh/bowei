@@ -18,7 +18,7 @@ import com.cdhxqh.bowei.ui.adapter.OrderServeAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by think on 2015/8/14.维修工单
+ * Created by think on 2015/8/14.缁翠慨宸ュ崟
  */
 public class ServeActivity extends BaseActivity {
     private ImageView backimg;
@@ -73,7 +73,7 @@ public class ServeActivity extends BaseActivity {
         for (int i = 0; i < 3; i++) {
             OrderServe orderServe = new OrderServe();
             orderServe.setNumber(103882549);
-            orderServe.setDescribe("TT2分拣机4日检");
+            orderServe.setDescribe("TT2分拣机"+ (i + 1) + "日检");
             list.add(i,orderServe);
         }
         orderServeAdapter.update(list, true);
