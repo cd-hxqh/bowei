@@ -54,16 +54,16 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
                 }
             }
         });
-        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-//                holder.imageView.setVisibility(View.GONE);
-//                holder.checkBox.setVisibility(View.VISIBLE);
-//                notifyDataSetChanged();
-                activity.changeitem();
-                return true;
-            }
-        });
+//        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+////                holder.imageView.setVisibility(View.GONE);
+////                holder.checkBox.setVisibility(View.VISIBLE);
+////                notifyDataSetChanged();
+//                activity.changeitem();
+//                return true;
+//            }
+//        });
     }
 
     @Override

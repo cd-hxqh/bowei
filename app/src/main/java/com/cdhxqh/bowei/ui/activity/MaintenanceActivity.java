@@ -109,11 +109,11 @@ public class MaintenanceActivity extends BaseActivity{
         orderMainAdapter.update(list,true);
     }
 
-    public void changeitem(){
-        for(int i = 0;i<orderMainAdapter.getItemCount();i++){
-            layoutManager.findViewByPosition(i).findViewById(R.id.order_main_in).setVisibility(View.GONE);
-            layoutManager.findViewByPosition(i).findViewById(R.id.order_checkbox).setVisibility(View.VISIBLE);
-        }
-    }
+//    public void changeitem(){
+//        for(int i = 0;i<orderMainAdapter.getItemCount();i++){
+//            layoutManager.findViewByPosition(i).findViewById(R.id.order_main_in).setVisibility(View.GONE);
+//            layoutManager.findViewByPosition(i).findViewById(R.id.order_checkbox).setVisibility(View.VISIBLE);
+//        }
+//    }
 
 }

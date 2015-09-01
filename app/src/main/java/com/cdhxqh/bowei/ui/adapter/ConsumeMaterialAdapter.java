@@ -1,6 +1,7 @@
 package com.cdhxqh.bowei.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.MaterialInfo;
+import com.cdhxqh.bowei.ui.activity.PlanMaterialDetailActivity;
 
 import java.util.ArrayList;
 
@@ -36,9 +38,10 @@ public class ConsumeMaterialAdapter extends RecyclerView.Adapter<ConsumeMaterial
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(mContext,ServeDetailActivity.class);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClass(mContext,PlanMaterialDetailActivity.class);
+                intent.putExtra("materialInfo",list.get(position));
+                mContext.startActivity(intent);
             }
         });
     }

@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class AndroidClientService {
     private static final String TAG = "AndroidClientService";
-    public String NAMESPACE = "http://www.ibm.com/maximo/wsdl/CUWO";
+    public String NAMESPACE = "http://www.ibm.com/maximo";
     public String url = "http://182.92.8.94:7001/meaweb/wsdl/cuwo.wsdl";
     public int timeOut = 60000;
 
@@ -48,17 +48,12 @@ public class AndroidClientService {
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url, timeOut);
         try {
-            httpTransport.call("urn:action", soapEnvelope);
+            httpTransport.call("urn:action"+NAMESPACE, soapEnvelope);
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }
-//        Log.i(TAG, soapEnvelope.bodyIn.toString());
-        try {
-            Object retObj = soapEnvelope.getResponse();
-            return retObj.toString()+"sss";
-        } catch (SoapFault soapFault) {
-            soapFault.printStackTrace();
-        }
-        return "xxx";
+        SoapObject obj = (SoapObject) soapEnvelope.bodyIn;
+//        obj.getProperty("return");
+        return obj.getProperty("return").toString();
     }
 }
