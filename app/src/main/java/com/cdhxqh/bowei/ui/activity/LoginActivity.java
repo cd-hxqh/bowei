@@ -1,112 +1,169 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
-import com.cdhxqh.bowei.config.Constants;
-import com.cdhxqh.bowei.ui.widget.CustomProgressDialog;
+import com.cdhxqh.bowei.manager.AppManager;
+import com.cdhxqh.bowei.manager.HttpManager;
+import com.cdhxqh.bowei.manager.HttpRequestHandler;
+import com.cdhxqh.bowei.utils.AccountUtils;
 
 
-public class LoginActivity extends BaseActivity {
+/**
+ * 登录界面
+ */
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    public static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivity";
+    private EditText mUsername;
+    private EditText mPassword;
+    private Button mLogin;
+    private ProgressDialog mProgressDialog;
+    //    private MemberModel mProfile;
+    private CheckBox checkBox; //记住密码
 
-    private EditText username;
-    private EditText password;
-    private CheckBox isremenber;
-    private Button login;
+    private boolean isRemember; //是否记住密码
 
-    private CustomProgressDialog progressDialog = null;
 
-    protected static final int S = 0;
-    protected static final int F = 1;
-    private String result;
-    String json = "{woNum:'abc',description:'www'}";
+    String userName; //用户名
 
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case S:
-                    progressDialog.dismiss();
-                    Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, MainHomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                    break;
-                case F:
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
+    String userPassWorld; //密码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
+//        UmengUpdateAgent.setDefault();
+//        UmengUpdateAgent.update(this);
         findViewById();
         initView();
+        setEvent();
+        mLogin.setOnClickListener(this);
     }
 
     @Override
     protected void findViewById() {
-        username = (EditText) findViewById(R.id.user_login_id);
-        password = (EditText) findViewById(R.id.user_login_password);
-        isremenber = (CheckBox) findViewById(R.id.isremenber_password);
-        login = (Button) findViewById(R.id.user_login);
+        mUsername = (EditText) findViewById(R.id.user_login_id);
+        mPassword = (EditText) findViewById(R.id.user_login_password);
+        checkBox = (CheckBox) findViewById(R.id.isremenber_password);
+        mLogin = (Button) findViewById(R.id.user_login);
     }
 
     @Override
     protected void initView() {
-        username.setText(myshared.getString(Constants.NAME_KEY, ""));
-        password.setText(myshared.getString(Constants.PASS_KEY,""));
-        isremenber.setChecked(myshared.getBoolean(Constants.ISREMENBER, false));
-        login.setOnClickListener(loginonclick);
+        mUsername.setText("maxadmin");
+        mPassword.setText("maxadmin");
+        boolean isChecked = AccountUtils.getIsChecked(LoginActivity.this);
+        if (isChecked) {
+            mUsername.setText(AccountUtils.getUserName(LoginActivity.this));
+            mPassword.setText(AccountUtils.getUserPassword(LoginActivity.this));
+        }
     }
 
-    private View.OnClickListener loginonclick = new View.OnClickListener() {
+
+
+    /**
+     * 设置事件监听*
+     */
+    private void setEvent() {
+        checkBox.setOnCheckedChangeListener(cheBoxOnCheckedChangListener);
+    }
+
+
+    private CompoundButton.OnCheckedChangeListener cheBoxOnCheckedChangListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
-        public void onClick(View v) {
-            SharedPreferences.Editor editor = myshared.edit();
-            editor.putString(Constants.NAME_KEY, username.getText().toString());
-            if(isremenber.isChecked()){
-                editor.putString(Constants.PASS_KEY,password.getText().toString());
-            }else{
-                editor.putString(Constants.PASS_KEY, "");
-            }
-            editor.putBoolean(Constants.ISREMENBER,isremenber.isChecked());
-            editor.commit();
-            logon();
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            isRemember = isChecked;
         }
     };
 
-    private void logon(){
-        if (progressDialog == null){
-            progressDialog = CustomProgressDialog.createDialog(this);
-            progressDialog.setMessage("登录中...");
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_login:
+                if (mUsername.getText().length() == 0) {
+                    mUsername.setError(getString(R.string.login_error_empty_user));
+                    mUsername.requestFocus();
+                } else if (mPassword.getText().length() == 0) {
+                    mPassword.setError(getString(R.string.login_error_empty_passwd));
+                    mPassword.requestFocus();
+                } else {
+                    login();
+                }
+                break;
+
         }
-        progressDialog.show();
-        mHandler.sendEmptyMessage(S);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-//            return true;
-//        }
-        return super.onKeyDown(keyCode, event);
+    /**
+     * 登陆*
+     */
+    private void login() {
+        mProgressDialog = ProgressDialog.show(LoginActivity.this, null,
+                getString(R.string.login_loging), true, true);
+
+        HttpManager.login(LoginActivity.this,
+                mUsername.getText().toString(),
+                mPassword.getText().toString(),
+                new HttpRequestHandler<String>() {
+                    @Override
+                    public void onSuccess(String data) {
+                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                        if (isRemember) {
+                            AccountUtils.setChecked(LoginActivity.this, isRemember);
+                            //记住密码
+                            AccountUtils.setUserNameAndPassWord(LoginActivity.this, mUsername.getText().toString(), mPassword.getText().toString());
+                        }
+
+                        startIntent();
+
+                    }
+
+
+                    @Override
+                    public void onSuccess(String data, int totalPages, int currentPage) {
+                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+
+                        startIntent();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(LoginActivity.this,error,Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
     }
+
+
+    private void startIntent() {
+        Intent inetnt = new Intent();
+        inetnt.setClass(this, MainHomeActivity.class);
+        startActivity(inetnt);
+    }
+
+
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+
+
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_LONG).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            AppManager.AppExit(LoginActivity.this);
+        }
+    }
+
 }
