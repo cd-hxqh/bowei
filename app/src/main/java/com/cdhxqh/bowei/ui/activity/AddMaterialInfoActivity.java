@@ -12,8 +12,9 @@ import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.MaterialInfo;
 
 /**
- * Created by think on 2015/8/26.
+ *添加物料信息
  */
+
 public class AddMaterialInfoActivity extends BaseActivity {
     private int requestCode;
     private ImageView backimg;
