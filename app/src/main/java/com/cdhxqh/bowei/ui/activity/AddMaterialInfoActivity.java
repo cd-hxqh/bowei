@@ -24,6 +24,8 @@ public class AddMaterialInfoActivity extends BaseActivity {
     private Button inputbtn;
     private Intent intent;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
