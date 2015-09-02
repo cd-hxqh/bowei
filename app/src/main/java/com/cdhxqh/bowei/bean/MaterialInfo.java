@@ -9,6 +9,7 @@ public class MaterialInfo implements Serializable {
     private String number;
     private String name;
     private int size;
+    private String warehouse;
 
     public String getNumber() {
         return number;
@@ -32,5 +33,13 @@ public class MaterialInfo implements Serializable {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public String getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(String warehouse) {
+        this.warehouse = warehouse;
     }
 }

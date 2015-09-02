@@ -56,6 +56,7 @@ public class OrderMorePopuowindow extends PopupWindow {
             public void onClick(View arg0) {
                 OrderMorePopuowindow.this.dismiss();
                 Intent intent = new Intent(context, OrderTaskActivity.class);
+                intent.putExtra("fromname",fromname);
                 context.startActivity(intent);
 
             }

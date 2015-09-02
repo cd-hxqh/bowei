@@ -1,10 +1,8 @@
-package com.cdhxqh.bowei.ui;
+package com.cdhxqh.bowei.ui.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.Gravity;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;

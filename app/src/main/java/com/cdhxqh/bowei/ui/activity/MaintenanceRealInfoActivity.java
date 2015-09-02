@@ -21,7 +21,7 @@ import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.cdhxqh.bowei.ui.fragment.ConsumeMaterialFragment;
 import com.cdhxqh.bowei.ui.fragment.GiveMaterialFragment;
 import com.cdhxqh.bowei.ui.fragment.JieyunFragment;
-import com.cdhxqh.bowei.ui.fragment.MaterialConsunmeFragment;
+import com.cdhxqh.bowei.ui.fragment.RealMaterialConsunmeFragment;
 import com.cdhxqh.bowei.ui.fragment.WorkerFragment;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class MaintenanceRealInfoActivity extends BaseActivity {
     private WorkerFragment workerFragment = new WorkerFragment();
     private GiveMaterialFragment giveMaterialFragment = new GiveMaterialFragment();
     private ConsumeMaterialFragment consumeMaterialFragment = new ConsumeMaterialFragment();
-    private MaterialConsunmeFragment materialConsunmeFragment = new MaterialConsunmeFragment();
+    private RealMaterialConsunmeFragment realMaterialConsunmeFragment = new RealMaterialConsunmeFragment();
     private JieyunFragment jieyunFragment = new JieyunFragment();
     private Intent intent;
     private int requestCode;
@@ -117,7 +117,7 @@ public class MaintenanceRealInfoActivity extends BaseActivity {
 //        fragmentlist.add(giveMaterialFragment);
         fragmentlist.add(consumeMaterialFragment);
 //        fragmentlist.add(jieyunFragment);
-        fragmentlist.add(materialConsunmeFragment);
+        fragmentlist.add(realMaterialConsunmeFragment);
         mViewPager.setAdapter(new MyFrageStatePagerAdapter(getSupportFragmentManager()));//设置ViewPager的适配器
     }
 

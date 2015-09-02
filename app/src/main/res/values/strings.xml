@@ -48,6 +48,7 @@
         <string name="material_size">物料数量</string>
     <string name="real_material">实际物料消耗</string>
         <string name="consume_material_add_new">消耗物料新建</string>
+        <string name="warehouse_below">所属仓库</string>
     <string name="real_info_4">捷运备件</string>
         <string name="jieyun_add_new">捷运备件新建</string>
     <string name="real_info_5">领料消耗</string>

@@ -20,7 +20,7 @@ import java.io.IOException;
 public class AndroidClientService {
     private static final String TAG = "AndroidClientService";
     public String NAMESPACE = "http://www.ibm.com/maximo";
-    public String url = "http://182.92.8.94:7001/meaweb/wsdl/cuwo.wsdl";
+    public String url = "http://182.92.8.94:7001/meaweb/services/CUWO";
     public int timeOut = 60000;
 
     public AndroidClientService() {
@@ -39,21 +39,26 @@ public class AndroidClientService {
     }
 
     public String InsertWO(String s) {
-        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(
-                SoapEnvelope.VER12);
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
+        SoapObject soapReq = new SoapObject(NAMESPACE, "cuwoInsertWO");
         soapReq.addProperty("json", s);
         soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(url, timeOut);
+        HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
-            httpTransport.call("urn:action"+NAMESPACE, soapEnvelope);
-        } catch (IOException | XmlPullParserException e) {
+            httpTransport.call("urn:action", soapEnvelope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
-        SoapObject obj = (SoapObject) soapEnvelope.bodyIn;
-//        obj.getProperty("return");
-        return obj.getProperty("return").toString();
+        String obj = null;
+        try {
+            obj = soapEnvelope.getResponse().toString();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return obj;
     }
 }

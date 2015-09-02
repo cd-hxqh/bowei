@@ -43,6 +43,10 @@ public class OrderTaskActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        String name = (String) getIntent().getExtras().get("fromname");
+        if(name.equals(getResources().getString(R.string.maintenance))){
+            addimg.setVisibility(View.GONE);
+        }
         titlename.setText(getResources().getString(R.string.task_list));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

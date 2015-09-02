@@ -12,18 +12,16 @@ import android.view.ViewGroup;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.MaterialInfo;
-import com.cdhxqh.bowei.bean.WorkerInfo;
-import com.cdhxqh.bowei.ui.adapter.JieyunAdapter;
-import com.cdhxqh.bowei.ui.adapter.MaterialConsumeAdapter;
+import com.cdhxqh.bowei.ui.adapter.RealMaterialConsumeAdapter;
 
 import java.util.ArrayList;
 
 /**
  * Created by think on 2015/8/25.
  */
-public class MaterialConsunmeFragment extends Fragment {
+public class RealMaterialConsunmeFragment extends Fragment {
     private RecyclerView recyclerView;
-    private MaterialConsumeAdapter materialConsumeAdapter;
+    private RealMaterialConsumeAdapter materialConsumeAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +37,7 @@ public class MaterialConsunmeFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.material_consume_list);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        materialConsumeAdapter = new MaterialConsumeAdapter(getActivity());
+        materialConsumeAdapter = new RealMaterialConsumeAdapter(getActivity());
         recyclerView.setAdapter(materialConsumeAdapter);
         addData();
         return view;
@@ -52,6 +50,7 @@ public class MaterialConsunmeFragment extends Fragment {
             materialInfo.setNumber("LSD888"+i);
             materialInfo.setName("螺丝刀");
             materialInfo.setSize(50+i);
+            materialInfo.setWarehouse("仓库"+i);
             list.add(i,materialInfo);
         }
         materialConsumeAdapter.update(list, true);
