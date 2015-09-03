@@ -24,7 +24,6 @@ public class ServeActivity extends BaseActivity {
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
-    private Button chooseitembtn;
     RecyclerView recyclerView;
     private OrderServeAdapter orderServeAdapter;
     @Override
@@ -41,7 +40,6 @@ public class ServeActivity extends BaseActivity {
         backimg = (ImageView) findViewById(R.id.maintenance_title_back);
         addimg = (ImageView) findViewById(R.id.maintenance_title_add);
         titlename = (TextView) findViewById(R.id.title_name);
-        chooseitembtn = (Button) findViewById(R.id.activity_chooser_view_content);
         recyclerView = (RecyclerView) findViewById(R.id.maintenance_list);
     }
 
@@ -56,7 +54,13 @@ public class ServeActivity extends BaseActivity {
         orderServeAdapter = new OrderServeAdapter(this);
         recyclerView.setAdapter(orderServeAdapter);
         addData();
-
+        addimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ServeActivity.this, AddOrderServeActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +70,18 @@ public class ServeActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        OrderServe orderServe;
+        switch (resultCode) {
+            case 0:
+                break;
+            case 1:
+                orderServe = (OrderServe) data.getSerializableExtra("orderServe");
+                adddata(orderServe);
+                break;
+        }
     }
 
     private void addData() {
@@ -77,5 +93,11 @@ public class ServeActivity extends BaseActivity {
             list.add(i,orderServe);
         }
         orderServeAdapter.update(list, true);
+    }
+
+    private void adddata(OrderServe orderServe){
+        ArrayList<OrderServe> list = new ArrayList<OrderServe>();
+        list.add(0,orderServe);
+        orderServeAdapter.update(list,true);
     }
 }

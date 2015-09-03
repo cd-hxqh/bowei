@@ -63,6 +63,7 @@
                 android:text="@string/order_detail_state"
                 android:textColor="@color/black"/>
             <EditText
+                android:id="@+id/order_detail_state"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
@@ -80,6 +81,7 @@
                 android:text="@string/order_detail_questiontogether"
                 android:textColor="@color/black"/>
             <EditText
+                android:id="@+id/order_detail_questiontogether"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"
@@ -95,6 +97,7 @@
                 android:text="@string/order_detail_faultclass"
                 android:textColor="@color/black"/>
             <EditText
+                android:id="@+id/order_detail_faultclass"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"
@@ -110,6 +113,7 @@
                 android:text="@string/order_detail_error_coding"
                 android:textColor="@color/black"/>
             <EditText
+                android:id="@+id/order_detail_error_coding"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"

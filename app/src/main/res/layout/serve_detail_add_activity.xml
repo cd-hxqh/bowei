@@ -52,11 +52,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <include layout="@layout/order_detail_one_layout"/>
             <TextView
@@ -70,11 +70,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <include layout="@layout/order_detail_two_layout"/>
             <TextView
@@ -87,76 +87,75 @@
                 android:id="@+id/questiontogether"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="@string/order_detail_ratinghours"
+                android:text="@string/order_detail_faultclass"
                 android:textColor="@color/black"/>
             <EditText
-                android:id="@+id/detail_ratinghours"
+                android:id="@+id/order_detail_faultclass"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="@string/order_detail_pm"
+                android:text="@string/order_detail_error_coding"
                 android:textColor="@color/black"/>
             <EditText
-                android:id="@+id/pm"
+                android:id="@+id/order_detail_error_coding"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="@string/order_detail_notinspection_device"
+                android:text="@string/order_detail_fault_rank"
                 android:textColor="@color/black"/>
             <EditText
-                android:id="@+id/notinspection_device"
+                android:id="@+id/order_detail_fault_rank"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:textColor="@color/gray"
                 android:paddingLeft="3dp"
                 android:textSize="14dp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
+                android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <RelativeLayout
-                android:id="@+id/inspect_result_layout"
+                android:id="@+id/order_detail_reporttime_layout"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"
-                android:padding="6dp"
                 android:background="@drawable/content_bg02">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
-                    android:text="@string/order_detail_inspect_result"
+                    android:text="@string/order_detail_reporttime"
                     android:textColor="@color/black"/>
                 <EditText
-                    android:id="@+id/inspect_result_edit"
+                    android:id="@+id/order_detail_reporttime_edit"
                     android:layout_width="200dp"
                     android:layout_height="18dp"
                     android:layout_alignParentRight="true"
@@ -168,7 +167,7 @@
                     android:background="@drawable/content_bg01"
                     android:visibility="gone"/>
                 <TextView
-                    android:id="@+id/inspect_result"
+                    android:id="@+id/order_detail_reporttime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -182,7 +181,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="@string/OK"
+                android:text="@string/order_detail_input"
                 android:background="@color/start_back_color"/>
         </LinearLayout>
 

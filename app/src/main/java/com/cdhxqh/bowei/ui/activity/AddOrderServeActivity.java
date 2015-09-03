@@ -1,28 +1,24 @@
 package com.cdhxqh.bowei.ui.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.bean.OrderServe;
 
 /**
- * Created by think on 2015/8/26.新增维保工单
+ * Created by think on 2015/9/2.
  */
-public class AddOrderMaintenanceActivity extends BaseActivity {
+public class AddOrderServeActivity extends BaseActivity {
     private ImageView backimg;
     private TextView titlename;
     private LinearLayout linearLayout;
@@ -66,12 +62,13 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private RelativeLayout employee_idlayout;
     private EditText employee_idedit;
     private EditText questiontogether;//问题汇总
-    private EditText ratinghours;//额定工时
-    private EditText pm;//PM
-    private EditText notinspection_device;//未巡检设备
-    private TextView inspect_result;//检查结果
-    private RelativeLayout inspect_resultlayout;
-    private EditText inspect_resultedit;
+    private EditText faultclass;
+    private EditText error_coding;
+    private EditText fault_rank;
+    private TextView reporttime;
+    private RelativeLayout reporttimelayout;
+    private EditText reporttimeedit;
+
     private Button inputbtn;
 
     private EditText showingedit;
@@ -80,7 +77,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.maintenance_detail_add_new_activity);
+        setContentView(R.layout.serve_detail_add_activity);
 
         findViewById();
         initView();
@@ -145,24 +142,23 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         employee_idedit = (EditText) findViewById(R.id.oder_detail_employee_id_edit);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
-        ratinghours = (EditText) findViewById(R.id.detail_ratinghours);
-        pm = (EditText) findViewById(R.id.pm);
-        notinspection_device = (EditText) findViewById(R.id.notinspection_device);
-
-        inspect_result = (TextView) findViewById(R.id.inspect_result);
-        inspect_resultlayout = (RelativeLayout) findViewById(R.id.inspect_result_layout);
-        inspect_resultedit = (EditText) findViewById(R.id.inspect_result_edit);
+        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
+        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
+        fault_rank = (EditText) findViewById(R.id.order_detail_fault_rank);
+        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
+        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
+        reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
 
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.Serve_add_new));
+        titlename.setText(getResources().getString(R.string.maintenance_add_new));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddOrderMaintenanceActivity.this.setResult(0);
+                AddOrderServeActivity.this.setResult(0);
                 finish();
             }
         });
@@ -179,57 +175,26 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         reality_starttimelayout.setOnClickListener(new MylayoutListener(reality_starttimeedit,reality_starttime));
         reality_stoptimelayout.setOnClickListener(new MylayoutListener(reality_stoptimeedit,reality_stoptime));
         employee_idlayout.setOnClickListener(new MylayoutListener(employee_idedit,employee_id));
-        inspect_resultlayout.setOnClickListener(new MylayoutListener(inspect_resultedit,inspect_result));
+        reporttimelayout.setOnClickListener(new MylayoutListener(reporttimeedit,reporttime));
 
         inputbtn.setOnClickListener(inputlistener);
-//        linearLayout.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if (showingedit != null && showingedit.getVisibility() == View.VISIBLE &&
-//                        (motionEvent.getX() < showingedit.getLeft() || motionEvent.getX() > showingedit.getRight()
-//                                || motionEvent.getY() < showingedit.getBottom() || motionEvent.getY() > showingedit.getTop())) {
-//                    showingtext.setText(showingedit.getText());
-//                    showingedit.setVisibility(View.GONE);
-//                    showingtext.setVisibility(View.VISIBLE);
-//                    showingedit = null;
-//                    showingtext = null;
-//                }
-//                return true;
-//            }
-//        });
+
+        linearLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (showingedit != null && showingedit.getVisibility() == View.VISIBLE &&
+                        (motionEvent.getX() < showingedit.getLeft() || motionEvent.getX() > showingedit.getRight()
+                                || motionEvent.getY() < showingedit.getBottom() || motionEvent.getY() > showingedit.getTop())) {
+                    showingtext.setText(showingedit.getText());
+                    showingedit.setVisibility(View.GONE);
+                    showingtext.setVisibility(View.VISIBLE);
+                    showingedit = null;
+                    showingtext = null;
+                }
+                return true;
+            }
+        });
     }
-
-    private View.OnClickListener inputlistener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent();
-            OrderMain orderMain = new OrderMain();
-            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
-            orderMain.setDescribe(describe.getText().toString());
-            orderMain.setPlace(place.getText().toString());
-            orderMain.setProperty(property.getText().toString());
-            orderMain.setWordtype(wordtype.getText().toString());
-            orderMain.setReality_worktype(reality_worktype.getText().toString());
-            orderMain.setApplyunity(applyunity.getText().toString());
-            orderMain.setMajor(major.getText().toString());
-            orderMain.setReality_item(reality_item.getText().toString());
-            orderMain.setState(state.getText().toString());
-            orderMain.setDate(date.getText().toString());
-            orderMain.setWorkplan(workplan.getText().toString());
-            orderMain.setReality_starttime(reality_starttime.getText().toString());
-            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-            orderMain.setEmployee_id(employee_id.getText().toString());
-            orderMain.setQuestiontogether(questiontogether.getText().toString());
-            orderMain.setRatinghours(ratinghours.getText().toString());
-            orderMain.setPm(pm.getText().toString());
-            orderMain.setNotinspection_device(notinspection_device.getText().toString());
-            orderMain.setInspect_result(inspect_result.getText().toString());
-            intent.putExtra("orderMain", orderMain);
-            AddOrderMaintenanceActivity.this.setResult(1, intent);
-            finish();
-        }
-    };
-
     public class MylayoutListener implements View.OnClickListener {
         private EditText editText;
         private TextView textView;
@@ -250,4 +215,35 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             showingtext = textView;
         }
     }
+
+    private View.OnClickListener inputlistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            OrderServe orderServe = new OrderServe();
+            orderServe.setNumber(Integer.parseInt(number.getText().toString()));
+            orderServe.setDescribe(describe.getText().toString());
+            orderServe.setPlace(place.getText().toString());
+            orderServe.setProperty(property.getText().toString());
+            orderServe.setWordtype(wordtype.getText().toString());
+            orderServe.setReality_worktype(reality_worktype.getText().toString());
+            orderServe.setApplyunity(applyunity.getText().toString());
+            orderServe.setMajor(major.getText().toString());
+            orderServe.setReality_item(reality_item.getText().toString());
+            orderServe.setState(state.getText().toString());
+            orderServe.setDate(date.getText().toString());
+            orderServe.setWorkplan(workplan.getText().toString());
+            orderServe.setReality_starttime(reality_starttime.getText().toString());
+            orderServe.setReality_stoptime(reality_stoptime.getText().toString());
+            orderServe.setEmployee_id(employee_id.getText().toString());
+            orderServe.setQuestiontogether(questiontogether.getText().toString());
+            orderServe.setFaultclass(faultclass.getText().toString());
+            orderServe.setError_coding(error_coding.getText().toString());
+            orderServe.setFault_rank(fault_rank.getText().toString());
+            orderServe.setReporttime(reporttime.getText().toString());
+            intent.putExtra("orderServe", orderServe);
+            AddOrderServeActivity.this.setResult(1, intent);
+            finish();
+        }
+    };
 }
