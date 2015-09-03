@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/maintenance"
+        android:id="@+id/inventory_company"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -19,20 +19,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@color/white"
-            android:src="@drawable/maintenance_ico"
+            android:src="@drawable/ic_company"
             android:textColor="@color/gray" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/maintenance"
+            android:text="@string/company_inventory_text"
             android:textColor="@color/gray"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/serve"
+        android:id="@+id/inventory_mtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -45,16 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@color/white"
-            android:src="@drawable/serve_ico"
+            android:src="@drawable/ic_mrt"
             android:textColor="@color/gray" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:text="@string/maintenance"
+            android:text="@string/mrt_text"
             android:textColor="@color/gray"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

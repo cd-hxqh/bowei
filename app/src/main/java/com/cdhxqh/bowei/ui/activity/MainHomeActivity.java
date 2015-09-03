@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
+import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
 import com.cdhxqh.bowei.ui.fragment.OrderFragment;
 
 /**
@@ -29,7 +30,8 @@ public class MainHomeActivity extends BaseActivity {
     private ImageView maintitleimg;
     private TextView titlename;
     private FragmentTransaction fragmentTransaction;
-    private OrderFragment orderFragment = new OrderFragment();
+    private OrderFragment orderFragment = new OrderFragment(); //工单
+    private InventoryFragment inventoryFragment=new InventoryFragment();
 
 
     @Override
@@ -96,6 +98,10 @@ public class MainHomeActivity extends BaseActivity {
                     titlename.setText(getResources().getString(R.string.property));
                     break;
                 case 3://库存查询
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,inventoryFragment);
+                    fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.inventory));
                     break;
                 case 4://知识库

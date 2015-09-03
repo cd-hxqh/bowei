@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">博维航空</string>
 
+    <string name="app_name">博维航空</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="log">北京博维航空设施管理有限公司</string>
@@ -10,14 +11,14 @@
     <string name="login">登录</string>
     <string name="login_loging">登录中...</string>
 
-    <!--记住密码-->
+    <!-- 记住密码 -->
     <string name="logined_member_username">logined_member_username</string>
     <string name="logined_member_password">logined_member_password</string>
     <string name="logined_member_ischeck">logined_member_ischeck</string>
     <string name="login_error_empty_user">用户名不能为空</string>
     <string name="login_error_empty_passwd">密码不能为空</string>
 
-    <!--主界面-->
+    <!-- 主界面 -->
     <string name="maintenance">维保工单</string>
     <string name="serve">维修工单</string>
     <string name="service">服务工单</string>
@@ -28,7 +29,6 @@
     <string name="download">下载</string>
     <string name="setting">设置</string>
     <string name="out">退出</string>
-
     <string name="maintenance_name">维保工单</string>
     <string name="maintenance_add_new">新建维保工单</string>
     <string name="choose_item">选择班组</string>
@@ -41,28 +41,28 @@
     <string name="choose_batch">批量选择(执行人/检查人)</string>
     <string name="real_info">实际信息</string>
     <string name="worker_info">员工信息</string>
-        <string name="worker_info_add_new">员工新建</string>
-        <string name="worker_info_number">员工编号</string>
-        <string name="worker_info_name">名称</string>
-        <string name="worker_info_start_date">开始日期</string>
-        <string name="worker_info_stop_date">结束日期</string>
-        <string name="worker_info_start_time">开始时间</string>
-        <string name="worker_info_stop_time">结束时间</string>
-        <string name="worker_info_work_time">工时</string>
+    <string name="worker_info_add_new">员工新建</string>
+    <string name="worker_info_number">员工编号</string>
+    <string name="worker_info_name">名称</string>
+    <string name="worker_info_start_date">开始日期</string>
+    <string name="worker_info_stop_date">结束日期</string>
+    <string name="worker_info_start_time">开始时间</string>
+    <string name="worker_info_stop_time">结束时间</string>
+    <string name="worker_info_work_time">工时</string>
     <string name="plan_material">计划物料消耗</string>
-        <string name="give_material_add_new">发放物料新建</string>
-        <string name="material_number">物料编号</string>
-        <string name="material_name">物料名称</string>
-        <string name="material_size">物料数量</string>
+    <string name="give_material_add_new">发放物料新建</string>
+    <string name="material_number">物料编号</string>
+    <string name="material_name">物料名称</string>
+    <string name="material_size">物料数量</string>
     <string name="real_material">实际物料消耗</string>
-        <string name="consume_material_add_new">消耗物料新建</string>
-        <string name="warehouse_below">所属仓库</string>
+    <string name="consume_material_add_new">消耗物料新建</string>
+    <string name="warehouse_below">所属仓库</string>
     <string name="real_info_4">捷运备件</string>
-        <string name="jieyun_add_new">捷运备件新建</string>
+    <string name="jieyun_add_new">捷运备件新建</string>
     <string name="real_info_5">领料消耗</string>
-        <string name="material_consume_add_new">领料消耗新建</string>
+    <string name="material_consume_add_new">领料消耗新建</string>
 
-    <!--工单详情-->
+    <!-- 工单详情 -->
     <string name="order_detail_number">工单编号</string>
     <string name="order_detail_describe">工单描述</string>
     <string name="order_detail_palce">位置</string>
@@ -90,5 +90,9 @@
     <string name="order_detail_starttime">开始时间</string>
     <string name="order_detail_input">提交</string>
     <string name="OK">确定</string>
+    <string name="company_inventory_text">公司库存</string>
+    <string name="mrt_text">捷运库存</string>
+    <string name="title_activity_in__company_">In_Company_Activity</string>
+    <string name="company_title_text">公司库存</string>
 
 </resources>
