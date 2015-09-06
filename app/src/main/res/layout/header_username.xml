@@ -29,7 +29,7 @@
         android:text="刘小溪，你好"/>
 
     <TextView
-        android:id="@+id/id_username"
+        android:id="@+id/id_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

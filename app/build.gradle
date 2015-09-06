@@ -26,4 +26,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile files('src/main/libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
+    compile files('src/main/libs/ormlite-android-4.48.jar')
+    compile files('src/main/libs/ormlite-core-4.48.jar')
 }

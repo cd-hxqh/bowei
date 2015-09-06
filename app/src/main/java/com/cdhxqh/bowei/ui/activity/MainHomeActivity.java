@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,18 +14,23 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
+import com.cdhxqh.bowei.ui.fragment.DownloadFragment;
 import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
 import com.cdhxqh.bowei.ui.fragment.OrderFragment;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by think on 2015/8/11.
@@ -40,7 +46,10 @@ public class MainHomeActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private OrderFragment orderFragment = new OrderFragment(); //工单
     private InventoryFragment inventoryFragment=new InventoryFragment();
+    private DownloadFragment downloadFragment = new DownloadFragment();
     private ProgressDialog mProgressDialog;
+    TextView nameview;
+    TextView dateview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +92,12 @@ public class MainHomeActivity extends BaseActivity {
     private void setUpDrawer()
     {
         LayoutInflater inflater = LayoutInflater.from(this);
-        mLvLeftMenu.addHeaderView(inflater.inflate(R.layout.header_username, mLvLeftMenu, false));
+        View view = inflater.inflate(R.layout.header_username, mLvLeftMenu, false);
+        nameview = (TextView) view.findViewById(R.id.id_link);
+        nameview.setText(Constants.UserName+",你好");
+        dateview = (TextView) view.findViewById(R.id.id_date);
+        dateview.setText(new SimpleDateFormat("yyyy.MM.dd").format(new Date()));
+        mLvLeftMenu.addHeaderView(view);
         mLvLeftMenu.setAdapter(new MenuItemAdapter(this));
     }
 
@@ -116,6 +130,12 @@ public class MainHomeActivity extends BaseActivity {
                 case 4://知识库
                     titlename.setText(getResources().getString(R.string.knowledge));
                     break;
+                case 5://下载
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,downloadFragment);
+                    fragmentTransaction.commit();
+                    titlename.setText(getResources().getString(R.string.download));
             }
         }
     };
@@ -130,7 +150,7 @@ public class MainHomeActivity extends BaseActivity {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        JsonUtils.parsingWenerId(data);
+                        JsonUtils.parsingWenerId(jsonObject.getString("result"));
                         mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
