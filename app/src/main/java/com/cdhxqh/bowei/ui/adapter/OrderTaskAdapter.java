@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.bean.OrderTask;
+import com.cdhxqh.bowei.ui.activity.OrderTaskActivity;
 import com.cdhxqh.bowei.ui.activity.ServeDetailActivity;
+import com.cdhxqh.bowei.ui.activity.TaskDetailActivity;
 
 import java.util.ArrayList;
 
@@ -21,9 +23,11 @@ import java.util.ArrayList;
  */
 public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.ViewHolder> {
     Context mContext;
+    OrderTaskActivity activity;
     ArrayList<OrderTask> list=new ArrayList<OrderTask>();
-    public OrderTaskAdapter(Context context){
+    public OrderTaskAdapter(Context context,OrderTaskActivity activity){
         this.mContext = context;
+        this.activity = activity;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,9 +42,17 @@ public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.View
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(mContext,ServeDetailActivity.class);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent();
+                intent.setClass(mContext,TaskDetailActivity.class);
+                intent.putExtra("orderTask",list.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                activity.changeitem();
+                return true;
             }
         });
     }

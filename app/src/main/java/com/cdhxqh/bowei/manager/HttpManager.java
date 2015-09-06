@@ -7,10 +7,12 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.utils.JsonUtils;
 import com.cdhxqh.bowei.utils.SafeHandler;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONObject;
 
 /**
  * Created by apple on 15/9/1.
@@ -47,6 +49,26 @@ public class HttpManager {
                     SafeHandler.onSuccess(handler,reult);
                 }
 
+            }
+        });
+    }
+
+    public static void getData(final Context cxt,String data,final HttpRequestHandler<String> handler){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("data",data);
+//        client.addHeader("data",data);
+        client.get(Constants.searchURL,params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
+                SafeHandler.onFailure(handler, "查询失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
+                SafeHandler.onSuccess(handler,responseString);
             }
         });
     }

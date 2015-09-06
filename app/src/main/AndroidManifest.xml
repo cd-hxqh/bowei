@@ -62,6 +62,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Anim_fade" />
         <activity
+            android:name=".ui.activity.TaskDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Anim_fade" />
+        <activity
             android:name=".ui.activity.MaintenanceRealInfoActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -108,8 +113,7 @@
             android:theme="@style/Anim_fade" />
         <activity
             android:name=".ui.activity.In_Company_Activity"
-            android:label="@string/title_activity_in__company_" >
-        </activity>
+            android:label="@string/title_activity_in__company_"
             android:theme="@style/Anim_fade"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.AddOrderServeActivity"

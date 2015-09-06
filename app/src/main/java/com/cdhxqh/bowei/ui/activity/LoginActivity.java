@@ -116,7 +116,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 new HttpRequestHandler<String>() {
                     @Override
                     public void onSuccess(String data) {
-                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        getBaseApplication().setUsername(mUsername.getText().toString());
                         mProgressDialog.dismiss();
                         if (isRemember) {
                             AccountUtils.setChecked(LoginActivity.this, isRemember);
@@ -131,14 +132,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onSuccess(String data, int totalPages, int currentPage) {
-                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
 
                         startIntent();
                     }
 
                     @Override
                     public void onFailure(String error) {
-                        Toast.makeText(LoginActivity.this,error,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
                         mProgressDialog.dismiss();
                     }
                 });

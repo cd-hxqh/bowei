@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,10 +12,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.application.BaseApplication;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.config.Constants;
+import com.cdhxqh.bowei.manager.HttpManager;
+import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
+import com.cdhxqh.bowei.utils.JsonUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,6 +43,7 @@ public class MaintenanceActivity extends BaseActivity{
     public RecyclerView recyclerView;
     private OrderMaintenanceAdapter orderMainAdapter;
     private ArrayList<OrderMain> list;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +80,7 @@ public class MaintenanceActivity extends BaseActivity{
                 startActivityForResult(intent,1);
             }
         });
-        addData();
+        getData();
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,16 +101,38 @@ public class MaintenanceActivity extends BaseActivity{
                 break;
         }
     }
-    private void addData() {
-        ArrayList<OrderMain> list = new ArrayList<OrderMain>();
-        for (int i = 0; i < 3; i++) {
-            OrderMain orderMain = new OrderMain();
-            orderMain.setNumber(103882549+i);
-            orderMain.setDescribe("TT2分拣机" + (i + 1) + "日检");
-            orderMain.setPlace("SQWES");
-            orderMain.setProperty("01002");
-            list.add(i, orderMain);
-        }
+
+    private void getData(){
+        mProgressDialog = ProgressDialog.show(this, null,
+                getString(R.string.requesting), true, true);
+        HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(data);
+                    if(jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))){
+//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
+                        addData(jsonObject.getString("result"));
+                        mProgressDialog.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
+    }
+    private void addData(String str) {
+        list = JsonUtils.parsingOrderArr(str);
         orderMainAdapter.update(list, true);
     }
 

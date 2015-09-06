@@ -1,6 +1,7 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,9 +15,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.config.Constants;
+import com.cdhxqh.bowei.manager.HttpManager;
+import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
 import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
 import com.cdhxqh.bowei.ui.fragment.OrderFragment;
+import com.cdhxqh.bowei.utils.JsonUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by think on 2015/8/11.
@@ -32,7 +40,7 @@ public class MainHomeActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private OrderFragment orderFragment = new OrderFragment(); //工单
     private InventoryFragment inventoryFragment=new InventoryFragment();
-
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,7 @@ public class MainHomeActivity extends BaseActivity {
 
         findViewById();
         initView();
+        getOwnerId();
     }
 
 
@@ -111,6 +120,35 @@ public class MainHomeActivity extends BaseActivity {
         }
     };
 
+    private void getOwnerId(){
+        mProgressDialog = ProgressDialog.show(this, null,
+                getString(R.string.requesting), true, true);
+        HttpManager.getData(this, Constants.getOwnerId(getBaseApplication().getUsername()), new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(data);
+                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
+                        JsonUtils.parsingWenerId(data);
+                        mProgressDialog.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                mProgressDialog.dismiss();
+            }
+        });
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

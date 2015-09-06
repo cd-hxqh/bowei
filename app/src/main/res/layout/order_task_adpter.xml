@@ -50,7 +50,7 @@
     </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:id="@+id/order_main_in"
+        android:id="@+id/task_main_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -58,7 +58,7 @@
         android:src="@drawable/in_ico"
         android:visibility="visible"/>
     <CheckBox
-        android:id="@+id/order_checkbox"
+        android:id="@+id/task_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
 import com.cdhxqh.bowei.ui.activity.OrderTaskActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceRealInfoActivity;
 import com.cdhxqh.bowei.ui.activity.ServeRealInfoActivity;
@@ -22,7 +23,7 @@ import com.cdhxqh.bowei.ui.activity.ServeRealInfoActivity;
 public class OrderMorePopuowindow extends PopupWindow {
     private View conentView;
 
-    public OrderMorePopuowindow(final Activity context, final String fromname) {
+    public OrderMorePopuowindow(final Activity context, final String fromname, final String number) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         conentView = inflater.inflate(R.layout.popup_order_more, null);
@@ -56,7 +57,8 @@ public class OrderMorePopuowindow extends PopupWindow {
             public void onClick(View arg0) {
                 OrderMorePopuowindow.this.dismiss();
                 Intent intent = new Intent(context, OrderTaskActivity.class);
-                intent.putExtra("fromname",fromname);
+                intent.putExtra("fromname", fromname);
+                intent.putExtra("ordernum", number);
                 context.startActivity(intent);
 
             }
@@ -80,6 +82,8 @@ public class OrderMorePopuowindow extends PopupWindow {
             }
         });
     }
+
+
 
     /**
      * 显示popupWindow
