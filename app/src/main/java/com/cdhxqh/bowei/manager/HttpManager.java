@@ -45,8 +45,11 @@ public class HttpManager {
                 Log.i(TAG,"2statusCode="+statusCode+",responseString="+responseString);
                 //解析登录信息
                 String reult= JsonUtils.parsingAuthStr(cxt, responseString);
+                Log.i(TAG,reult);
                 if(reult.equals(Constants.LOGINSUCCESS)||reult.equals(Constants.CHANGEIMEI)){
                     SafeHandler.onSuccess(handler,reult);
+                }else if (reult.equals(Constants.USERNAMEERROR)){
+                    SafeHandler.onSuccess(handler,"用户名或密码错误");
                 }
 
             }

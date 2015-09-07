@@ -15,24 +15,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_palce"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_place_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_property_layout"
@@ -45,24 +40,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_property"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_property_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_wordtype_layout"
@@ -75,24 +65,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_worktype"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_wordtype_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_wordtype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_reality_worktype_layout"
@@ -105,24 +90,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_reality_worktype"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_reality_worktype_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_reality_worktype"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_applyunity_layout"
@@ -135,24 +115,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_applyunit"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_applyunity_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_applyunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_major_layout"
@@ -165,24 +140,19 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_major"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_major_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_major"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oder_detail_reality_item_layout"
@@ -195,23 +165,18 @@
             android:layout_height="wrap_content"
             android:text="@string/order_detail_reality_item"
             android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/oder_detail_reality_item_edit"
-            android:layout_width="200dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/gray"
-            android:paddingLeft="3dp"
-            android:textSize="14dp"
-            android:textCursorDrawable="@null"
-            android:gravity="center_vertical"
-            android:background="@drawable/content_bg01"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/oder_detail_reality_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
     </RelativeLayout>
  </LinearLayout>

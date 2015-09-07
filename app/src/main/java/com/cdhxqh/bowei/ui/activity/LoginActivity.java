@@ -59,8 +59,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initView() {
-        mUsername.setText("maxadmin");
-        mPassword.setText("maxadmin");
+//        mUsername.setText("maxadmin");
+//        mPassword.setText("maxadmin");
         boolean isChecked = AccountUtils.getIsChecked(LoginActivity.this);
         if (isChecked) {
             mUsername.setText(AccountUtils.getUserName(LoginActivity.this));
@@ -116,25 +116,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 new HttpRequestHandler<String>() {
                     @Override
                     public void onSuccess(String data) {
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        getBaseApplication().setUsername(mUsername.getText().toString());
-                        mProgressDialog.dismiss();
-                        if (isRemember) {
-                            AccountUtils.setChecked(LoginActivity.this, isRemember);
-                            //记住密码
-                            AccountUtils.setUserNameAndPassWord(LoginActivity.this, mUsername.getText().toString(), mPassword.getText().toString());
+                        if(data.equals("用户名或密码错误")){
+                            Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+
+                        }else {
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            getBaseApplication().setUsername(mUsername.getText().toString());
+                            mProgressDialog.dismiss();
+                            if (isRemember) {
+                                AccountUtils.setChecked(LoginActivity.this, isRemember);
+                                //记住密码
+                                AccountUtils.setUserNameAndPassWord(LoginActivity.this, mUsername.getText().toString(), mPassword.getText().toString());
+                            }
+
+                            startIntent();
                         }
 
-                        startIntent();
 
                     }
 
 
                     @Override
                     public void onSuccess(String data, int totalPages, int currentPage) {
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        if(data.equals("用户名或密码错误")){
+                            Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show();
+                        }else {
 
-                        startIntent();
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+
+                            startIntent();
+                        }
+
                     }
 
                     @Override

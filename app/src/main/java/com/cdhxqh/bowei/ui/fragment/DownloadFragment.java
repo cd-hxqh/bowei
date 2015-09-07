@@ -135,11 +135,11 @@ public class DownloadFragment extends Fragment {
         }
     };
 
-    private void downloaddata(final String url, final Button button){
+    private void downloaddata(final String url, final Button button) {
         mProgressDialog = ProgressDialog.show(getActivity(), null,
                 getString(R.string.requesting), true, true);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        HttpManager.getData(getActivity(),url, new HttpRequestHandler<String>() {
+        HttpManager.getData(getActivity(), url, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 JSONObject jsonObject = null;
@@ -147,8 +147,41 @@ public class DownloadFragment extends Fragment {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
                         button.setText(getResources().getString(R.string.downloaded));
-                        if(url==Constants.LOCATIONS){
-
+                        String result = jsonObject.getString("result");
+                        if (url == Constants.LOCATIONS) {
+                            JsonUtils.parsingLocations(getActivity(),result);
+                        }else if(url == Constants.ASSET){
+                            JsonUtils.parsingAsset(getActivity(),result);
+                        }
+                        else if(url == Constants.WORKDW){
+                            JsonUtils.parsingWorkdw(getActivity(),result);
+                        }
+                        else if(url == Constants.WORKZY){
+                            JsonUtils.parsingWorkzy(getActivity(), result);
+                        }
+                        else if(url == Constants.WORKTYPE){
+                            JsonUtils.parsingWorkType(getActivity(), result);
+                        }
+                        else if(url == Constants.ACWORKTYPE){
+                            JsonUtils.parsingAcWorkType(getActivity(), result);
+                        }
+                        else if(url == Constants.FAILURECODE){
+                            JsonUtils.parsingFailurecode(getActivity(), result);
+                        }
+                        else if(url == Constants.FAILURELIST){
+                            JsonUtils.parsingFailureList(getActivity(), result);
+                        }
+                        else if(url == Constants.JOBPLAN){
+                            JsonUtils.parsingJobPlan(getActivity(), result);
+                        }
+                        else if(url == Constants.JOBTASK){
+                            JsonUtils.parsingJobTask(getActivity(), result);
+                        }
+                        else if(url == Constants.JOBMATERIAL){
+                            JsonUtils.parsingJobMaterial(getActivity(), result);
+                        }
+                        else if(url == Constants.PERSON){
+                            JsonUtils.parsingErson(getActivity(),result);
                         }
                         mProgressDialog.dismiss();
 

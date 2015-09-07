@@ -69,6 +69,8 @@ public class Constants {
     public static final String LOGINSUCCESS = "USER-S-101"; //登录成功
 
     public static final String CHANGEIMEI = "USER-S-104"; //登录成功,检测到用户更换手机登录
+
+    public static final String USERNAMEERROR = "USER-E-100";//用户名密码错误
     /**用户登录表识--结束**/
 
 }

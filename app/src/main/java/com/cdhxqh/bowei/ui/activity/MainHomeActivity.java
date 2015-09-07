@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.config.Constants;
+import com.cdhxqh.bowei.manager.AppManager;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
@@ -114,10 +115,10 @@ public class MainHomeActivity extends BaseActivity {
                     fragmentTransaction.commit();
                     break;
                 case 2://资产查询
-                    fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    fragmentTransaction.replace(R.id.container,orderFragment);
-                    fragmentTransaction.commit();
+//                    fragmentTransaction = getFragmentManager().beginTransaction();
+//                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                    fragmentTransaction.replace(R.id.container,orderFragment);
+//                    fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.property));
                     break;
                 case 3://库存查询
@@ -133,9 +134,13 @@ public class MainHomeActivity extends BaseActivity {
                 case 5://下载
                     fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    fragmentTransaction.replace(R.id.container,downloadFragment);
+                    fragmentTransaction.replace(R.id.container, downloadFragment);
                     fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.download));
+                    break;
+                case 7://退出
+                    AppManager.AppExit(MainHomeActivity.this);
+                    break;
             }
         }
     };

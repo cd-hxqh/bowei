@@ -102,6 +102,7 @@
     <string name="mrt_text">捷运库存</string>
     <string name="title_activity_in__company_">In_Company_Activity</string>
     <string name="company_title_text">公司库存</string>
+    <string name="item_list">选项列表</string>
 
     <string name="request_ok">请求成功</string>
     <string name="requesting">正在获取数据...</string>
