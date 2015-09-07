@@ -31,13 +31,11 @@ import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
 import com.cdhxqh.bowei.bean.Workzy;
 import com.cdhxqh.bowei.config.Constants;
-import com.j256.ormlite.dao.Dao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

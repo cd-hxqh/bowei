@@ -3,7 +3,6 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.Asset;
 import com.cdhxqh.bowei.bean.JobMaterial;
 import com.j256.ormlite.dao.Dao;
 
