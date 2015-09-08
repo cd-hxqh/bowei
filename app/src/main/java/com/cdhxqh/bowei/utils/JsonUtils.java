@@ -12,6 +12,7 @@ import com.cdhxqh.bowei.Dao.JobMaterialDao;
 import com.cdhxqh.bowei.Dao.JobPlanDao;
 import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.LocationsDao;
+import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.Dao.WorkTypeDao;
 import com.cdhxqh.bowei.Dao.WorkdwDao;
 import com.cdhxqh.bowei.Dao.WorkzyDao;
@@ -54,7 +55,7 @@ public class JsonUtils {
         try {
             JSONObject json = new JSONObject(data);
             String jsonString = json.getString("errcode");
-            if(jsonString.equals(Constants.LOGINSUCCESS)||jsonString.equals(Constants.CHANGEIMEI)){
+            if (jsonString.equals(Constants.LOGINSUCCESS) || jsonString.equals(Constants.CHANGEIMEI)) {
                 Constants.UserName = json.getJSONObject("result").getString("displayName");
             }
 
@@ -70,46 +71,40 @@ public class JsonUtils {
     /**
      * 解析通用查询接口返回的工单jsonArray信息*
      */
-    public static ArrayList<OrderMain> parsingOrderArr(String data) {
+    public static void parsingOrderArr(String data, Context ctx) {
         try {
 
             JSONArray jsonArray = new JSONArray(data);
             OrderMain orderMain;
             JSONObject jsonObject;
-            ArrayList<OrderMain> list = new ArrayList<OrderMain>();
+            new OrderMainDao(ctx).deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.get("WORKTYPE").toString().equals("PM")
-                        ||jsonObject.get("WORKTYPE").toString().equals("CM")) {
-                    orderMain.setNumber(Integer.parseInt(jsonObject.get("WONUM").toString()));
-                    orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
-                    orderMain.setPlace(jsonObject.get("LOCATION") == null ? "" : jsonObject.get("LOCATION").toString());
-//                    orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
-                    orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
-//                    orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
-//                    orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
-//                    orderMain.setMajor(jsonObject.get("WORKZY").toString());
-//                    orderMain.setState(jsonObject.get("Status").toString());
-//                    orderMain.setDate(jsonObject.get("STATUSDATE").toString());
-//                    orderMain.setWorkplan(jsonObject.get("JPNUM").toString());
-                    orderMain.setReality_starttime(jsonObject.get("STATUSDATE").toString());
+                orderMain.setNumber(Integer.parseInt(jsonObject.get("WONUM").toString()));
+                orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
+                orderMain.setPlace(jsonObject.get("LOCATION") == null ? "" : jsonObject.get("LOCATION").toString());
+                    orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
+                orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
+                    orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
+                    orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
+                    orderMain.setMajor(jsonObject.get("WORKZY").toString());
+                    orderMain.setState(jsonObject.get("WOSTATUS").toString());
+                    orderMain.setDate(jsonObject.get("STATUSDATE").toString());
+                    orderMain.setWorkplan(jsonObject.get("JPNUM").toString());
+//                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
 //                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
-//                    orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
-//                    orderMain.setQuestiontogether(jsonObject.get("Bz").toString());
-//                    orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
-//                    orderMain.setPm(jsonObject.get("PMNUM").toString());
+                    orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                    orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
+                    orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
+                    orderMain.setPm(jsonObject.get("PMNUM").toString());
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
-
-                    list.add(i, orderMain);
-                }
+                new OrderMainDao(ctx).update(orderMain);
             }
-            return list;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public static ArrayList<OrderTask> parsingOrderTask(String data) {
@@ -143,21 +138,21 @@ public class JsonUtils {
             JSONObject object = new JSONObject(Constants.ORDER_GETDATA);
 //            JSONArray toweneridarr = new JSONArray();
             JSONArray towenertablearr = new JSONArray();
-            if(fromarr.length() ==1){
+            if (fromarr.length() == 1) {
                 Constants.serOrderUrl(fromarr.getJSONObject(0).get("OWNERID").toString());
-            }else {
+            } else {
                 String s = "";
                 for (int i = 0; i < fromarr.length(); i++) {
-                    if(i ==0){
+                    if (i == 0) {
                         s = fromarr.getJSONObject(0).get("OWNERID").toString();
-                    }else {
+                    } else {
                         s = s + "," + fromarr.getJSONObject(i).get("OWNERID").toString();
                     }
                 }
                 Constants.serOrderUrl(s);
             }
             Log.i(TAG, Constants.ORDER_GETDATA);
-            Log.i(TAG,fromarr.length()+"");
+            Log.i(TAG, fromarr.length() + "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -165,16 +160,17 @@ public class JsonUtils {
 
     /**
      * 解析并存储位置信息
+     *
      * @param ctx
      * @param str
      */
-    public static void parsingLocations(Context ctx,String str){
+    public static void parsingLocations(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Locations locations;
             new LocationsDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 locations = new Locations();
                 jsonObject = jsonArray.getJSONObject(i);
                 locations.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -187,13 +183,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingAsset(Context ctx,String str){
+    public static void parsingAsset(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Asset asset;
             new AssetDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 asset = new Asset();
                 jsonObject = jsonArray.getJSONObject(i);
                 asset.setASSETNUM(jsonObject.getString("ASSETNUM"));
@@ -202,20 +198,18 @@ public class JsonUtils {
                 asset.setLOCATIONDESC(jsonObject.getString("LOCATIONDESC"));
                 new AssetDao(ctx).update(asset);
             }
-            List<Asset> list = new AssetDao(ctx).queryForAll();
-            Log.i(TAG,list.size()+"");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void parsingWorkdw(Context ctx,String str){
+    public static void parsingWorkdw(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Workdw workdw;
             new WorkdwDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 workdw = new Workdw();
                 jsonObject = jsonArray.getJSONObject(i);
                 workdw.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -227,13 +221,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingWorkzy(Context ctx,String str){
+    public static void parsingWorkzy(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Workzy workzy;
             new WorkzyDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 workzy = new Workzy();
                 jsonObject = jsonArray.getJSONObject(i);
                 workzy.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -245,13 +239,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingWorkType(Context ctx,String str){
+    public static void parsingWorkType(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             WorkType workType;
             new WorkTypeDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 workType = new WorkType();
                 jsonObject = jsonArray.getJSONObject(i);
                 workType.setWORKTYPE(jsonObject.getString("WORKTYPE"));
@@ -263,13 +257,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingAcWorkType(Context ctx,String str){
+    public static void parsingAcWorkType(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             AcWorkType acWorkType;
             new AcWorkTypeDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 acWorkType = new AcWorkType();
                 jsonObject = jsonArray.getJSONObject(i);
                 acWorkType.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -281,13 +275,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingFailurecode(Context ctx,String str){
+    public static void parsingFailurecode(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Failurecode failurecode;
             new FailurecodeDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 failurecode = new Failurecode();
                 jsonObject = jsonArray.getJSONObject(i);
                 failurecode.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -300,13 +294,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingFailureList(Context ctx,String str){
+    public static void parsingFailureList(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             FailureList1 failureList;
             new FailureListDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 failureList = new FailureList1();
                 jsonObject = jsonArray.getJSONObject(i);
                 failureList.setFAILURELIST(jsonObject.getString("FAILURELIST"));
@@ -320,13 +314,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingJobPlan(Context ctx,String str){
+    public static void parsingJobPlan(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Jobplan jobPlan;
             new JobPlanDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new Jobplan();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -339,13 +333,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingJobTask(Context ctx,String str){
+    public static void parsingJobTask(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             JobTask jobPlan;
             new JobTaskDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new JobTask();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
@@ -359,13 +353,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingJobMaterial(Context ctx,String str){
+    public static void parsingJobMaterial(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Jobmaterial jobPlan;
             new JobMaterialDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new Jobmaterial();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setITEMDESC(jsonObject.getString("ITEMDESC"));
@@ -381,13 +375,13 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingErson(Context ctx,String str){
+    public static void parsingErson(Context ctx, String str) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Erson erson;
             new ErsonDao(ctx).deleteall();
-            for(int i = 0;i < jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 erson = new Erson();
                 jsonObject = jsonArray.getJSONObject(i);
                 erson.setDISPLAYNAME(jsonObject.getString("DISPLAYNAME"));

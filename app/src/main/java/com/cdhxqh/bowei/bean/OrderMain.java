@@ -1,32 +1,65 @@
 package com.cdhxqh.bowei.bean;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 
 /**
  * Created by think on 2015/8/17.
  */
+@DatabaseTable(tableName = "ORSERMAIN")
 public class OrderMain implements Serializable {
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField(columnName = "number")
     private int number;
+    @DatabaseField(columnName = "describe")
     private String describe;
+    @DatabaseField(columnName = "place")
     private String place;//位置
+    @DatabaseField(columnName = "property")
     private String property;//资产
+    @DatabaseField(columnName = "wordtype")
     private String wordtype;//工作类型
+    @DatabaseField(columnName = "reality_worktype")
     private String reality_worktype;//实际工作类型
+    @DatabaseField(columnName = "applyunity")
     private String applyunity;//申请单位
+    @DatabaseField(columnName = "major")
     private String major;//专业
+    @DatabaseField(columnName = "reality_item")
     private String reality_item;//实际班组
+    @DatabaseField(columnName = "state")
     private String state;//状态
+    @DatabaseField(columnName = "date")
     private String date;//汇报时间
+    @DatabaseField(columnName = "workplan")
     private String workplan;//作业计划
+    @DatabaseField(columnName = "reality_starttime")
     private String reality_starttime;//实际开始时间
+    @DatabaseField(columnName = "reality_stoptime")
     private String reality_stoptime;//实际完成时间
+    @DatabaseField(columnName = "employee_id")
     private String employee_id;//录入人工号
+    @DatabaseField(columnName = "questiontogether")
     private String questiontogether;//问题汇总
+    @DatabaseField(columnName = "ratinghours")
     private String ratinghours;//额定工时
+    @DatabaseField(columnName = "pm")
     private String pm;//PM
+    @DatabaseField(columnName = "notinspection_device")
     private String notinspection_device;//未巡检设备
+    @DatabaseField(columnName = "inspect_result")
     private String inspect_result;//检查结果
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDescribe() {
         return describe;

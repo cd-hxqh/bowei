@@ -26,7 +26,7 @@ public class ServeDetailActivity extends BaseActivity {
     private TextView reality_worktype;//实际工作类型
     private TextView applyunity;//申请单位
     private TextView major;//专业
-    private TextView reality_item;//实际班组
+//    private TextView reality_item;//实际班组
     private EditText state;//状态
     private TextView date;//汇报时间
     private TextView workplan;//作业计划
@@ -61,7 +61,7 @@ public class ServeDetailActivity extends BaseActivity {
         reality_worktype = (TextView) findViewById(R.id.oder_detail_reality_worktype);
         applyunity = (TextView) findViewById(R.id.oder_detail_applyunity);
         major = (TextView) findViewById(R.id.oder_detail_major);
-        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
+//        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
         state = (EditText) findViewById(R.id.order_detail_state);
         date = (TextView) findViewById(R.id.oder_detail_date);
         workplan = (TextView) findViewById(R.id.oder_detail_workplan);

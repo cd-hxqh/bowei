@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.ChooseItem;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.ui.activity.ItemChooseListActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceActivity;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
     Context mContext;
     ItemChooseListActivity activity;
-    ArrayList<String> list=new ArrayList<String>();
+    ArrayList<ChooseItem> list=new ArrayList<ChooseItem>();
     public ItemListAdapter(Context context, ItemChooseListActivity activity){
         this.mContext = context;
         this.activity = activity;
@@ -38,8 +40,14 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.textView.setText(list.get(position));
-
+        holder.name.setText(list.get(position).getName());
+        holder.value.setText(list.get(position).getValue());
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.responseData(list.get(position).getValue());
+            }
+        });
     }
 
     @Override
@@ -49,29 +57,31 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public RelativeLayout relativeLayout;
+        public LinearLayout relativeLayout;
         /**内容**/
-        public TextView textView;
+        public TextView name;
+        public TextView value;
         public ViewHolder(final View itemView) {
             super(itemView);
-            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.item_choose_content);
-            textView = (TextView) itemView.findViewById(R.id.item_name);
+            relativeLayout = (LinearLayout) itemView.findViewById(R.id.item_choose_content);
+            name = (TextView) itemView.findViewById(R.id.item_name);
+            value = (TextView) itemView.findViewById(R.id.item_value);
         }
     }
 
-    public void update(ArrayList<String> data, boolean merge) {
+    public void update(ArrayList<ChooseItem> data, boolean merge) {
         if (merge && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                String string = list.get(i);
+                ChooseItem chooseItem = list.get(i);
                 boolean exist = false;
                 for (int j = 0; j < data.size(); j++) {
-                    if (data.get(j) == string) {
+                    if (data.get(j) == chooseItem) {
                         exist = true;
                         break;
                     }
                 }
                 if (exist) continue;
-                data.add(string);
+                data.add(chooseItem);
             }
         }
         list = data;

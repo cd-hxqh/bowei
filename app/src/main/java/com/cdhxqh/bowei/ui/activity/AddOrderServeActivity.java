@@ -36,8 +36,8 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-    private TextView reality_item;//实际班组
-    private RelativeLayout reality_itemlayout;
+//    private TextView reality_item;//实际班组
+//    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
@@ -47,8 +47,7 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
     private RelativeLayout reality_stoptimelayout;
-    private TextView employee_id;//录入人工号
-    private RelativeLayout employee_idlayout;
+    private EditText employee_id;//录入人工号
     private EditText questiontogether;//问题汇总
     private EditText faultclass;
     private EditText error_coding;
@@ -97,8 +96,8 @@ public class AddOrderServeActivity extends BaseActivity {
         major = (TextView) findViewById(R.id.oder_detail_major);
         majorlayout = (RelativeLayout) findViewById(R.id.oder_detail_major_layout);
 
-        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
-        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
+//        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
+//        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
 
         state = (EditText) findViewById(R.id.order_detail_state);
 
@@ -114,8 +113,7 @@ public class AddOrderServeActivity extends BaseActivity {
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
 
-        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
-        employee_idlayout = (RelativeLayout) findViewById(R.id.oder_detail_employee_id_layout);
+        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
         faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
@@ -205,7 +203,7 @@ public class AddOrderServeActivity extends BaseActivity {
             orderServe.setReality_worktype(reality_worktype.getText().toString());
             orderServe.setApplyunity(applyunity.getText().toString());
             orderServe.setMajor(major.getText().toString());
-            orderServe.setReality_item(reality_item.getText().toString());
+//            orderServe.setReality_item(reality_item.getText().toString());
             orderServe.setState(state.getText().toString());
             orderServe.setDate(date.getText().toString());
             orderServe.setWorkplan(workplan.getText().toString());

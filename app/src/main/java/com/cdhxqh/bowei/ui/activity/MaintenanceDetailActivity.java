@@ -27,13 +27,13 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private TextView reality_worktype;//实际工作类型
     private TextView applyunity;//申请单位
     private TextView major;//专业
-    private TextView reality_item;//实际班组
+//    private TextView reality_item;//实际班组
     private EditText state;//状态
     private TextView date;//汇报时间
     private TextView workplan;//作业计划
     private TextView reality_starttime;//实际开始时间
     private TextView reality_stoptime;//实际完成时间
-    private TextView employee_id;//录入人工号
+    private EditText employee_id;//录入人工号
     private EditText questiontogether;//问题汇总
     private EditText ratinghours;//额定工时
     private EditText pm;//PM
@@ -63,13 +63,13 @@ public class MaintenanceDetailActivity extends BaseActivity {
         reality_worktype = (TextView) findViewById(R.id.oder_detail_reality_worktype);
         applyunity = (TextView) findViewById(R.id.oder_detail_applyunity);
         major = (TextView) findViewById(R.id.oder_detail_major);
-        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
+//        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
         state = (EditText) findViewById(R.id.order_detail_state);
         date = (TextView) findViewById(R.id.oder_detail_date);
         workplan = (TextView) findViewById(R.id.oder_detail_workplan);
         reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
-        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
+        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
         questiontogether = (EditText) findViewById(R.id.questiontogether);
         ratinghours = (EditText) findViewById(R.id.detail_ratinghours);
         pm = (EditText) findViewById(R.id.pm);
@@ -112,7 +112,6 @@ public class MaintenanceDetailActivity extends BaseActivity {
         reality_worktype.setText(orderMain.getReality_worktype());
         applyunity.setText(orderMain.getApplyunity());
         major.setText(orderMain.getMajor());
-        reality_item.setText(orderMain.getReality_item());
         state.setText(orderMain.getState());
         date.setText(orderMain.getDate());
         workplan.setText(orderMain.getWorkplan());

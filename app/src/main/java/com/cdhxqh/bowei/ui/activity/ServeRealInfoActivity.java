@@ -43,13 +43,14 @@ public class ServeRealInfoActivity extends BaseActivity {
     private ImageView mImageView;
     private ViewPager mViewPager;    //下方的可横向拖动的控件
     private List<Fragment> fragmentlist = new ArrayList<Fragment>();
-    private WorkerFragment workerFragment = new WorkerFragment();
+    private WorkerFragment workerFragment;
     private GiveMaterialFragment giveMaterialFragment = new GiveMaterialFragment();
-    private ConsumeMaterialFragment consumeMaterialFragment = new ConsumeMaterialFragment();
-    private RealMaterialConsunmeFragment realMaterialConsunmeFragment = new RealMaterialConsunmeFragment();
+//    private ConsumeMaterialFragment consumeMaterialFragment = new ConsumeMaterialFragment();
+    private RealMaterialConsunmeFragment realMaterialConsunmeFragment;
     private JieyunFragment jieyunFragment = new JieyunFragment();
     private Intent intent;
     private int requestCode;
+    private String num;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class ServeRealInfoActivity extends BaseActivity {
     @Override
     protected void initView() {
         titlename.setText(getResources().getString(R.string.real_info));
+        num = (String) getIntent().getExtras().get("ordernum");
         currentIndex = 0;
         backimg.setOnClickListener(new OnClickListener() {
             @Override
@@ -105,7 +107,8 @@ public class ServeRealInfoActivity extends BaseActivity {
                 mViewPager.setCurrentItem(1);
             }
         });
-
+        workerFragment = new WorkerFragment(num);
+        realMaterialConsunmeFragment = new RealMaterialConsunmeFragment(num);
         fragmentlist.add(workerFragment);
 //        fragmentlist.add(giveMaterialFragment);
 //        fragmentlist.add(consumeMaterialFragment);

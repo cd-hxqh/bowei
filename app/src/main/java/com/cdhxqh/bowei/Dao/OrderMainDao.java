@@ -3,27 +3,29 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.Workzy;
+import com.cdhxqh.bowei.bean.AcWorkType;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by think on 2015/9/7.
  */
-public class WorkzyDao {
+public class OrderMainDao {
     private Context context;
-    private Dao<Workzy, Integer> WorkzyDaoOpe;
+    private Dao<OrderMain, Integer> OrderMainDaoOpe;
     private DatabaseHelper helper;
 
-    public WorkzyDao(Context context)
+    public OrderMainDao(Context context)
     {
         this.context = context;
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            WorkzyDaoOpe = helper.getDao(Workzy.class);
+            OrderMainDaoOpe = helper.getDao(OrderMain.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -31,13 +33,13 @@ public class WorkzyDao {
     }
 
     /**
-     * 更新专业信息
-     * @param workzy
+     * 更新实际工作类型信息
+     * @param orderMain
      */
-    public void update(Workzy workzy) {
+    public void update(OrderMain orderMain) {
         try
         {
-            WorkzyDaoOpe.create(workzy);
+            OrderMainDaoOpe.create(orderMain);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -45,12 +47,12 @@ public class WorkzyDao {
     }
 
     /**
-     * 查询所有专业
+     * 查询所有实际工作类型
      * @return
      */
-    public List<Workzy> queryForAll(){
+    public List<OrderMain> queryForAll(){
         try {
-            return WorkzyDaoOpe.queryForAll();
+            return OrderMainDaoOpe.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,11 +60,11 @@ public class WorkzyDao {
     }
 
     /**
-     * 删除所有位置信息
+     * 删除所有信息
      */
     public void deleteall(){
         try {
-            WorkzyDaoOpe.delete(WorkzyDaoOpe.queryForAll());
+            OrderMainDaoOpe.delete(OrderMainDaoOpe.queryForAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }

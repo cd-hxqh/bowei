@@ -19,6 +19,18 @@ public class Constants {
     public static String getOrderTaskUrl(String num){
         return "{appid:'WOACTIVITY',objectname:'WOACTIVITY',option:'read',condition:{wonum:'"+num+"'}}";
     }
+    //获得实际员工信息
+    public static String getRealWorkerInfoUrl(String num){
+        return "{appid:'LABTRANS',objectname:'LABTRANS',option:'read',condition:{wonum:'"+num+"'}}";
+    }
+    //获得计划物料消耗
+    public static String getMeterialConsumePlanUrl(String num){
+        return "{appid:'WPMATERIAL',objectname:'WPMATERIAL',option:'read',condition:{wonum:'"+num+"'}}";
+    }
+    //获得实际物料消耗
+    public static String getMeterialConsumeRealUrl(String num){
+        return "{appid:'DEPTMATUSETRANS',objectname:'DEPTMATUSETRANS',option:'read',condition:{wonum:'"+num+"',issuetype:'发放'}}";
+    }
     //获得工单流程任务分配
     public static String GET_OWNER_ID = "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
             "condition:{origperson:'maxadmin',PROCESSNAME:'APPWFWO',ASSIGNSTATUS:'ACTIVE'}}";

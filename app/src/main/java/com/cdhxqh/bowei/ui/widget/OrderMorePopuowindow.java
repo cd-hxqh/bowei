@@ -71,12 +71,15 @@ public class OrderMorePopuowindow extends PopupWindow {
                 OrderMorePopuowindow.this.dismiss();
                 if (fromname.equals(context.getResources().getString(R.string.maintenance))) {
                     Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
+                    intent.putExtra("ordernum", number);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.serve))){
                     Intent intent = new Intent(context, ServeRealInfoActivity.class);
+                    intent.putExtra("ordernum", number);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.service))){
                     Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
+                    intent.putExtra("ordernum", number);
                     context.startActivity(intent);
                 }
             }

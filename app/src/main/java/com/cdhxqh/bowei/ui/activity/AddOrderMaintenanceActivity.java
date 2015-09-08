@@ -1,6 +1,9 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +12,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+
+import java.util.Calendar;
 
 /**
  * Created by think on 2015/8/26.新增维保工单
@@ -32,16 +39,16 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private RelativeLayout placelayout;
     private TextView property;//资产
     private RelativeLayout propertylayout;
-    private TextView wordtype;//工作类型
-    private RelativeLayout wordtypelayout;
+    private TextView worktype;//工作类型
+    private RelativeLayout worktypelayout;
     private TextView reality_worktype;//实际工作类型
     private RelativeLayout reality_worktypelayout;
     private TextView applyunity;//申请单位
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-    private TextView reality_item;//实际班组
-    private RelativeLayout reality_itemlayout;
+//    private TextView reality_item;//实际班组
+//    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
@@ -51,8 +58,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
     private RelativeLayout reality_stoptimelayout;
-    private TextView employee_id;//录入人工号
-    private RelativeLayout employee_idlayout;
+    private EditText employee_id;//录入人工号
     private EditText questiontogether;//问题汇总
     private EditText ratinghours;//额定工时
     private EditText pm;//PM
@@ -63,6 +69,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 
     private EditText showingedit;
     private TextView showingtext;
+
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    StringBuffer sb;
+    private int layoutnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +98,8 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         property = (TextView) findViewById(R.id.oder_detail_property);
         propertylayout = (RelativeLayout) findViewById(R.id.oder_detail_property_layout);
 
-        wordtype = (TextView) findViewById(R.id.oder_detail_wordtype);
-        wordtypelayout = (RelativeLayout) findViewById(R.id.oder_detail_wordtype_layout);
+        worktype = (TextView) findViewById(R.id.oder_detail_wordtype);
+        worktypelayout = (RelativeLayout) findViewById(R.id.oder_detail_wordtype_layout);
 
         reality_worktype = (TextView) findViewById(R.id.oder_detail_reality_worktype);
         reality_worktypelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_worktype_layout);
@@ -99,8 +110,8 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         major = (TextView) findViewById(R.id.oder_detail_major);
         majorlayout = (RelativeLayout) findViewById(R.id.oder_detail_major_layout);
 
-        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
-        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
+//        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
+//        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
 
         state = (EditText) findViewById(R.id.order_detail_state);
 
@@ -116,8 +127,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
 
-        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
-        employee_idlayout = (RelativeLayout) findViewById(R.id.oder_detail_employee_id_layout);
+        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
         ratinghours = (EditText) findViewById(R.id.detail_ratinghours);
@@ -141,19 +151,21 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             }
         });
         number.setText("123");
+        datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
+        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
-        wordtypelayout.setOnClickListener(new MylayoutListener(3));
+        worktypelayout.setOnClickListener(new MylayoutListener(3));
         reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
-        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
-        datelayout.setOnClickListener(new MylayoutListener(8));
+//        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
+        datelayout.setOnClickListener(new MydateListener());
         workplanlayout.setOnClickListener(new MylayoutListener(9));
-        reality_starttimelayout.setOnClickListener(new MylayoutListener(10));
-        reality_stoptimelayout.setOnClickListener(new MylayoutListener(11));
-        employee_idlayout.setOnClickListener(new MylayoutListener(12));
-        inspect_resultlayout.setOnClickListener(new MylayoutListener(13));
+        reality_starttimelayout.setOnClickListener(new MydateListener());
+        reality_stoptimelayout.setOnClickListener(new MydateListener());
+//        employee_idlayout.setOnClickListener(new MylayoutListener(12));
+//        inspect_resultlayout.setOnClickListener(new MylayoutListener(13));
 
         inputbtn.setOnClickListener(inputlistener);
     }
@@ -167,11 +179,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             orderMain.setDescribe(describe.getText().toString());
             orderMain.setPlace(place.getText().toString());
             orderMain.setProperty(property.getText().toString());
-            orderMain.setWordtype(wordtype.getText().toString());
+            orderMain.setWordtype(worktype.getText().toString());
             orderMain.setReality_worktype(reality_worktype.getText().toString());
             orderMain.setApplyunity(applyunity.getText().toString());
             orderMain.setMajor(major.getText().toString());
-            orderMain.setReality_item(reality_item.getText().toString());
+//            orderMain.setReality_item(reality_item.getText().toString());
             orderMain.setState(state.getText().toString());
             orderMain.setDate(date.getText().toString());
             orderMain.setWorkplan(workplan.getText().toString());
@@ -202,19 +214,83 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         }
     }
 
+    public class MydateListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            layoutnum = 0;
+            sb = new StringBuffer();
+            layoutnum = view.getId();
+            datePickerDialog.show();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String content = null;
+        if(resultCode!=0){
+             content = data.getCharSequenceExtra("result").toString();
+        }
         switch (resultCode) {
             case 0:
                 break;
             case 1:
+                place.setText(content);
                 break;
             case 2:
+                property.setText(content);
                 break;
             case 3:
+                worktype.setText(content);
+                break;
+            case 4:
+                reality_worktype.setText(content);
+                break;
+            case 5:
+                applyunity.setText(content);
+                break;
+            case 6:
+                major.setText(content);
+                break;
+            case 9:
+                workplan.setText(content);
                 break;
             default:
                 break;
+        }
+    }
+
+    private class datelistener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
+            if(dayOfMonth<10){
+                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
+            }else {
+                sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
+            }
+                timePickerDialog.show();
+        }
+    }
+
+    private class timelistener implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                sb.append(" ");
+            if(i1<10){
+                sb.append(i+":"+"0"+i1+":00");
+            }else {
+                sb.append(i+":"+i1+":00");
+            }
+            if(layoutnum == datelayout.getId()){
+                date.setText(sb);
+            }else if(layoutnum == reality_starttimelayout.getId()){
+                reality_starttime.setText(sb);
+            }else if(layoutnum ==reality_stoptimelayout.getId()){
+                reality_stoptime.setText(sb);
+            }
+
         }
     }
 }

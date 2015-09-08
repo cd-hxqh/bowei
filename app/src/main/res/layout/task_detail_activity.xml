@@ -26,6 +26,7 @@
             android:id="@+id/task_num"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:textColor="@color/gray"
@@ -44,6 +45,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
             android:textSize="14sp"
             android:textColor="@color/gray"
             android:background="@drawable/content_bg01"/>
@@ -58,6 +60,7 @@
             android:id="@+id/task_zxr"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
             android:textColor="@color/gray"
             android:background="@drawable/content_bg01"/>
         <TextView
@@ -71,6 +74,7 @@
             android:id="@+id/task_jcr"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
             android:textColor="@color/gray"
             android:background="@drawable/content_bg01"/>
     </LinearLayout>

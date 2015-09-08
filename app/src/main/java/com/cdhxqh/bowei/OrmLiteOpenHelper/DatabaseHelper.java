@@ -5,12 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.cdhxqh.bowei.bean.AcWorkType;
 import com.cdhxqh.bowei.bean.Asset;
+import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.FailureList1;
 import com.cdhxqh.bowei.bean.Failurecode;
 import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
 import com.cdhxqh.bowei.bean.Workzy;
@@ -50,6 +52,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Jobplan.class);
             TableUtils.createTable(connectionSource, JobTask.class);
             TableUtils.createTable(connectionSource, Jobmaterial.class);
+            TableUtils.createTable(connectionSource, Erson.class);
+            TableUtils.createTable(connectionSource, OrderMain.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,6 +77,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Jobplan.class, true);
             TableUtils.dropTable(connectionSource, JobTask.class, true);
             TableUtils.dropTable(connectionSource, Jobmaterial.class, true);
+            TableUtils.dropTable(connectionSource, Erson.class, true);
+            TableUtils.dropTable(connectionSource, OrderMain.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();
