@@ -3,7 +3,7 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.JobMaterial;
+import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class JobMaterialDao {
     private Context context;
-    private Dao<JobMaterial, Integer> JobMaterialDaoOpe;
+    private Dao<Jobmaterial, Integer> JobMaterialDaoOpe;
     private DatabaseHelper helper;
 
     public JobMaterialDao(Context context)
@@ -23,7 +23,7 @@ public class JobMaterialDao {
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            JobMaterialDaoOpe = helper.getDao(JobMaterial.class);
+            JobMaterialDaoOpe = helper.getDao(Jobmaterial.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class JobMaterialDao {
      * 更新资产信息
      * @param jobMaterial
      */
-    public void update(JobMaterial jobMaterial) {
+    public void update(Jobmaterial jobMaterial) {
         try
         {
             JobMaterialDaoOpe.create(jobMaterial);
@@ -48,7 +48,7 @@ public class JobMaterialDao {
      * 查询所有资产
      * @return
      */
-    public List<JobMaterial> queryForAll(){
+    public List<Jobmaterial> queryForAll(){
         try {
             return JobMaterialDaoOpe.queryForAll();
         } catch (SQLException e) {

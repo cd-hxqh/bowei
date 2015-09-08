@@ -19,10 +19,10 @@ import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.AcWorkType;
 import com.cdhxqh.bowei.bean.Asset;
 import com.cdhxqh.bowei.bean.Erson;
-import com.cdhxqh.bowei.bean.FailureList;
+import com.cdhxqh.bowei.bean.FailureList1;
 import com.cdhxqh.bowei.bean.Failurecode;
-import com.cdhxqh.bowei.bean.JobMaterial;
-import com.cdhxqh.bowei.bean.JobPlan;
+import com.cdhxqh.bowei.bean.Jobmaterial;
+import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
@@ -304,10 +304,10 @@ public class JsonUtils {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
-            FailureList failureList;
+            FailureList1 failureList;
             new FailureListDao(ctx).deleteall();
             for(int i = 0;i < jsonArray.length();i++){
-                failureList = new FailureList();
+                failureList = new FailureList1();
                 jsonObject = jsonArray.getJSONObject(i);
                 failureList.setFAILURELIST(jsonObject.getString("FAILURELIST"));
                 failureList.setFAILURECODE(jsonObject.getString("FAILURECODE"));
@@ -324,10 +324,10 @@ public class JsonUtils {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
-            JobPlan jobPlan;
+            Jobplan jobPlan;
             new JobPlanDao(ctx).deleteall();
             for(int i = 0;i < jsonArray.length();i++){
-                jobPlan = new JobPlan();
+                jobPlan = new Jobplan();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
@@ -363,10 +363,10 @@ public class JsonUtils {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
-            JobMaterial jobPlan;
+            Jobmaterial jobPlan;
             new JobMaterialDao(ctx).deleteall();
             for(int i = 0;i < jsonArray.length();i++){
-                jobPlan = new JobMaterial();
+                jobPlan = new Jobmaterial();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setITEMDESC(jsonObject.getString("ITEMDESC"));
                 jobPlan.setITEMNUM(jsonObject.getString("ITEMNUM"));

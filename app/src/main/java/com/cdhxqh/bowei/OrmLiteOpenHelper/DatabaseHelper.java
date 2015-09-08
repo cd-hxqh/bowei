@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.cdhxqh.bowei.bean.AcWorkType;
 import com.cdhxqh.bowei.bean.Asset;
-import com.cdhxqh.bowei.bean.FailureList;
+import com.cdhxqh.bowei.bean.FailureList1;
 import com.cdhxqh.bowei.bean.Failurecode;
-import com.cdhxqh.bowei.bean.JobMaterial;
-import com.cdhxqh.bowei.bean.JobPlan;
+import com.cdhxqh.bowei.bean.Jobmaterial;
+import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.WorkType;
@@ -46,10 +46,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, WorkType.class);
             TableUtils.createTable(connectionSource, AcWorkType.class);
             TableUtils.createTable(connectionSource, Failurecode.class);
-            TableUtils.createTable(connectionSource, FailureList.class);
-            TableUtils.createTable(connectionSource, JobPlan.class);
+            TableUtils.createTable(connectionSource, FailureList1.class);
+            TableUtils.createTable(connectionSource, Jobplan.class);
             TableUtils.createTable(connectionSource, JobTask.class);
-            TableUtils.createTable(connectionSource, JobMaterial.class);
+            TableUtils.createTable(connectionSource, Jobmaterial.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,10 +69,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, WorkType.class, true);
             TableUtils.dropTable(connectionSource, AcWorkType.class, true);
             TableUtils.dropTable(connectionSource, Failurecode.class, true);
-            TableUtils.dropTable(connectionSource, FailureList.class, true);
-            TableUtils.dropTable(connectionSource, JobPlan.class, true);
+            TableUtils.dropTable(connectionSource, FailureList1.class, true);
+            TableUtils.dropTable(connectionSource, Jobplan.class, true);
             TableUtils.dropTable(connectionSource, JobTask.class, true);
-            TableUtils.dropTable(connectionSource, JobMaterial.class, true);
+            TableUtils.dropTable(connectionSource, Jobmaterial.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

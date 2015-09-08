@@ -3,7 +3,7 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.JobPlan;
+import com.cdhxqh.bowei.bean.Jobplan;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class JobPlanDao {
     private Context context;
-    private Dao<JobPlan, Integer> JobPlanDaoOpe;
+    private Dao<Jobplan, Integer> JobPlanDaoOpe;
     private DatabaseHelper helper;
 
     public JobPlanDao(Context context)
@@ -23,7 +23,7 @@ public class JobPlanDao {
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            JobPlanDaoOpe = helper.getDao(JobPlan.class);
+            JobPlanDaoOpe = helper.getDao(Jobplan.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class JobPlanDao {
      * 更新工作计划
      * @param jobPlan
      */
-    public void update(JobPlan jobPlan) {
+    public void update(Jobplan jobPlan) {
         try
         {
             JobPlanDaoOpe.create(jobPlan);
@@ -48,7 +48,7 @@ public class JobPlanDao {
      * 查询所有工作计划
      * @return
      */
-    public List<JobPlan> queryForAll(){
+    public List<Jobplan> queryForAll(){
         try {
             return JobPlanDaoOpe.queryForAll();
         } catch (SQLException e) {
