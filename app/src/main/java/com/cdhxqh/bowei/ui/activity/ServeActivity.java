@@ -73,31 +73,31 @@ public class ServeActivity extends BaseActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        OrderServe orderServe;
+        OrderMain orderMain;
         switch (resultCode) {
             case 0:
                 break;
             case 1:
-                orderServe = (OrderServe) data.getSerializableExtra("orderServe");
-                adddata(orderServe);
+                orderMain = (OrderMain) data.getSerializableExtra("orderMain");
+                adddata(orderMain);
                 break;
         }
     }
 
     private void addData() {
-        ArrayList<OrderServe> list = new ArrayList<OrderServe>();
+        ArrayList<OrderMain> list = new ArrayList<OrderMain>();
         for (int i = 0; i < 3; i++) {
-            OrderServe orderServe = new OrderServe();
-            orderServe.setNumber(103882549);
-            orderServe.setDescribe("TT2分拣机"+ (i + 1) + "日检");
-            list.add(i,orderServe);
+            OrderMain orderMain = new OrderMain();
+            orderMain.setNumber(103882549);
+            orderMain.setDescribe("TT2分拣机"+ (i + 1) + "日检");
+            list.add(i,orderMain);
         }
         orderServeAdapter.update(list, true);
     }
 
-    private void adddata(OrderServe orderServe){
-        ArrayList<OrderServe> list = new ArrayList<OrderServe>();
-        list.add(0,orderServe);
+    private void adddata(OrderMain orderMain){
+        ArrayList<OrderMain> list = new ArrayList<OrderMain>();
+        list.add(0,orderMain);
         orderServeAdapter.update(list,true);
     }
 }

@@ -60,6 +60,50 @@ public class OrderMainDao {
     }
 
     /**
+     * 查询维保工单
+     * @return
+     */
+    public List<OrderMain> queryForPMAndCM(){
+        try {
+
+            return OrderMainDaoOpe.queryBuilder().orderBy("number",true)
+                    .where().eq("wordtype","PM").or().eq("wordtype","CM").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 查询维修工单
+     * @return
+     */
+    public List<OrderMain> queryForEM(){
+        try {
+
+            return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                    .where().eq("wordtype","EM").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * 查询服务工单
+     * @return
+     */
+    public List<OrderMain> queryForSVR(){
+        try {
+
+            return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                    .where().eq("wordtype","SVR").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){

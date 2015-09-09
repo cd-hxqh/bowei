@@ -75,7 +75,10 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         orderTaskAdapter = new OrderTaskAdapter(this, this);
         recyclerView.setAdapter(orderTaskAdapter);
-        getData();
+        if(!num.equals("0")){
+            getData();
+        }
+
 
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override

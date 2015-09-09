@@ -1,15 +1,19 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
@@ -28,8 +32,8 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout placelayout;
     private TextView property;//资产
     private RelativeLayout propertylayout;
-    private TextView wordtype;//工作类型
-    private RelativeLayout wordtypelayout;
+    private TextView worktype;//工作类型
+    private RelativeLayout worktypelayout;
     private TextView reality_worktype;//实际工作类型
     private RelativeLayout reality_worktypelayout;
     private TextView applyunity;//申请单位
@@ -61,6 +65,11 @@ public class AddOrderServeActivity extends BaseActivity {
     private EditText showingedit;
     private TextView showingtext;
 
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    StringBuffer sb;
+    private int layoutnum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +93,8 @@ public class AddOrderServeActivity extends BaseActivity {
         property = (TextView) findViewById(R.id.oder_detail_property);
         propertylayout = (RelativeLayout) findViewById(R.id.oder_detail_property_layout);
 
-        wordtype = (TextView) findViewById(R.id.oder_detail_wordtype);
-        wordtypelayout = (RelativeLayout) findViewById(R.id.oder_detail_wordtype_layout);
+        worktype = (TextView) findViewById(R.id.oder_detail_wordtype);
+        worktypelayout = (RelativeLayout) findViewById(R.id.oder_detail_wordtype_layout);
 
         reality_worktype = (TextView) findViewById(R.id.oder_detail_reality_worktype);
         reality_worktypelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_worktype_layout);
@@ -128,7 +137,7 @@ public class AddOrderServeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.maintenance_add_new));
+        titlename.setText(getResources().getString(R.string.serve_add_new));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +145,20 @@ public class AddOrderServeActivity extends BaseActivity {
                 finish();
             }
         });
-        number.setText("123");
+        number.setText("");
+        worktype.setText("EM");
+        datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
+        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
+        placelayout.setOnClickListener(new MylayoutListener(1));
+        propertylayout.setOnClickListener(new MylayoutListener(2));
+        worktypelayout.setOnClickListener(new MylayoutListener(3));
+        reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
+        applyunitylayout.setOnClickListener(new MylayoutListener(5));
+        majorlayout.setOnClickListener(new MylayoutListener(6));
+        datelayout.setOnClickListener(new MydateListener());
+        workplanlayout.setOnClickListener(new MylayoutListener(9));
+        reality_starttimelayout.setOnClickListener(new MydateListener());
+        reality_stoptimelayout.setOnClickListener(new MydateListener());
 //        placelayout.setOnClickListener(new MylayoutListener(placeedit, place));
 //        propertylayout.setOnClickListener(new MylayoutListener(propertyedit,property));
 //        wordtypelayout.setOnClickListener(new MylayoutListener(wordtypeedit,wordtype));
@@ -153,43 +175,64 @@ public class AddOrderServeActivity extends BaseActivity {
 
         inputbtn.setOnClickListener(inputlistener);
 
-        linearLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (showingedit != null && showingedit.getVisibility() == View.VISIBLE &&
-                        (motionEvent.getX() < showingedit.getLeft() || motionEvent.getX() > showingedit.getRight()
-                                || motionEvent.getY() < showingedit.getBottom() || motionEvent.getY() > showingedit.getTop())) {
-                    showingtext.setText(showingedit.getText());
-                    showingedit.setVisibility(View.GONE);
-                    showingtext.setVisibility(View.VISIBLE);
-                    showingedit = null;
-                    showingtext = null;
-                }
-                return true;
-            }
-        });
     }
     public class MylayoutListener implements View.OnClickListener {
-        private EditText editText;
-        private TextView textView;
-        public MylayoutListener(EditText editText,TextView textView){
-            this.editText = editText;
-            this.textView = textView;
+        int requestCode;
+        public MylayoutListener(int requestcode){
+            this.requestCode = requestcode;
         }
         @Override
         public void onClick(View view) {
-            if(showingedit!=null){
-                showingtext.setText(showingedit.getText());
-                showingedit.setVisibility(View.GONE);
-                showingtext.setVisibility(View.VISIBLE);
-            }
-            editText.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.GONE);
-            showingedit = editText;
-            showingtext = textView;
+            Intent intent = new Intent(AddOrderServeActivity.this,ItemChooseListActivity.class);
+            intent.putExtra("requestCode",requestCode);
+            startActivityForResult(intent, requestCode);
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String content = null;
+        if(resultCode!=0){
+            content = data.getCharSequenceExtra("result").toString();
+        }
+        switch (resultCode) {
+            case 0:
+                break;
+            case 1:
+                place.setText(content);
+                break;
+            case 2:
+                property.setText(content);
+                break;
+            case 3:
+                worktype.setText(content);
+                break;
+            case 4:
+                reality_worktype.setText(content);
+                break;
+            case 5:
+                applyunity.setText(content);
+                break;
+            case 6:
+                major.setText(content);
+                break;
+            case 9:
+                workplan.setText(content);
+                break;
+            default:
+                break;
+        }
+    }
+    public class MydateListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            layoutnum = 0;
+            sb = new StringBuffer();
+            layoutnum = view.getId();
+            datePickerDialog.show();
+        }
+    }
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -199,7 +242,7 @@ public class AddOrderServeActivity extends BaseActivity {
             orderServe.setDescribe(describe.getText().toString());
             orderServe.setPlace(place.getText().toString());
             orderServe.setProperty(property.getText().toString());
-            orderServe.setWordtype(wordtype.getText().toString());
+            orderServe.setWordtype(worktype.getText().toString());
             orderServe.setReality_worktype(reality_worktype.getText().toString());
             orderServe.setApplyunity(applyunity.getText().toString());
             orderServe.setMajor(major.getText().toString());
@@ -220,4 +263,36 @@ public class AddOrderServeActivity extends BaseActivity {
             finish();
         }
     };
+    private class datelistener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
+            if(dayOfMonth<10){
+                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
+            }else {
+                sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
+            }
+            timePickerDialog.show();
+        }
+    }
+    private class timelistener implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            sb.append(" ");
+            if(i1<10){
+                sb.append(i+":"+"0"+i1+":00");
+            }else {
+                sb.append(i+":"+i1+":00");
+            }
+            if(layoutnum == datelayout.getId()){
+                date.setText(sb);
+            }else if(layoutnum == reality_starttimelayout.getId()){
+                reality_starttime.setText(sb);
+            }else if(layoutnum ==reality_stoptimelayout.getId()){
+                reality_stoptime.setText(sb);
+            }
+
+        }
+    }
 }

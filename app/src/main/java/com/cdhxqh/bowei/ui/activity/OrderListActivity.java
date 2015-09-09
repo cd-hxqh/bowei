@@ -10,16 +10,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
-import com.cdhxqh.bowei.application.BaseApplication;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
@@ -36,10 +33,11 @@ import java.util.List;
 /**
  * Created by think on 2015/8/13.
  */
-public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String TAG = "MaintenanceActivity";
+    public static final String TAG = "OrderListActivity";
 
+    public String name;
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
@@ -72,7 +70,8 @@ public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLay
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.maintenance));
+        name = (String) getIntent().getExtras().get("ordername");
+        titlename.setText(name);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
@@ -83,7 +82,14 @@ public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLay
         addimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MaintenanceActivity.this, AddOrderMaintenanceActivity.class);
+                Intent intent = new Intent();
+                if(name.equals(getResources().getString(R.string.maintenance))){
+                    intent.setClass(OrderListActivity.this, AddOrderMaintenanceActivity.class);
+                }else if(name.equals(getResources().getString(R.string.serve))){
+                    intent.setClass(OrderListActivity.this, AddOrderServeActivity.class);
+                }else if(name.equals(getResources().getString(R.string.service))){
+                    intent.setClass(OrderListActivity.this, AddOrderMaintenanceActivity.class);
+                }
                 startActivityForResult(intent, 1);
             }
         });
@@ -123,7 +129,7 @@ public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLay
                     if(jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))){
 //                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
 //                        addData(jsonObject.getString("result"));
-                        JsonUtils.parsingOrderArr(jsonObject.getString("result"), MaintenanceActivity.this);
+                        JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
                         refreshData();
 //                        mProgressDialog.dismiss();
                     }
@@ -148,7 +154,16 @@ public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLay
         addData();
     }
     private void addData() {
-        List<OrderMain> list = new OrderMainDao(this).queryForAll();
+        List<OrderMain> list;
+        if(name.equals(getResources().getString(R.string.maintenance))){
+            list = new OrderMainDao(this).queryForPMAndCM();
+        }else if(name.equals(getResources().getString(R.string.serve))){
+            list = new OrderMainDao(this).queryForEM();
+        }else if(name.equals(getResources().getString(R.string.service))){
+            list = new OrderMainDao(this).queryForSVR();
+        }else {
+            list = new OrderMainDao(this).queryForAll();
+        }
         orderMainArrayList = new ArrayList<OrderMain>();
         for(int i = 0;i < list.size();i++){
             orderMainArrayList.add(i,list.get(i));
@@ -166,7 +181,7 @@ public class MaintenanceActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         if(orderMainAdapter.getItemCount()>0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MaintenanceActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(OrderListActivity.this);
             builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
                     .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                         @Override

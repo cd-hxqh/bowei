@@ -1,7 +1,6 @@
 package com.cdhxqh.bowei.ui.fragment;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,21 +8,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
-import com.cdhxqh.bowei.application.BaseApplication;
-import com.cdhxqh.bowei.config.Constants;
-import com.cdhxqh.bowei.manager.HttpManager;
-import com.cdhxqh.bowei.manager.HttpRequestHandler;
-import com.cdhxqh.bowei.ui.activity.MaintenanceActivity;
+import com.cdhxqh.bowei.ui.activity.OrderListActivity;
 import com.cdhxqh.bowei.ui.activity.ServeActivity;
 import com.cdhxqh.bowei.ui.activity.ServiceActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by think on 2015/8/17.
@@ -57,17 +47,18 @@ public class OrderFragment extends Fragment {
         @Override
         public void onClick(View v) {
             intent = new Intent();
+            intent.setClass(getActivity(),OrderListActivity.class);
             switch (v.getId()){
                 case R.id.maintenance://维保工单
-                    intent.setClass(getActivity(),MaintenanceActivity.class);
+                    intent.putExtra("ordername",getResources().getString(R.string.maintenance));
                     startActivity(intent);
                     break;
                 case R.id.serve://维护工单
-                    intent.setClass(getActivity(),ServeActivity.class);
+                    intent.putExtra("ordername", getResources().getString(R.string.serve));
                     startActivity(intent);
                     break;
                 case R.id.service://服务工单
-                    intent.setClass(getActivity(),ServiceActivity.class);
+                    intent.putExtra("ordername", getResources().getString(R.string.service));
                     startActivity(intent);
                     break;
             }

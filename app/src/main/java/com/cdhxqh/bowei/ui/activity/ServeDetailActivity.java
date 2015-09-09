@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
 
@@ -17,7 +18,7 @@ public class ServeDetailActivity extends BaseActivity {
     private ImageView backimg;
     private TextView titlename;
     private ImageView moreimg;
-    private OrderServe orderServe;
+    private OrderMain orderMain;
     private EditText number;//工单编号
     private EditText describe;//工单描述
     private TextView place;//位置
@@ -76,8 +77,9 @@ public class ServeDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         getData();
-        number.setText(orderServe.getNumber() + "");
-        describe.setText(orderServe.getDescribe());
+        setview();
+        number.setText(orderMain.getNumber() + "");
+        describe.setText(orderMain.getDescribe());
         titlename.setText(getResources().getString(R.string.serve));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,13 +91,32 @@ public class ServeDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this,getResources().getString(R.string.serve),
-                        orderServe.getNumber() + "");
+                        orderMain.getNumber() + "");
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
     }
 
     private void getData(){
-        orderServe = (OrderServe) getIntent().getSerializableExtra("orderserve");
+        orderMain = (OrderMain) getIntent().getSerializableExtra("orderMain");
+    }
+
+    private void setview(){
+        number.setText(orderMain.getNumber() + "");
+        describe.setText(orderMain.getDescribe());
+        place.setText(orderMain.getPlace());
+        property.setText(orderMain.getProperty());
+        wordtype.setText(orderMain.getWordtype());
+        reality_worktype.setText(orderMain.getReality_worktype());
+        applyunity.setText(orderMain.getApplyunity());
+        major.setText(orderMain.getMajor());
+        state.setText(orderMain.getState());
+        date.setText(orderMain.getDate());
+        workplan.setText(orderMain.getWorkplan());
+        reality_starttime.setText(orderMain.getReality_starttime());
+        reality_stoptime.setText(orderMain.getReality_stoptime());
+        employee_id.setText(orderMain.getEmployee_id());
+        questiontogether.setText(orderMain.getQuestiontogether());
+        faultclass.setText(orderMain.getFaultclass());
     }
 }

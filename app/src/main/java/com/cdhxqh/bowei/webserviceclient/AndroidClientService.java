@@ -38,7 +38,12 @@ public class AndroidClientService {
         this.url = url;
     }
 
-    public String InsertWO(String s) {
+    /**
+     * 测试方法
+     * @param s
+     * @return
+     */
+    public String TestInsertWO(String s) {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
@@ -48,6 +53,64 @@ public class AndroidClientService {
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
             httpTransport.call("urn:action", soapEnvelope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        String obj = null;
+        try {
+            obj = soapEnvelope.getResponse().toString();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * 添加工单方法
+     * @param string
+     * @return
+     */
+    public String InsertWO(String string){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
+        soapReq.addProperty("in0", string);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        try {
+            httpTransport.call("", soapEnvelope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        String obj = null;
+        try {
+            obj = soapEnvelope.getResponse().toString();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * 修改工单方法
+     * @param string
+     * @return
+     */
+    public String UpdataWO(String string){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject(NAMESPACE, "UpdateWO");
+        soapReq.addProperty("in0", string);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        try {
+            httpTransport.call("", soapEnvelope);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {

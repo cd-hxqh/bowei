@@ -53,6 +53,27 @@ public class OrderMain implements Serializable {
     @DatabaseField(columnName = "inspect_result")
     private String inspect_result;//检查结果
 
+    @DatabaseField(columnName = "faultclass")
+    private String faultclass;//故障类
+    @DatabaseField(columnName = "error_coding")
+    private String error_coding;//问题代码
+    @DatabaseField(columnName = "fault_rank")
+    private String fault_rank;//故障等级
+    @DatabaseField(columnName = "reporttime")
+    private String reporttime;
+
+
+    @DatabaseField(columnName = "isNew")
+    private boolean isNew;
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+
     public int getId() {
         return id;
     }
@@ -219,5 +240,37 @@ public class OrderMain implements Serializable {
 
     public void setInspect_result(String inspect_result) {
         this.inspect_result = inspect_result;
+    }
+
+    public String getFaultclass() {
+        return faultclass;
+    }
+
+    public void setFaultclass(String faultclass) {
+        this.faultclass = faultclass;
+    }
+
+    public String getError_coding() {
+        return error_coding;
+    }
+
+    public void setError_coding(String error_coding) {
+        this.error_coding = error_coding;
+    }
+
+    public String getReporttime() {
+        return reporttime;
+    }
+
+    public void setReporttime(String reporttime) {
+        this.reporttime = reporttime;
+    }
+
+    public String getFault_rank() {
+        return fault_rank;
+    }
+
+    public void setFault_rank(String fault_rank) {
+        this.fault_rank = fault_rank;
     }
 }

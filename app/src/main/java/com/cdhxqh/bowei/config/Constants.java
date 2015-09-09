@@ -3,7 +3,7 @@ package com.cdhxqh.bowei.config;
 import android.content.Context;
 
 public class Constants {
-    public static String webserviceURL = "http://182.92.8.94:7001/meaweb/schema/common/meta/MXMeta.xsd";//webservice接口地址
+    public static String webserviceURL = "http://182.92.8.94:7001/maximo/services/WOService";//webservice接口地址
 
     public static String loginURL = "http://182.92.8.94:7001/maximo/mobile/system/login";//登录接口地址
 
@@ -21,7 +21,7 @@ public class Constants {
     }
     //获得实际员工信息
     public static String getRealWorkerInfoUrl(String num){
-        return "{appid:'LABTRANS',objectname:'LABTRANS',option:'read',condition:{wonum:'"+num+"'}}";
+        return "{appid:'LABTRANS',objectname:'LABTRANS',option:'read',condition:{refwo:'"+num+"'}}";
     }
     //获得计划物料消耗
     public static String getMeterialConsumePlanUrl(String num){
@@ -29,7 +29,7 @@ public class Constants {
     }
     //获得实际物料消耗
     public static String getMeterialConsumeRealUrl(String num){
-        return "{appid:'DEPTMATUSETRANS',objectname:'DEPTMATUSETRANS',option:'read',condition:{wonum:'"+num+"',issuetype:'发放'}}";
+        return "{appid:'DEPTMATUSETRANS',objectname:'DEPTMATUSETRANS',option:'read',condition:{wonum:'"+num+"',issuetype:'ISSUETYPE'}}";
     }
     //获得工单流程任务分配
     public static String GET_OWNER_ID = "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +

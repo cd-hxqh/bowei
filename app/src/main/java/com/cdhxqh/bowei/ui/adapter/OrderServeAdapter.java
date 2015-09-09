@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class OrderServeAdapter extends RecyclerView.Adapter<OrderServeAdapter.ViewHolder> {
     Context mContext;
-    ArrayList<OrderServe> list=new ArrayList<OrderServe>();
+    ArrayList<OrderMain> list=new ArrayList<OrderMain>();
     public OrderServeAdapter(Context context){
         this.mContext = context;
     }
@@ -68,19 +68,19 @@ public class OrderServeAdapter extends RecyclerView.Adapter<OrderServeAdapter.Vi
         }
     }
 
-    public void update(ArrayList<OrderServe> data, boolean merge) {
+    public void update(ArrayList<OrderMain> data, boolean merge) {
         if (merge && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                OrderServe orderServe = list.get(i);
+                OrderMain orderMain = list.get(i);
                 boolean exist = false;
                 for (int j = 0; j < data.size(); j++) {
-                    if (data.get(j) == orderServe) {
+                    if (data.get(j) == orderMain) {
                         exist = true;
                         break;
                     }
                 }
                 if (exist) continue;
-                data.add(orderServe);
+                data.add(orderMain);
             }
         }
         list = data;

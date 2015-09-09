@@ -2,23 +2,21 @@ package com.cdhxqh.bowei.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
-import com.cdhxqh.bowei.ui.activity.MaintenanceActivity;
+import com.cdhxqh.bowei.ui.activity.OrderListActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
+import com.cdhxqh.bowei.ui.activity.ServeDetailActivity;
+import com.cdhxqh.bowei.ui.activity.ServiceDetailActivity;
 
 import java.util.ArrayList;
 
@@ -27,9 +25,9 @@ import java.util.ArrayList;
  */
 public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenanceAdapter.ViewHolder> {
     Context mContext;
-    MaintenanceActivity activity;
+    OrderListActivity activity;
     ArrayList<OrderMain> list=new ArrayList<OrderMain>();
-    public OrderMaintenanceAdapter(Context context,MaintenanceActivity activity){
+    public OrderMaintenanceAdapter(Context context,OrderListActivity activity){
         this.mContext = context;
         this.activity = activity;
     }
@@ -49,21 +47,17 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
                 if(holder.imageView.getVisibility()==View.VISIBLE){
                     Intent intent = new Intent();
                     intent.putExtra("ordermain", list.get(position));
-                    intent.setClass(mContext, MaintenanceDetailActivity.class);
+                    if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                        intent.setClass(mContext, MaintenanceDetailActivity.class);
+                    }else if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                        intent.setClass(mContext, ServeDetailActivity.class);
+                    }else if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                        intent.setClass(mContext, ServiceDetailActivity.class);
+                    }
                     mContext.startActivity(intent);
                 }
             }
         });
-//        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-////                holder.imageView.setVisibility(View.GONE);
-////                holder.checkBox.setVisibility(View.VISIBLE);
-////                notifyDataSetChanged();
-//                activity.changeitem();
-//                return true;
-//            }
-//        });
     }
 
     @Override

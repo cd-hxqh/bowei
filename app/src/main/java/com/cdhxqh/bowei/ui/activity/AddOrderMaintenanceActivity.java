@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
@@ -30,6 +31,7 @@ import java.util.Calendar;
  * Created by think on 2015/8/26.新增维保工单
  */
 public class AddOrderMaintenanceActivity extends BaseActivity {
+    private ScrollView scrollView;
     private ImageView backimg;
     private TextView titlename;
     private LinearLayout linearLayout;
@@ -88,6 +90,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     protected void findViewById() {
         backimg = (ImageView) findViewById(R.id.info_title_img_left);
         titlename = (TextView) findViewById(R.id.info_title_name);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         linearLayout = (LinearLayout) findViewById(R.id.order_detail_layout);
         number = (EditText) findViewById(R.id.order_detail_number);
         describe = (EditText) findViewById(R.id.order_detail_describe);
@@ -142,7 +145,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.Serve_add_new));
+        titlename.setText(getResources().getString(R.string.maintenance_add_new));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +153,9 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 finish();
             }
         });
-        number.setText("123");
+//        scrollView.scrollTo();
+        number.setText("");
+        applyunity.setText("JY");
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
@@ -173,31 +178,37 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
-            OrderMain orderMain = new OrderMain();
-            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
-            orderMain.setDescribe(describe.getText().toString());
-            orderMain.setPlace(place.getText().toString());
-            orderMain.setProperty(property.getText().toString());
-            orderMain.setWordtype(worktype.getText().toString());
-            orderMain.setReality_worktype(reality_worktype.getText().toString());
-            orderMain.setApplyunity(applyunity.getText().toString());
-            orderMain.setMajor(major.getText().toString());
+            String isok = isOK();
+            if(isok.equals("OK")) {
+                Intent intent = new Intent();
+                OrderMain orderMain = new OrderMain();
+//                orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+                orderMain.setDescribe(describe.getText().toString());
+                orderMain.setPlace(place.getText().toString());
+                orderMain.setProperty(property.getText().toString());
+                orderMain.setWordtype(worktype.getText().toString());
+                orderMain.setReality_worktype(reality_worktype.getText().toString());
+                orderMain.setApplyunity(applyunity.getText().toString());
+                orderMain.setMajor(major.getText().toString());
 //            orderMain.setReality_item(reality_item.getText().toString());
-            orderMain.setState(state.getText().toString());
-            orderMain.setDate(date.getText().toString());
-            orderMain.setWorkplan(workplan.getText().toString());
-            orderMain.setReality_starttime(reality_starttime.getText().toString());
-            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-            orderMain.setEmployee_id(employee_id.getText().toString());
-            orderMain.setQuestiontogether(questiontogether.getText().toString());
-            orderMain.setRatinghours(ratinghours.getText().toString());
-            orderMain.setPm(pm.getText().toString());
-            orderMain.setNotinspection_device(notinspection_device.getText().toString());
-            orderMain.setInspect_result(inspect_result.getText().toString());
-            intent.putExtra("orderMain", orderMain);
-            AddOrderMaintenanceActivity.this.setResult(1, intent);
-            finish();
+                orderMain.setState(state.getText().toString());
+                orderMain.setDate(date.getText().toString());
+                orderMain.setWorkplan(workplan.getText().toString());
+                orderMain.setReality_starttime(reality_starttime.getText().toString());
+                orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+                orderMain.setEmployee_id(employee_id.getText().toString());
+                orderMain.setQuestiontogether(questiontogether.getText().toString());
+                orderMain.setRatinghours(ratinghours.getText().toString());
+                orderMain.setPm(pm.getText().toString());
+                orderMain.setNotinspection_device(notinspection_device.getText().toString());
+                orderMain.setInspect_result(inspect_result.getText().toString());
+                orderMain.setIsNew(true);
+                intent.putExtra("orderMain", orderMain);
+                AddOrderMaintenanceActivity.this.setResult(1, intent);
+                finish();
+            }else if (isok.equals("请完善信息")){
+                Toast.makeText(AddOrderMaintenanceActivity.this,isok,Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -291,6 +302,21 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 reality_stoptime.setText(sb);
             }
 
+        }
+    }
+
+    /**
+     * 提交时判断填写是否合格
+     * @return
+     */
+    private String isOK(){
+        if (describe.getText().equals("")||place.equals("")
+                ||property.getText().equals("")||worktype.getText().equals("")
+                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+                ||major.getText().equals("")||date.getText().equals("")){
+            return "请完善信息";
+        }else{
+            return "OK";
         }
     }
 }
