@@ -88,7 +88,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 }else if(name.equals(getResources().getString(R.string.serve))){
                     intent.setClass(OrderListActivity.this, AddOrderServeActivity.class);
                 }else if(name.equals(getResources().getString(R.string.service))){
-                    intent.setClass(OrderListActivity.this, AddOrderMaintenanceActivity.class);
+                    intent.setClass(OrderListActivity.this, AddOrderServiceActivity.class);
                 }
                 startActivityForResult(intent, 1);
             }

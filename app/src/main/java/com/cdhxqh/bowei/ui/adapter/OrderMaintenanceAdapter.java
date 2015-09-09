@@ -49,9 +49,9 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
                     intent.putExtra("ordermain", list.get(position));
                     if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
                         intent.setClass(mContext, MaintenanceDetailActivity.class);
-                    }else if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                    }else if(activity.name.equals(activity.getResources().getString(R.string.serve))){
                         intent.setClass(mContext, ServeDetailActivity.class);
-                    }else if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                    }else if(activity.name.equals(activity.getResources().getString(R.string.service))){
                         intent.setClass(mContext, ServiceDetailActivity.class);
                     }
                     mContext.startActivity(intent);

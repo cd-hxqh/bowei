@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderService;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
 
@@ -17,7 +18,7 @@ public class ServiceDetailActivity extends BaseActivity {
     private ImageView backimg;
     private TextView titlename;
     private ImageView moreimg;
-    private OrderService orderService;
+    private OrderMain orderMain;
     private EditText number;
     private EditText describe;
 
@@ -42,8 +43,8 @@ public class ServiceDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         getData();
-        number.setText(orderService.getNumber() + "");
-        describe.setText(orderService.getDescribe());
+        number.setText(orderMain.getNumber() + "");
+        describe.setText(orderMain.getDescribe());
         titlename.setText(getResources().getString(R.string.service));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +56,13 @@ public class ServiceDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServiceDetailActivity.this,getResources().getString(R.string.service),
-                        orderService.getNumber() + "");
+                        orderMain.getNumber() + "");
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
     }
 
     private void getData(){
-        orderService = (OrderService) getIntent().getSerializableExtra("orderservice");
+        orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 }

@@ -78,8 +78,6 @@ public class ServeDetailActivity extends BaseActivity {
     protected void initView() {
         getData();
         setview();
-        number.setText(orderMain.getNumber() + "");
-        describe.setText(orderMain.getDescribe());
         titlename.setText(getResources().getString(R.string.serve));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +96,7 @@ public class ServeDetailActivity extends BaseActivity {
     }
 
     private void getData(){
-        orderMain = (OrderMain) getIntent().getSerializableExtra("orderMain");
+        orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
     private void setview(){
@@ -111,12 +109,12 @@ public class ServeDetailActivity extends BaseActivity {
         applyunity.setText(orderMain.getApplyunity());
         major.setText(orderMain.getMajor());
         state.setText(orderMain.getState());
-        date.setText(orderMain.getDate());
-        workplan.setText(orderMain.getWorkplan());
-        reality_starttime.setText(orderMain.getReality_starttime());
-        reality_stoptime.setText(orderMain.getReality_stoptime());
-        employee_id.setText(orderMain.getEmployee_id());
-        questiontogether.setText(orderMain.getQuestiontogether());
-        faultclass.setText(orderMain.getFaultclass());
+//        date.setText(orderMain.getDate());
+//        workplan.setText(orderMain.getWorkplan());
+//        reality_starttime.setText(orderMain.getReality_starttime());
+//        reality_stoptime.setText(orderMain.getReality_stoptime());
+//        employee_id.setText(orderMain.getEmployee_id());
+//        questiontogether.setText(orderMain.getQuestiontogether());
+//        faultclass.setText(orderMain.getFaultclass());
     }
 }

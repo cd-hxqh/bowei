@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
@@ -23,7 +21,7 @@ import com.cdhxqh.bowei.bean.OrderServe;
 /**
  * Created by think on 2015/9/2.
  */
-public class AddOrderServeActivity extends BaseActivity {
+public class AddOrderServiceActivity extends BaseActivity {
     private ImageView backimg;
     private TextView titlename;
     private LinearLayout linearLayout;
@@ -44,27 +42,8 @@ public class AddOrderServeActivity extends BaseActivity {
 //    private TextView reality_item;//实际班组
 //    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
-    private TextView date;//汇报时间
-    private RelativeLayout datelayout;
-    private TextView workplan;//作业计划
-    private RelativeLayout workplanlayout;
-    private TextView reality_starttime;//实际开始时间
-    private RelativeLayout reality_starttimelayout;
-    private TextView reality_stoptime;//实际完成时间
-    private RelativeLayout reality_stoptimelayout;
-    private EditText employee_id;//录入人工号
-    private EditText questiontogether;//问题汇总
-    private EditText faultclass;
-    private EditText error_coding;
-    private EditText fault_rank;
-    private TextView reporttime;
-    private RelativeLayout reporttimelayout;
-    private EditText reporttimeedit;
 
     private Button inputbtn;
-
-    private EditText showingedit;
-    private TextView showingtext;
 
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
@@ -74,7 +53,7 @@ public class AddOrderServeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.serve_detail_add_activity);
+        setContentView(R.layout.service_detail_add_activity);
 
         findViewById();
         initView();
@@ -111,43 +90,22 @@ public class AddOrderServeActivity extends BaseActivity {
 
         state = (EditText) findViewById(R.id.order_detail_state);
 
-        date = (TextView) findViewById(R.id.oder_detail_date);
-        datelayout = (RelativeLayout) findViewById(R.id.oder_detail_date_layout);
-
-        workplan = (TextView) findViewById(R.id.oder_detail_workplan);
-        workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
-
-        reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
-        reality_starttimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_starttime_layout);
-
-        reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
-        reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
-
-        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
-
-        questiontogether = (EditText) findViewById(R.id.questiontogether);
-        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
-        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
-        fault_rank = (EditText) findViewById(R.id.order_detail_fault_rank);
-        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
-        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
-        reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
 
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
     @Override
     protected void initView() {
-        titlename.setText(getResources().getString(R.string.serve_add_new));
+        titlename.setText(getResources().getString(R.string.service_add_new));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddOrderServeActivity.this.setResult(0);
+                AddOrderServiceActivity.this.setResult(0);
                 finish();
             }
         });
         number.setText("");
-        worktype.setText("EM");
+        worktype.setText("SVR");
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
@@ -156,10 +114,10 @@ public class AddOrderServeActivity extends BaseActivity {
         reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
-        datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(9));
-        reality_starttimelayout.setOnClickListener(new MydateListener());
-        reality_stoptimelayout.setOnClickListener(new MydateListener());
+//        datelayout.setOnClickListener(new MydateListener());
+//        workplanlayout.setOnClickListener(new MylayoutListener(9));
+//        reality_starttimelayout.setOnClickListener(new MydateListener());
+//        reality_stoptimelayout.setOnClickListener(new MydateListener());
 //        placelayout.setOnClickListener(new MylayoutListener(placeedit, place));
 //        propertylayout.setOnClickListener(new MylayoutListener(propertyedit,property));
 //        wordtypelayout.setOnClickListener(new MylayoutListener(wordtypeedit,wordtype));
@@ -184,7 +142,7 @@ public class AddOrderServeActivity extends BaseActivity {
         }
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(AddOrderServeActivity.this,ItemChooseListActivity.class);
+            Intent intent = new Intent(AddOrderServiceActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
             startActivityForResult(intent, requestCode);
         }
@@ -218,7 +176,7 @@ public class AddOrderServeActivity extends BaseActivity {
                 major.setText(content);
                 break;
             case 9:
-                workplan.setText(content);
+//                workplan.setText(content);
                 break;
             default:
                 break;
@@ -239,7 +197,7 @@ public class AddOrderServeActivity extends BaseActivity {
         public void onClick(View v) {
             Intent intent = new Intent();
             OrderMain orderMain = new OrderMain();
-//            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+//            orderServe.setNumber(Integer.parseInt(number.getText().toString()));
             orderMain.setDescribe(describe.getText().toString());
             orderMain.setPlace(place.getText().toString());
             orderMain.setProperty(property.getText().toString());
@@ -249,18 +207,18 @@ public class AddOrderServeActivity extends BaseActivity {
             orderMain.setMajor(major.getText().toString());
 //            orderServe.setReality_item(reality_item.getText().toString());
             orderMain.setState(state.getText().toString());
-            orderMain.setDate(date.getText().toString());
-            orderMain.setWorkplan(workplan.getText().toString());
-            orderMain.setReality_starttime(reality_starttime.getText().toString());
-            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-//            orderMain.setEmployee_id(employee_id.getText().toString());
-//            orderMain.setQuestiontogether(questiontogether.getText().toString());
-//            orderMain.setFaultclass(faultclass.getText().toString());
-//            orderMain.setError_coding(error_coding.getText().toString());
-//            orderMain.setFault_rank(fault_rank.getText().toString());
-//            orderMain.setReporttime(reporttime.getText().toString());
+//            orderServe.setDate(date.getText().toString());
+//            orderServe.setWorkplan(workplan.getText().toString());
+//            orderServe.setReality_starttime(reality_starttime.getText().toString());
+//            orderServe.setReality_stoptime(reality_stoptime.getText().toString());
+//            orderServe.setEmployee_id(employee_id.getText().toString());
+//            orderServe.setQuestiontogether(questiontogether.getText().toString());
+//            orderServe.setFaultclass(faultclass.getText().toString());
+//            orderServe.setError_coding(error_coding.getText().toString());
+//            orderServe.setFault_rank(fault_rank.getText().toString());
+//            orderServe.setReporttime(reporttime.getText().toString());
             intent.putExtra("orderMain", orderMain);
-            AddOrderServeActivity.this.setResult(1, intent);
+            AddOrderServiceActivity.this.setResult(1, intent);
             finish();
         }
     };
@@ -286,13 +244,13 @@ public class AddOrderServeActivity extends BaseActivity {
             }else {
                 sb.append(i+":"+i1+":00");
             }
-            if(layoutnum == datelayout.getId()){
-                date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
-                reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
-                reality_stoptime.setText(sb);
-            }
+//            if(layoutnum == datelayout.getId()){
+//                date.setText(sb);
+//            }else if(layoutnum == reality_starttimelayout.getId()){
+//                reality_starttime.setText(sb);
+//            }else if(layoutnum ==reality_stoptimelayout.getId()){
+//                reality_stoptime.setText(sb);
+//            }
 
         }
     }
