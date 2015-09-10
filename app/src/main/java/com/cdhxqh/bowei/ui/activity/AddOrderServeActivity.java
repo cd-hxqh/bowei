@@ -250,7 +250,9 @@ public class AddOrderServeActivity extends BaseActivity {
 //            orderServe.setReality_item(reality_item.getText().toString());
             orderMain.setState(state.getText().toString());
             orderMain.setDate(date.getText().toString());
-            orderMain.setWorkplan(workplan.getText().toString());
+            if(workplan.getText()!=null) {
+                orderMain.setWorkplan(Integer.parseInt(workplan.getText().toString()));
+            }
             orderMain.setReality_starttime(reality_starttime.getText().toString());
             orderMain.setReality_stoptime(reality_stoptime.getText().toString());
 //            orderMain.setEmployee_id(employee_id.getText().toString());

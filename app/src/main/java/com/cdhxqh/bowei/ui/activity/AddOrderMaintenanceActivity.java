@@ -3,10 +3,15 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +29,9 @@ import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -67,16 +75,32 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private EditText notinspection_device;//未巡检设备
     private TextView inspect_result;//检查结果
     private RelativeLayout inspect_resultlayout;
+    private Button yuzhi;//预置
     private Button inputbtn;
-
-    private EditText showingedit;
-    private TextView showingtext;
 
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     StringBuffer sb;
     private int layoutnum;
+    private ProgressDialog mProgressDialog;
 
+    protected static final int S = 0;
+    protected static final int F = 1;
+    private String result;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case S:
+                    number.setText(result);
+                    Toast.makeText(AddOrderMaintenanceActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    break;
+                case F:
+                    Toast.makeText(AddOrderMaintenanceActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +164,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         inspect_result = (TextView) findViewById(R.id.inspect_result);
         inspect_resultlayout = (RelativeLayout) findViewById(R.id.inspect_result_layout);
 
+        yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -166,15 +191,55 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
 //        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(9));
+        workplanlayout.setOnClickListener(new MylayoutListener(10));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 //        employee_idlayout.setOnClickListener(new MylayoutListener(12));
 //        inspect_resultlayout.setOnClickListener(new MylayoutListener(13));
 
+        yuzhi.setOnClickListener(yuzhilistener);
         inputbtn.setOnClickListener(inputlistener);
     }
 
+    private View.OnClickListener yuzhilistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+                    mProgressDialog = ProgressDialog.show(AddOrderMaintenanceActivity.this, null,
+                            getString(R.string.requesting), true, true);
+            new AsyncTask<String, String, String>() {
+                @Override
+                protected String doInBackground(String... strings) {
+                    String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    if(S==null){
+                        return "false";
+                    }else {
+                        return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    if(!s.equals("false")) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if (object.getString("errorMsg").equals("成功")) {
+                                mHandler.sendEmptyMessage(S);
+                                result = object.getString("woNum");
+                            } else {
+                                mHandler.sendEmptyMessage(F);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        mHandler.sendEmptyMessage(F);
+                    }
+                    mProgressDialog.dismiss();
+                }
+            }.execute();
+        }
+    };
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -182,7 +247,9 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             if(isok.equals("OK")) {
                 Intent intent = new Intent();
                 OrderMain orderMain = new OrderMain();
-//                orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+                if (number.getText().toString()!=null){
+                    orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+                }
                 orderMain.setDescribe(describe.getText().toString());
                 orderMain.setPlace(place.getText().toString());
                 orderMain.setProperty(property.getText().toString());
@@ -193,7 +260,9 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 //            orderMain.setReality_item(reality_item.getText().toString());
                 orderMain.setState(state.getText().toString());
                 orderMain.setDate(date.getText().toString());
-                orderMain.setWorkplan(workplan.getText().toString());
+                if(workplan.getText()!=null) {
+                    orderMain.setWorkplan(Integer.parseInt(workplan.getText().toString()));
+                }
                 orderMain.setReality_starttime(reality_starttime.getText().toString());
                 orderMain.setReality_stoptime(reality_stoptime.getText().toString());
                 orderMain.setEmployee_id(employee_id.getText().toString());
@@ -203,6 +272,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 orderMain.setNotinspection_device(notinspection_device.getText().toString());
                 orderMain.setInspect_result(inspect_result.getText().toString());
                 orderMain.setIsNew(true);
+                if(number.getText()!=null){
+                    orderMain.setIsyuzhi(true);
+                }else {
+                    orderMain.setIsyuzhi(false);
+                }
                 intent.putExtra("orderMain", orderMain);
                 AddOrderMaintenanceActivity.this.setResult(1, intent);
                 finish();

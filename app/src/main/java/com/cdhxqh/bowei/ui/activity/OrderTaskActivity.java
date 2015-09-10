@@ -12,7 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdhxqh.bowei.Dao.JobTaskDao;
+import com.cdhxqh.bowei.Dao.OrderMainDao;
+import com.cdhxqh.bowei.Dao.OrderTaskDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.JobTask;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
@@ -24,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by think on 2015/8/20.
@@ -63,10 +69,11 @@ public class OrderTaskActivity extends BaseActivity {
     protected void initView() {
         name = (String) getIntent().getExtras().get("fromname");
         num = (String) getIntent().getExtras().get("ordernum");
+        OrderMain orderMain = new OrderMainDao(this).SearchByNum(num);
 
-        if (name.equals(getResources().getString(R.string.maintenance))) {
+//        if (name.equals(getResources().getString(R.string.maintenance))) {
             addimg.setVisibility(View.GONE);
-        }
+//        }
         titlename.setText(getResources().getString(R.string.task_list));
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -75,8 +82,18 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         orderTaskAdapter = new OrderTaskAdapter(this, this);
         recyclerView.setAdapter(orderTaskAdapter);
-        if(!num.equals("0")){
+        if(!num.equals("0")&&!orderMain.isyuzhi()){
             getData();
+        }else if(orderMain.isyuzhi()){
+            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
+            OrderTask orderTask = new OrderTask();
+            orderTask.setNum(num);
+//            orderTask.setTask(task.getJPNUM());
+//            orderTask.setDigest(task.getDESCRIPTION());
+//            new OrderTaskDao(this).update(orderTask);
+//            ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+//            list.add(0,orderTask);
+//            orderTaskAdapter.update(list,true);
         }
 
 

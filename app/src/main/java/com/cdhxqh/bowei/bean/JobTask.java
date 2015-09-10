@@ -15,7 +15,7 @@ public class JobTask {
     @DatabaseField(columnName = "JOBPLANID")
     private String JOBPLANID;
     @DatabaseField(columnName = "JOBTASKID")
-    private String JOBTASKID;
+    private int JOBTASKID;
     @DatabaseField(columnName = "JPNUM")
     private String JPNUM;
     @DatabaseField(columnName = "JPTASK")
@@ -37,11 +37,11 @@ public class JobTask {
         this.DESCRIPTION = DESCRIPTION;
     }
 
-    public String getJOBTASKID() {
+    public int getJOBTASKID() {
         return JOBTASKID;
     }
 
-    public void setJOBTASKID(String JOBTASKID) {
+    public void setJOBTASKID(int JOBTASKID) {
         this.JOBTASKID = JOBTASKID;
     }
 

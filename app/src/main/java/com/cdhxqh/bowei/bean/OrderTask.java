@@ -1,18 +1,32 @@
 package com.cdhxqh.bowei.bean;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 
 /**
  * Created by think on 2015/8/20.
  */
+@DatabaseTable(tableName = "ORDERTASK")
 public class OrderTask implements Serializable {
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField(columnName = "num")
     private String num;
+    @DatabaseField(columnName = "task")
     private String task;//任务名
+    @DatabaseField(columnName = "digest")
     private String digest;//摘要
+    @DatabaseField(columnName = "wosequence")
     private String wosequence;//序号
+    @DatabaseField(columnName = "zxr")
     private String zxr;//执行人
+    @DatabaseField(columnName = "jcr")
     private String jcr;//检查人
+    @DatabaseField(columnName = "workorderid")
     private String workorderid;
+
 
     public String getNum() {
         return num;

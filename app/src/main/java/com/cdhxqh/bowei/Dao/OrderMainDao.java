@@ -113,4 +113,18 @@ public class OrderMainDao {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 按照工单编号查询工单
+     * @param num
+     * @return
+     */
+    public OrderMain SearchByNum(String num){
+        try {
+            return OrderMainDaoOpe.queryBuilder().where().eq("number",num).queryForFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

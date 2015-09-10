@@ -35,7 +35,7 @@ public class OrderMain implements Serializable {
     @DatabaseField(columnName = "date")
     private String date;//汇报时间
     @DatabaseField(columnName = "workplan")
-    private String workplan;//作业计划
+    private int workplan;//作业计划
     @DatabaseField(columnName = "reality_starttime")
     private String reality_starttime;//实际开始时间
     @DatabaseField(columnName = "reality_stoptime")
@@ -65,6 +65,8 @@ public class OrderMain implements Serializable {
 
     @DatabaseField(columnName = "isNew")
     private boolean isNew;
+    @DatabaseField(columnName = "isyuzhi")
+    private boolean isyuzhi;
 
     public boolean isNew() {
         return isNew;
@@ -170,11 +172,11 @@ public class OrderMain implements Serializable {
         this.date = date;
     }
 
-    public String getWorkplan() {
+    public int getWorkplan() {
         return workplan;
     }
 
-    public void setWorkplan(String workplan) {
+    public void setWorkplan(int workplan) {
         this.workplan = workplan;
     }
 
@@ -272,5 +274,13 @@ public class OrderMain implements Serializable {
 
     public void setFault_rank(String fault_rank) {
         this.fault_rank = fault_rank;
+    }
+
+    public boolean isyuzhi() {
+        return isyuzhi;
+    }
+
+    public void setIsyuzhi(boolean isyuzhi) {
+        this.isyuzhi = isyuzhi;
     }
 }

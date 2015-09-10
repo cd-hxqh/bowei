@@ -3,7 +3,8 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.JobTask;
+import com.cdhxqh.bowei.bean.Asset;
+import com.cdhxqh.bowei.bean.OrderTask;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -12,18 +13,18 @@ import java.util.List;
 /**
  * Created by think on 2015/9/7.
  */
-public class JobTaskDao {
+public class OrderTaskDao {
     private Context context;
-    private Dao<JobTask, Integer> JobTaskDaoOpe;
+    private Dao<OrderTask, Integer> OrderTaskDaoOpe;
     private DatabaseHelper helper;
 
-    public JobTaskDao(Context context)
+    public OrderTaskDao(Context context)
     {
         this.context = context;
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            JobTaskDaoOpe = helper.getDao(JobTask.class);
+            OrderTaskDaoOpe = helper.getDao(OrderTask.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -31,13 +32,13 @@ public class JobTaskDao {
     }
 
     /**
-     * 更新计划任务
-     * @param jobTask
+     * 更新任务信息
+     * @param orderTask
      */
-    public void update(JobTask jobTask) {
+    public void update(OrderTask orderTask) {
         try
         {
-            JobTaskDaoOpe.create(jobTask);
+            OrderTaskDaoOpe.create(orderTask);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -45,12 +46,12 @@ public class JobTaskDao {
     }
 
     /**
-     * 查询所有计划任务
+     * 查询所有任务
      * @return
      */
-    public List<JobTask> queryForAll(){
+    public List<OrderTask> queryForAll(){
         try {
-            return JobTaskDaoOpe.queryBuilder().orderBy("JOBTASKID",true).query();
+            return OrderTaskDaoOpe.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,22 +59,13 @@ public class JobTaskDao {
     }
 
     /**
-     * 删除所有信息
+     * 删除所有任务
      */
     public void deleteall(){
         try {
-            JobTaskDaoOpe.delete(JobTaskDaoOpe.queryForAll());
+            OrderTaskDaoOpe.delete(OrderTaskDaoOpe.queryForAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<JobTask> QueryByJobTaskId(int value){
-        try {
-            return JobTaskDaoOpe.queryBuilder().where().eq("JOBTASKID",value).query();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

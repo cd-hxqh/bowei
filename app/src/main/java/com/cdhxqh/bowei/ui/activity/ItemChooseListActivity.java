@@ -183,7 +183,8 @@ public class ItemChooseListActivity extends BaseActivity{
                 for(int i = 0;i < jobTaskList.size();i++){
                     chooseItem = new ChooseItem();
                     chooseItem.setName(jobTaskList.get(i).getDESCRIPTION());
-                    chooseItem.setValue(jobTaskList.get(i).getJPTASK());
+                    chooseItem.setValue(String.valueOf(jobTaskList.get(i).getJOBTASKID()));
+                    list.add(i,chooseItem);
                 }
                 break;
             case 11:

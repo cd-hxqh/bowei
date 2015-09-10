@@ -13,6 +13,7 @@ import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
 import com.cdhxqh.bowei.bean.Workzy;
@@ -54,6 +55,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Jobmaterial.class);
             TableUtils.createTable(connectionSource, Erson.class);
             TableUtils.createTable(connectionSource, OrderMain.class);
+            TableUtils.createTable(connectionSource, OrderTask.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,6 +81,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Jobmaterial.class, true);
             TableUtils.dropTable(connectionSource, Erson.class, true);
             TableUtils.dropTable(connectionSource, OrderMain.class, true);
+            TableUtils.dropTable(connectionSource, OrderTask.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

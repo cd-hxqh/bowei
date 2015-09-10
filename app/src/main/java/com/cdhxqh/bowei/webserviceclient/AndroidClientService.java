@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class AndroidClientService {
     private static final String TAG = "AndroidClientService";
-    public String NAMESPACE = "http://www.ibm.com/maximo";
+    public String NAMESPACE = "http://webservice.hxqh";
     public String url = "http://182.92.8.94:7001/meaweb/services/CUWO";
     public int timeOut = 60000;
 
@@ -78,6 +78,36 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0", string);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        try {
+            httpTransport.call("", soapEnvelope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        String obj = null;
+        try {
+            obj = soapEnvelope.getResponse().toString();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * 预置工单方法
+     * @param string
+     * @return
+     */
+    public String InsertWOyz(String string){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
+        soapReq.addProperty("in0","");
+        soapReq.addProperty("in1", string);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {

@@ -112,7 +112,7 @@ public class JsonUtils {
                 orderMain.setDate(jsonObject.get("STATUSDATE").toString());
                 }
                 if(jsonObject.has("JPNUM")) {
-                orderMain.setWorkplan(jsonObject.get("JPNUM").toString());
+                orderMain.setWorkplan(jsonObject.getInt("JPNUM"));
                 }
                 if(jsonObject.has("ONBEHALFOF")) {
 //                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
@@ -368,16 +368,17 @@ public class JsonUtils {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
-            JobTask jobPlan;
+            JobTask jobTask;
             new JobTaskDao(ctx).deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
-                jobPlan = new JobTask();
+                jobTask = new JobTask();
                 jsonObject = jsonArray.getJSONObject(i);
-                jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
-                jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
-                jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
-                jobPlan.setJPTASK(jsonObject.getString("JPTASK"));
-                new JobTaskDao(ctx).update(jobPlan);
+                jobTask.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
+                jobTask.setJOBPLANID(jsonObject.getString("JOBPLANID"));
+                jobTask.setJOBTASKID(jsonObject.getInt("JOBTASKID"));
+                jobTask.setJPNUM(jsonObject.getString("JPNUM"));
+                jobTask.setJPTASK(jsonObject.getString("JPTASK"));
+                new JobTaskDao(ctx).update(jobTask);
             }
         } catch (JSONException e) {
             e.printStackTrace();
