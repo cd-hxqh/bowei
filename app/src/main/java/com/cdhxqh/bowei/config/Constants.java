@@ -7,7 +7,7 @@ public class Constants {
 
     public static String loginURL = "http://182.92.8.94:7001/maximo/mobile/system/login";//登录接口地址
 
-    public static String searchURL = "http://182.92.8.94:7001/maximo/mobile/common/api";//通用查询接口地址
+    public static String SEARCHURL = "http://182.92.8.94:7001/maximo/mobile/common/api";//通用查询接口地址
     /**工单测试接口**/
     public static String ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
     /**工单接口**/
@@ -38,6 +38,17 @@ public class Constants {
         return "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
                 "condition:{origperson:'"+name+"',PROCESSNAME:'APPWFWO',ASSIGNSTATUS:'ACTIVE'}}";
     }
+
+    //知识库列表信息
+    public static String KNOW_LEDGE_LIST = "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read'}";
+
+
+
+
+
+
+
+
 
     //位置信息
     public static String LOCATIONS = "{appid:'LOCATIONS',objectname:'LOCATIONS',option:'read',condition:{TYPE:'OPERATING'}}";
@@ -83,6 +94,8 @@ public class Constants {
     public static final String CHANGEIMEI = "USER-S-104"; //登录成功,检测到用户更换手机登录
 
     public static final String USERNAMEERROR = "USER-E-100";//用户名密码错误
+
+    public static final String GETDATASUCCESS = "GLOBAL-S-0";//获取数据成功
     /**用户登录表识--结束**/
 
 }

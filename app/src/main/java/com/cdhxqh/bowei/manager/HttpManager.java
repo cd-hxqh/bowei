@@ -56,12 +56,14 @@ public class HttpManager {
         });
     }
 
+
+    /**获取信息方法**/
     public static void getData(final Context cxt,String data,final HttpRequestHandler<String> handler){
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("data",data);
 //        client.addHeader("data",data);
-        client.get(Constants.searchURL,params, new TextHttpResponseHandler() {
+        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
@@ -75,4 +77,32 @@ public class HttpManager {
             }
         });
     }
+
+
+
+    /**解析返回的结果**/
+    public static void getDataInfo(final Context cxt,String data,final HttpRequestHandler<String> handler){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("data",data);
+        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
+                SafeHandler.onFailure(handler, "查询失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
+
+                String result=JsonUtils.parsing(cxt,responseString);
+
+                Log.i(TAG,"result="+result);
+                SafeHandler.onSuccess(handler,result);
+            }
+        });
+    }
+
+
 }

@@ -10,4 +10,6 @@
     <dimen name="rdo3">200dp</dimen>
     <dimen name="rdo4">300dp</dimen>
     <dimen name="rdo5">400dp</dimen>
+    <dimen name="dimens_16sp">16sp</dimen>
+    <dimen name="dimens_15dp">15dp</dimen>
 </resources>

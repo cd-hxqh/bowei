@@ -24,6 +24,7 @@ import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
 import com.cdhxqh.bowei.ui.fragment.DownloadFragment;
 import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
+import com.cdhxqh.bowei.ui.fragment.KnowKedge_Fragment;
 import com.cdhxqh.bowei.ui.fragment.OrderFragment;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
@@ -39,18 +40,24 @@ import java.util.Date;
 public class MainHomeActivity extends BaseActivity {
     public static final String TAG = "MainHomeActivity";
 
-
+    /**搜索按钮**/
+    private ImageView searchImageView;
     private ListView mLvLeftMenu;
     private DrawerLayout mDrawerLayout;
     private ImageView maintitleimg;
     private TextView titlename;
     private FragmentTransaction fragmentTransaction;
     private OrderFragment orderFragment = new OrderFragment(); //工单
+    /**库存**/
     private InventoryFragment inventoryFragment=new InventoryFragment();
+    /**知识库**/
+    private KnowKedge_Fragment knowKedge_Fragment=new KnowKedge_Fragment();
     private DownloadFragment downloadFragment = new DownloadFragment();
     private ProgressDialog mProgressDialog;
     TextView nameview;
     TextView dateview;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class MainHomeActivity extends BaseActivity {
         mLvLeftMenu = (ListView) findViewById(R.id.left_menu);
         maintitleimg = (ImageView) findViewById(R.id.main_title);
         titlename = (TextView) findViewById(R.id.title_activity_name);
+        searchImageView=(ImageView)findViewById(R.id.title_search_btn);
     }
 
     @Override
@@ -106,6 +114,7 @@ public class MainHomeActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
+            searchImageView.setVisibility(View.GONE);
             switch (position){
                 case 1://工单管理
                     titlename.setText(getResources().getString(R.string.order));
@@ -129,6 +138,11 @@ public class MainHomeActivity extends BaseActivity {
                     titlename.setText(getResources().getString(R.string.inventory));
                     break;
                 case 4://知识库
+                    searchImageView.setVisibility(View.VISIBLE);
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,knowKedge_Fragment);
+                    fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.knowledge));
                     break;
                 case 5://下载
