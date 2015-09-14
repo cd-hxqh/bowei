@@ -85,7 +85,7 @@ public class OrderTaskActivity extends BaseActivity {
         if(!num.equals("0")&&!orderMain.isyuzhi()){
             getData();
         }else if(orderMain.isyuzhi()){
-            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
+            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(Integer.parseInt(orderMain.getWorkplan()));
             OrderTask orderTask = new OrderTask();
             orderTask.setNum(num);
 //            orderTask.setTask(task.getJPNUM());

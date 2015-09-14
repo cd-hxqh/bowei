@@ -13,7 +13,7 @@ public class OrderMain implements Serializable {
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(columnName = "number")
-    private int number;
+    private String number;
     @DatabaseField(columnName = "describe")
     private String describe;
     @DatabaseField(columnName = "place")
@@ -35,7 +35,7 @@ public class OrderMain implements Serializable {
     @DatabaseField(columnName = "date")
     private String date;//汇报时间
     @DatabaseField(columnName = "workplan")
-    private int workplan;//作业计划
+    private String workplan;//作业计划
     @DatabaseField(columnName = "reality_starttime")
     private String reality_starttime;//实际开始时间
     @DatabaseField(columnName = "reality_stoptime")
@@ -92,11 +92,11 @@ public class OrderMain implements Serializable {
         this.describe = describe;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -172,11 +172,11 @@ public class OrderMain implements Serializable {
         this.date = date;
     }
 
-    public int getWorkplan() {
+    public String getWorkplan() {
         return workplan;
     }
 
-    public void setWorkplan(int workplan) {
+    public void setWorkplan(String workplan) {
         this.workplan = workplan;
     }
 

@@ -248,7 +248,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 Intent intent = new Intent();
                 OrderMain orderMain = new OrderMain();
                 if (number.getText().toString()!=null){
-                    orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+                    orderMain.setNumber(number.getText().toString());
                 }
                 orderMain.setDescribe(describe.getText().toString());
                 orderMain.setPlace(place.getText().toString());
@@ -261,7 +261,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 orderMain.setState(state.getText().toString());
                 orderMain.setDate(date.getText().toString());
                 if(workplan.getText()!=null) {
-                    orderMain.setWorkplan(Integer.parseInt(workplan.getText().toString()));
+                    orderMain.setWorkplan(workplan.getText().toString());
                 }
                 orderMain.setReality_starttime(reality_starttime.getText().toString());
                 orderMain.setReality_stoptime(reality_stoptime.getText().toString());

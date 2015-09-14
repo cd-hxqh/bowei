@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
@@ -237,33 +238,38 @@ public class AddOrderServeActivity extends BaseActivity {
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
-            OrderMain orderMain = new OrderMain();
+            String isok = isOK();
+            if(isok.equals("OK")) {
+                Intent intent = new Intent();
+                OrderMain orderMain = new OrderMain();
 //            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
-            orderMain.setDescribe(describe.getText().toString());
-            orderMain.setPlace(place.getText().toString());
-            orderMain.setProperty(property.getText().toString());
-            orderMain.setWordtype(worktype.getText().toString());
-            orderMain.setReality_worktype(reality_worktype.getText().toString());
-            orderMain.setApplyunity(applyunity.getText().toString());
-            orderMain.setMajor(major.getText().toString());
+                orderMain.setDescribe(describe.getText().toString());
+                orderMain.setPlace(place.getText().toString());
+                orderMain.setProperty(property.getText().toString());
+                orderMain.setWordtype(worktype.getText().toString());
+                orderMain.setReality_worktype(reality_worktype.getText().toString());
+                orderMain.setApplyunity(applyunity.getText().toString());
+                orderMain.setMajor(major.getText().toString());
 //            orderServe.setReality_item(reality_item.getText().toString());
-            orderMain.setState(state.getText().toString());
-            orderMain.setDate(date.getText().toString());
-            if(workplan.getText()!=null) {
-                orderMain.setWorkplan(Integer.parseInt(workplan.getText().toString()));
-            }
-            orderMain.setReality_starttime(reality_starttime.getText().toString());
-            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+                orderMain.setState(state.getText().toString());
+                orderMain.setDate(date.getText().toString());
+                if (workplan.getText() != null) {
+                    orderMain.setWorkplan(workplan.getText().toString());
+                }
+                orderMain.setReality_starttime(reality_starttime.getText().toString());
+                orderMain.setReality_stoptime(reality_stoptime.getText().toString());
 //            orderMain.setEmployee_id(employee_id.getText().toString());
 //            orderMain.setQuestiontogether(questiontogether.getText().toString());
 //            orderMain.setFaultclass(faultclass.getText().toString());
 //            orderMain.setError_coding(error_coding.getText().toString());
 //            orderMain.setFault_rank(fault_rank.getText().toString());
 //            orderMain.setReporttime(reporttime.getText().toString());
-            intent.putExtra("orderMain", orderMain);
-            AddOrderServeActivity.this.setResult(1, intent);
-            finish();
+                intent.putExtra("orderMain", orderMain);
+                AddOrderServeActivity.this.setResult(1, intent);
+                finish();
+            }else if(isok.equals("请完善信息")){
+                Toast.makeText(AddOrderServeActivity.this, isok, Toast.LENGTH_SHORT).show();
+            }
         }
     };
     private class datelistener implements DatePickerDialog.OnDateSetListener {
@@ -296,6 +302,20 @@ public class AddOrderServeActivity extends BaseActivity {
                 reality_stoptime.setText(sb);
             }
 
+        }
+    }
+    /**
+     * 提交时判断填写是否合格
+     * @return
+     */
+    private String isOK(){
+        if (describe.getText().equals("")||place.equals("")
+                ||property.getText().equals("")||worktype.getText().equals("")
+                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+                ||major.getText().equals("")||date.getText().equals("")){
+            return "请完善信息";
+        }else{
+            return "OK";
         }
     }
 }

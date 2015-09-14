@@ -88,7 +88,7 @@ public class ServeActivity extends BaseActivity {
         ArrayList<OrderMain> list = new ArrayList<OrderMain>();
         for (int i = 0; i < 3; i++) {
             OrderMain orderMain = new OrderMain();
-            orderMain.setNumber(103882549);
+            orderMain.setNumber("103882549");
             orderMain.setDescribe("TT2分拣机"+ (i + 1) + "日检");
             list.add(i,orderMain);
         }

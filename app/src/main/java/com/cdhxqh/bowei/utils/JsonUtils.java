@@ -25,7 +25,6 @@ import com.cdhxqh.bowei.bean.Failurecode;
 import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
-import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
@@ -82,52 +81,52 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.has("WONUM")) {
+                if(jsonObject.has("WONUM")) {
                     orderMain.setNumber(Integer.parseInt(jsonObject.get("WONUM").toString()));
                 }
-                if (jsonObject.has("DESCRIPTION")) {
+                if(jsonObject.has("DESCRIPTION")) {
                     orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
                 }
-                if (jsonObject.has("LOCATION")) {
-                    orderMain.setPlace(jsonObject.get("LOCATION").toString());
+                if(jsonObject.has("LOCATION")) {
+                orderMain.setPlace(jsonObject.get("LOCATION").toString());
                 }
-                if (jsonObject.has("ASSETNUM")) {
-                    orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
+                if(jsonObject.has("ASSETNUM")) {
+                orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
                 }
-                if (jsonObject.has("WORKTYPE")) {
-                    orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
+                if(jsonObject.has("WORKTYPE")) {
+                orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
                 }
-                if (jsonObject.has("ACWORKTYPE")) {
-                    orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
+                if(jsonObject.has("ACWORKTYPE")) {
+                orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
                 }
-                if (jsonObject.has("WORKDW")) {
-                    orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
+                if(jsonObject.has("WORKDW")) {
+                orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
                 }
-                if (jsonObject.has("WORKZY")) {
-                    orderMain.setMajor(jsonObject.get("WORKZY").toString());
+                if(jsonObject.has("WORKZY")) {
+                orderMain.setMajor(jsonObject.get("WORKZY").toString());
                 }
-                if (jsonObject.has("WOSTATUS")) {
-                    orderMain.setState(jsonObject.get("WOSTATUS").toString());
+                if(jsonObject.has("WOSTATUS")) {
+                orderMain.setState(jsonObject.get("WOSTATUS").toString());
                 }
-                if (jsonObject.has("STATUSDATE")) {
-                    orderMain.setDate(jsonObject.get("STATUSDATE").toString());
+                if(jsonObject.has("STATUSDATE")) {
+                orderMain.setDate(jsonObject.get("STATUSDATE").toString());
                 }
-                if (jsonObject.has("JPNUM")) {
-                    orderMain.setWorkplan(jsonObject.getInt("JPNUM"));
+                if(jsonObject.has("JPNUM")) {
+                orderMain.setWorkplan(jsonObject.getInt("JPNUM"));
                 }
-                if (jsonObject.has("ONBEHALFOF")) {
+                if(jsonObject.has("ONBEHALFOF")) {
 //                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
 //                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
-                    orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
                 }
-                if (jsonObject.has("BZ")) {
-                    orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
+                if(jsonObject.has("BZ")) {
+                orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
                 }
-                if (jsonObject.has("ESTDUR")) {
-                    orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
+                if(jsonObject.has("ESTDUR")) {
+                orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
                 }
-                if (jsonObject.has("PMNUM")) {
-                    orderMain.setPm(jsonObject.get("PMNUM").toString());
+                if(jsonObject.has("PMNUM")) {
+                orderMain.setPm(jsonObject.get("PMNUM").toString());
                 }
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));

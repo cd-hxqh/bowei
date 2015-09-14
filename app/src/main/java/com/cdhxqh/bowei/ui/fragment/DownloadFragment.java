@@ -129,6 +129,7 @@ public class DownloadFragment extends Fragment {
                     downloading_item = 12;
                     break;
                 case R.id.download_all://全部下载
+                    DownloadAll();
                     downloading_item = 13;
                     break;
             }
@@ -136,9 +137,9 @@ public class DownloadFragment extends Fragment {
     };
 
     private void downloaddata(final String url, final Button button) {
-        mProgressDialog = ProgressDialog.show(getActivity(), null,
-                getString(R.string.requesting), true, true);
-        mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog = ProgressDialog.show(getActivity(), null,
+                    getString(R.string.requesting), true, true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
         HttpManager.getData(getActivity(), url, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
@@ -183,7 +184,9 @@ public class DownloadFragment extends Fragment {
                         else if(url == Constants.PERSON){
                             JsonUtils.parsingErson(getActivity(),result);
                         }
-                        mProgressDialog.dismiss();
+                        if(mProgressDialog.isShowing()) {
+                            mProgressDialog.dismiss();
+                        }
 
                     }
                 } catch (JSONException e) {
@@ -193,12 +196,16 @@ public class DownloadFragment extends Fragment {
 
             @Override
             public void onSuccess(String data, int totalPages, int currentPage) {
-                mProgressDialog.dismiss();
+                if(mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
             }
 
             @Override
             public void onFailure(String error) {
-                mProgressDialog.dismiss();
+                if(mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
                 button.setText(getResources().getString(R.string.download_fail));
 //                if(url==Constants.LOCATIONS){
 //                    locations.setText(getResources().getString(R.string.download_fail));
@@ -207,4 +214,18 @@ public class DownloadFragment extends Fragment {
         });
     }
 
+    private void DownloadAll(){
+        locations.performClick();
+        asset.performClick();
+        workdw.performClick();
+        workzy.performClick();
+        worktype.performClick();
+        acworktype.performClick();
+        failurecode.performClick();
+        failurelist.performClick();
+        jobplan.performClick();
+        jobtask.performClick();
+        jobmaterial.performClick();
+        erson.performClick();
+    }
 }

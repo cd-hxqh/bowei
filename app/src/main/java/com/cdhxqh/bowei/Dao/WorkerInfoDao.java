@@ -3,8 +3,8 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.Asset;
-import com.cdhxqh.bowei.bean.OrderTask;
+import com.cdhxqh.bowei.bean.AcWorkType;
+import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * Created by think on 2015/9/7.
  */
-public class OrderTaskDao {
+public class WorkerInfoDao {
     private Context context;
-    private Dao<OrderTask, Integer> OrderTaskDaoOpe;
+    private Dao<WorkerInfo, Integer> WorkerInfoDaoOpe;
     private DatabaseHelper helper;
 
-    public OrderTaskDao(Context context)
+    public WorkerInfoDao(Context context)
     {
         this.context = context;
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            OrderTaskDaoOpe = helper.getDao(OrderTask.class);
+            WorkerInfoDaoOpe = helper.getDao(AcWorkType.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -32,13 +32,13 @@ public class OrderTaskDao {
     }
 
     /**
-     * 更新任务信息
-     * @param orderTask
+     * 更新员工信息
+     * @param workerInfo
      */
-    public void update(OrderTask orderTask) {
+    public void update(WorkerInfo workerInfo) {
         try
         {
-            OrderTaskDaoOpe.create(orderTask);
+            WorkerInfoDaoOpe.create(workerInfo);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -46,12 +46,12 @@ public class OrderTaskDao {
     }
 
     /**
-     * 查询所有任务
+     * 查询所有员工信息
      * @return
      */
-    public List<OrderTask> queryForAll(){
+    public List<WorkerInfo> queryForAll(){
         try {
-            return OrderTaskDaoOpe.queryForAll();
+            return WorkerInfoDaoOpe.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,22 +59,13 @@ public class OrderTaskDao {
     }
 
     /**
-     * 删除所有任务
+     * 删除所有员工信息
      */
     public void deleteall(){
         try {
-            OrderTaskDaoOpe.delete(OrderTaskDaoOpe.queryForAll());
+            WorkerInfoDaoOpe.delete(WorkerInfoDaoOpe.queryForAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<OrderTask> queryByNum(String num){
-        try {
-            return OrderTaskDaoOpe.queryBuilder().where().eq("num",num).query();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
