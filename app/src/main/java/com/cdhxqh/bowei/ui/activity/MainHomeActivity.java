@@ -139,6 +139,7 @@ public class MainHomeActivity extends BaseActivity {
                     break;
                 case 4://知识库
                     searchImageView.setVisibility(View.VISIBLE);
+                    searchImageView.setOnClickListener(searchOnClickListener);
                     fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     fragmentTransaction.replace(R.id.container,knowKedge_Fragment);
@@ -199,4 +200,18 @@ public class MainHomeActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+    /****/
+    private View.OnClickListener searchOnClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent=new Intent();
+            intent.setClass(MainHomeActivity.this,SearchActivity.class);
+            startActivityForResult(intent,0);
+        }
+    };
+
+
+
 }

@@ -126,8 +126,7 @@
     <string name="downloaded">已下载</string>
     <string name="download_fail">下载失败</string>
 
-
-    <!--知识库-->
+    <!-- 知识库 -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="know_number_text">编号:</string>
     <string name="know_desc">描述:</string>
@@ -137,5 +136,6 @@
     <string name="have_not_data_text">暂无信息</string>
     <string name="loading_text">努力加载中...</string>
     <string name="document_name_text">文件名称:</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>
