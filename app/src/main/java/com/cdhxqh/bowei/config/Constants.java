@@ -56,7 +56,17 @@ public class Constants {
         return "{appid:'DOCLINKS',objectname:'DOCLINKS',option:'read',condition:{OWNERID:'"+number+"'}}";
     }
 
+    //知识库搜索
+    public static String search_Knowledge(String knowdesc){
+        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read',condition:{knowdesc:'"+knowdesc+"'}}";
+    }
 
+
+    /**公司库存列表**/
+    public static String get_commany_inv(int curpage,int showcount){
+        return "{appid:'INV',objectname:'INVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
+
+    }
 
 
 

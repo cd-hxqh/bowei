@@ -38,12 +38,21 @@ public class In_Company_Activity extends BaseActivity {
         backImageView.setOnClickListener(backImageViewOnClickListener);
         titleTextView.setText(getResources().getString(R.string.company_title_text));
         seachImageView.setImageResource(R.drawable.ic_search);
+        seachImageView.setOnClickListener(seachOnClickListener);
     }
 
     private View.OnClickListener backImageViewOnClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+
+
+    private View.OnClickListener seachOnClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
         }
     };
 

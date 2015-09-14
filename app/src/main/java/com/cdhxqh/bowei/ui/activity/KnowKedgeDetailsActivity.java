@@ -74,7 +74,6 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
      */
     private void getInitData() {
         knowledge = (Knowledge) getIntent().getSerializableExtra("Knowledge");
-        Log.i(TAG, "knowledge=" + knowledge);
     }
 
     @Override
@@ -129,10 +128,8 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
             @Override
             public void onSuccess(String data) {
                 colseProgressDialog();
-                Log.i(TAG, "data=" + data);
                 if (!data.equals("")) {
                     Doclinks doclinks= JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this,data);
-                    Log.i(TAG,"doclinks="+doclinks);
                     nameText.setText(doclinks.getDescription());
                     pathText.setText(doclinks.getUrlname());
 ;                }
@@ -140,13 +137,11 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
 
             @Override
             public void onSuccess(String data, int totalPages, int currentPage) {
-                Log.i(TAG, "data=" + data);
                 colseProgressDialog();
             }
 
             @Override
             public void onFailure(String error) {
-                Log.i(TAG, "error=" + error);
                 colseProgressDialog();
             }
         });
