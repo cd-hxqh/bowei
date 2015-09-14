@@ -8,6 +8,14 @@ public class Constants {
     public static String loginURL = "http://182.92.8.94:7001/maximo/mobile/system/login";//登录接口地址
 
     public static String SEARCHURL = "http://182.92.8.94:7001/maximo/mobile/common/api";//通用查询接口地址
+
+
+
+    public static String SERVER_URL = "http://182.92.8.94:7001";//服务器地址
+
+
+
+
     /**工单测试接口**/
     public static String ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
     /**工单接口**/
@@ -42,8 +50,11 @@ public class Constants {
     //知识库列表信息
     public static String KNOW_LEDGE_LIST = "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read'}";
 
+    //知识库文件
 
-
+    public static String GETKNOW_PATH(String number){
+        return "{appid:'DOCLINKS',objectname:'DOCLINKS',option:'read',condition:{OWNERID:'"+number+"'}}";
+    }
 
 
 

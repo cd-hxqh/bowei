@@ -3,6 +3,7 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.Doclinks;
 import com.cdhxqh.bowei.bean.Knowledge;
+import com.cdhxqh.bowei.config.Constants;
+import com.cdhxqh.bowei.manager.HttpManager;
+import com.cdhxqh.bowei.manager.HttpRequestHandler;
+import com.cdhxqh.bowei.utils.JsonUtils;
 
 /**
  * 知识库详情*
@@ -78,6 +84,7 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
 
         numberText = (TextView) findViewById(R.id.knowledge_number_id);
         descText = (TextView) findViewById(R.id.knowledge_desc_id);
+
         nameText=(TextView)findViewById(R.id.knowledge_document_name_id);
         pathText = (TextView) findViewById(R.id.knowledge_path_id);
     }
@@ -88,6 +95,8 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
         titleText.setText(getString(R.string.knowkedge_details_text));
         numberText.setText(knowledge.getKnowledgeid()+"");
         descText.setText(knowledge.getKnowdesc());
+
+
     }
 
     private View.OnClickListener backOnClickListener = new View.OnClickListener() {
@@ -102,10 +111,44 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
         mProgressDialog = ProgressDialog.show(KnowKedgeDetailsActivity.this, null,getString(R.string.loading_text), true, true);
     }
 
+    /**
+     * 关闭进度条
+     */
+    private void colseProgressDialog(){
+        if(mProgressDialog!=null){
+            mProgressDialog.dismiss();
+            mProgressDialog=null;
+        }
+    }
+
 
     /**获取文件路径数据**/
     private void getHttpData() {
 
+        HttpManager.getDataInfo(KnowKedgeDetailsActivity.this, Constants.GETKNOW_PATH(knowledge.getKnowledgeid() + ""), new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data) {
+                colseProgressDialog();
+                Log.i(TAG, "data=" + data);
+                if (!data.equals("")) {
+                    Doclinks doclinks= JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this,data);
+                    Log.i(TAG,"doclinks="+doclinks);
+                    nameText.setText(doclinks.getDescription());
+                    pathText.setText(doclinks.getUrlname());
+;                }
+            }
 
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+                Log.i(TAG, "data=" + data);
+                colseProgressDialog();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.i(TAG, "error=" + error);
+                colseProgressDialog();
+            }
+        });
     }
 }

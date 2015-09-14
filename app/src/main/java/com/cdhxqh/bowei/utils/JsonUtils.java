@@ -19,6 +19,7 @@ import com.cdhxqh.bowei.Dao.WorkzyDao;
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.AcWorkType;
 import com.cdhxqh.bowei.bean.Asset;
+import com.cdhxqh.bowei.bean.Doclinks;
 import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.FailureList1;
 import com.cdhxqh.bowei.bean.Failurecode;
@@ -457,6 +458,34 @@ public class JsonUtils {
 
     }
 
+
+
+    /**
+     * 解析知识库附件*
+     */
+    public static Doclinks parsingDoclinks(Context ctx, String data) {
+        ArrayList<Doclinks> list=null;
+        Doclinks doclinks=null;
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            JSONObject jsonObject;
+            list=new ArrayList<Doclinks>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                 doclinks = new Doclinks();
+                jsonObject = jsonArray.getJSONObject(i);
+                doclinks.setDocument(Integer.valueOf(jsonObject.getString("DOCUMENT"))); //编号
+                doclinks.setDescription(jsonObject.getString("DESCRIPTION")); //名称
+                doclinks.setUrlname(Constants.SERVER_URL + replace(jsonObject.getString("URLNAME"))); //路径
+            }
+
+            return doclinks;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     /**解析返回的数据结果**/
 
     public static String  parsing(Context ctx,String data){
@@ -476,5 +505,17 @@ public class JsonUtils {
             return result;
         }
     }
+
+
+
+    /**替换数据格式**/
+    private static String replace(String data){
+        String newData=data.replaceAll("\\\\", "/");
+        Log.i(TAG,"newData="+newData);
+
+
+        return newData;
+    }
+
 
 }
