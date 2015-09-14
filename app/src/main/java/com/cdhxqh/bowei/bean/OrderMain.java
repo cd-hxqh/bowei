@@ -57,6 +57,16 @@ public class OrderMain implements Serializable {
     private String faultclass;//故障类
     @DatabaseField(columnName = "error_coding")
     private String error_coding;//问题代码
+    @DatabaseField(columnName = "error_coding_list")
+    private String error_coding_list;//问题代码关系
+    @DatabaseField(columnName = "cause")
+    private String cause;//原因
+    @DatabaseField(columnName = "cause_list")
+    private String cause_list;//原因关系
+    @DatabaseField(columnName = "remedy")
+    private String remedy;//措施
+    @DatabaseField(columnName = "remedy_list")
+    private String remedy_list;//措施关系
     @DatabaseField(columnName = "fault_rank")
     private String fault_rank;//故障等级
     @DatabaseField(columnName = "reporttime")
@@ -258,6 +268,46 @@ public class OrderMain implements Serializable {
 
     public void setError_coding(String error_coding) {
         this.error_coding = error_coding;
+    }
+
+    public String getError_coding_list() {
+        return error_coding_list;
+    }
+
+    public void setError_coding_list(String error_coding_list) {
+        this.error_coding_list = error_coding_list;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public void setCause(String cause) {
+        this.cause = cause;
+    }
+
+    public String getCause_list() {
+        return cause_list;
+    }
+
+    public void setCause_list(String cause_list) {
+        this.cause_list = cause_list;
+    }
+
+    public String getRemedy() {
+        return remedy;
+    }
+
+    public void setRemedy(String remedy) {
+        this.remedy = remedy;
+    }
+
+    public String getRemedy_list() {
+        return remedy_list;
+    }
+
+    public void setRemedy_list(String remedy_list) {
+        this.remedy_list = remedy_list;
     }
 
     public String getReporttime() {

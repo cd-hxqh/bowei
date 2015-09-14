@@ -31,6 +31,7 @@
     <string name="out">退出</string>
     <string name="maintenance_name">维保工单</string>
     <string name="maintenance_add_new">新建维保工单</string>
+    <string name="order_qualified">合格</string>
     <string name="serve_add_new">新建维修工单</string>
     <string name="service_add_new">新建服务工单</string>
     <string name="choose_item">选择班组</string>
@@ -95,6 +96,8 @@
     <string name="order_detail_faultclass">故障类</string>
     <string name="order_detail_error_coding">问题代码</string>
     <string name="order_detail_fault_rank">故障等级</string>
+    <string name="order_detail_cause">原因</string>
+    <string name="order_detail_remedy">措施</string>
     <string name="order_detail_reporttime">汇报时间</string>
     <string name="order_detail_starttime">开始时间</string>
     <string name="order_detail_input">提交</string>
@@ -115,6 +118,7 @@
     <string name="WORKZY">专业</string>
     <string name="WORKTYPE">工作类型</string>
     <string name="ACWORKTYPE">实际工作类型</string>
+    <string name="ALNDOMAIN">故障等级</string>
     <string name="FAILURECODE">故障代码</string>
     <string name="FAILURELIST">故障代码关系</string>
     <string name="JOBPLAN">所有工作计划</string>

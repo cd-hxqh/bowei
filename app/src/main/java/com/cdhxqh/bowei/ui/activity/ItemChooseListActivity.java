@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.AcWorkTypeDao;
+import com.cdhxqh.bowei.Dao.AlndomainDao;
 import com.cdhxqh.bowei.Dao.AssetDao;
 import com.cdhxqh.bowei.Dao.ErsonDao;
 import com.cdhxqh.bowei.Dao.FailureListDao;
@@ -25,6 +26,7 @@ import com.cdhxqh.bowei.Dao.WorkdwDao;
 import com.cdhxqh.bowei.Dao.WorkzyDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.AcWorkType;
+import com.cdhxqh.bowei.bean.Alndomain;
 import com.cdhxqh.bowei.bean.Asset;
 import com.cdhxqh.bowei.bean.ChooseItem;
 import com.cdhxqh.bowei.bean.Erson;
@@ -56,7 +58,8 @@ public class ItemChooseListActivity extends BaseActivity{
     ArrayList<ChooseItem> list;
     ChooseItem chooseItem;
     Intent intent;
-    private int requestCode;
+    public int requestCode;
+    private String parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class ItemChooseListActivity extends BaseActivity{
             }
         });
         requestCode = (int) getIntent().getExtras().get("requestCode");
+        parent = getIntent().getExtras().getString("parent");
         titlename.setText(getResources().getString(R.string.item_list));
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -187,12 +191,57 @@ public class ItemChooseListActivity extends BaseActivity{
                     list.add(i,chooseItem);
                 }
                 break;
-            case 11:
-
+            case 11://故障类
+                List<FailureList1> failureList1List = new FailureListDao(this).queryForClass();
+                for (int i = 0;i < failureList1List.size();i++){
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(new FailurecodeDao(this).queryByCode(failureList1List.get(i).getFAILURECODE()).getDESCRIPTION());
+                    chooseItem.setValue(failureList1List.get(i).getFAILURECODE());
+                    chooseItem.setParent(failureList1List.get(i).getFAILURELIST());
+                    list.add(i,chooseItem);
+                }
                 break;
-            case 12:
+            case 12://现象
+                if(parent!=null){
+                    List<FailureList1> failureList1List1 = new FailureListDao(this).queryForProblem(parent);
+                    for (int i = 0;i < failureList1List1.size();i++){
+                        chooseItem = new ChooseItem();
+                        chooseItem.setName(failureList1List1.get(i).getFAILURELIST());
+                        chooseItem.setValue(failureList1List1.get(i).getFAILURECODE());
+                        list.add(i, chooseItem);
+                    }
+                }
                 break;
-            case 13:
+            case 13://原因
+                if(parent!=null){
+                    List<FailureList1> failureList1List2 = new FailureListDao(this).queryForCauseByPatent(parent);
+                    for (int i = 0;i < failureList1List2.size();i++){
+                        chooseItem = new ChooseItem();
+                        chooseItem.setName(failureList1List2.get(i).getFAILURELIST());
+                        chooseItem.setValue(failureList1List2.get(i).getFAILURECODE());
+                        list.add(i, chooseItem);
+                    }
+                }
+                break;
+            case 14://措施
+                if(parent!=null) {
+                    List<FailureList1> failureList1List3 = new FailureListDao(this).queryForRemedyByPatent(parent);
+                    for (int i = 0; i < failureList1List3.size(); i++) {
+                        chooseItem = new ChooseItem();
+                        chooseItem.setName(failureList1List3.get(i).getFAILURELIST());
+                        chooseItem.setValue(failureList1List3.get(i).getFAILURECODE());
+                        list.add(i, chooseItem);
+                    }
+                }
+                break;
+            case 15:
+                List<Alndomain> alndomainList = new AlndomainDao(this).queryForAll();
+                for (int i = 0; i < alndomainList.size(); i++){
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(alndomainList.get(i).getDESCRIPTION());
+                    chooseItem.setValue(alndomainList.get(i).getVALUE());
+                    list.add(i, chooseItem);
+                }
                 break;
         }
         itemListAdapter.update(list, true);
@@ -201,6 +250,14 @@ public class ItemChooseListActivity extends BaseActivity{
     public void responseData(String data){
         intent = new Intent();
         intent.putExtra("result",data);
+        Log.i(TAG,data);
+        ItemChooseListActivity.this.setResult(requestCode, intent);
+        finish();
+    }
+    public void responseData(String data,String num){
+        intent = new Intent();
+        intent.putExtra("result",data);
+        intent.putExtra("number",num);
         Log.i(TAG,data);
         ItemChooseListActivity.this.setResult(requestCode, intent);
         finish();

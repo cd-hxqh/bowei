@@ -73,8 +73,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private EditText ratinghours;//额定工时
     private EditText pm;//PM
     private EditText notinspection_device;//未巡检设备
-    private TextView inspect_result;//检查结果
-    private RelativeLayout inspect_resultlayout;
+    private EditText inspect_result;//检查结果
     private Button yuzhi;//预置
     private Button inputbtn;
 
@@ -161,8 +160,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         pm = (EditText) findViewById(R.id.pm);
         notinspection_device = (EditText) findViewById(R.id.notinspection_device);
 
-        inspect_result = (TextView) findViewById(R.id.inspect_result);
-        inspect_resultlayout = (RelativeLayout) findViewById(R.id.inspect_result_layout);
+        inspect_result = (EditText) findViewById(R.id.inspect_result);
 
         yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
@@ -181,6 +179,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 //        scrollView.scrollTo();
         number.setText("");
         applyunity.setText("JY");
+        inspect_result.setText(getResources().getString(R.string.order_qualified));
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
@@ -191,7 +190,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
 //        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(10));
+        workplanlayout.setOnClickListener(new MylayoutListener(9));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 //        employee_idlayout.setOnClickListener(new MylayoutListener(12));

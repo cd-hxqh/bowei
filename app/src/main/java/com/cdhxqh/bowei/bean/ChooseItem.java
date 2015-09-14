@@ -6,6 +6,7 @@ package com.cdhxqh.bowei.bean;
 public class ChooseItem {
     private String name;
     private String value;
+    private String parent;
 
     public String getName() {
         return name;
@@ -21,5 +22,13 @@ public class ChooseItem {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 }

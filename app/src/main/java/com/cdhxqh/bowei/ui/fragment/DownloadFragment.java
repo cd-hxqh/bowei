@@ -3,12 +3,15 @@ package com.cdhxqh.bowei.ui.fragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.cdhxqh.bowei.Dao.AlndomainDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.Alndomain;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
@@ -17,12 +20,14 @@ import com.cdhxqh.bowei.utils.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by think on 2015/9/6.
  */
 public class DownloadFragment extends Fragment {
     private Button locations, asset, workdw, workzy, worktype, acworktype, failurecode, failurelist,
-            jobplan, jobtask, jobmaterial, erson, download_all;
+            jobplan, jobtask, jobmaterial, erson, download_all, alndomain;
     private ProgressDialog mProgressDialog;
     private int downloading_item;
 
@@ -47,6 +52,7 @@ public class DownloadFragment extends Fragment {
         jobmaterial = (Button) view.findViewById(R.id.jobmaterial);
         erson = (Button) view.findViewById(R.id.erson);
         download_all = (Button) view.findViewById(R.id.download_all);
+        alndomain = (Button) view.findViewById(R.id.alndomain);
 
         locations.setOnClickListener(buttonclick);
         asset.setOnClickListener(buttonclick);
@@ -61,6 +67,7 @@ public class DownloadFragment extends Fragment {
         jobmaterial.setOnClickListener(buttonclick);
         erson.setOnClickListener(buttonclick);
         download_all.setOnClickListener(buttonclick);
+        alndomain.setOnClickListener(buttonclick);
         return view;
     }
 
@@ -132,14 +139,19 @@ public class DownloadFragment extends Fragment {
                     DownloadAll();
                     downloading_item = 13;
                     break;
+                case R.id.alndomain:
+                    downloaddata(Constants.ALNDOMAIN, (Button) v);
+                    alndomain.setText(getResources().getString(R.string.downloading));
+                    downloading_item = 14;
+                    break;
             }
         }
     };
 
     private void downloaddata(final String url, final Button button) {
-            mProgressDialog = ProgressDialog.show(getActivity(), null,
-                    getString(R.string.requesting), true, true);
-            mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog = ProgressDialog.show(getActivity(), null,
+                getString(R.string.requesting), true, true);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         HttpManager.getData(getActivity(), url, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
@@ -150,41 +162,35 @@ public class DownloadFragment extends Fragment {
                         button.setText(getResources().getString(R.string.downloaded));
                         String result = jsonObject.getString("result");
                         if (url == Constants.LOCATIONS) {
-                            JsonUtils.parsingLocations(getActivity(),result);
-                        }else if(url == Constants.ASSET){
-                            JsonUtils.parsingAsset(getActivity(),result);
-                        }
-                        else if(url == Constants.WORKDW){
-                            JsonUtils.parsingWorkdw(getActivity(),result);
-                        }
-                        else if(url == Constants.WORKZY){
+                            JsonUtils.parsingLocations(getActivity(), result);
+                        } else if (url == Constants.ASSET) {
+                            JsonUtils.parsingAsset(getActivity(), result);
+                        } else if (url == Constants.WORKDW) {
+                            JsonUtils.parsingWorkdw(getActivity(), result);
+                        } else if (url == Constants.WORKZY) {
                             JsonUtils.parsingWorkzy(getActivity(), result);
-                        }
-                        else if(url == Constants.WORKTYPE){
+                        } else if (url == Constants.WORKTYPE) {
                             JsonUtils.parsingWorkType(getActivity(), result);
-                        }
-                        else if(url == Constants.ACWORKTYPE){
+                        } else if (url == Constants.ACWORKTYPE) {
                             JsonUtils.parsingAcWorkType(getActivity(), result);
-                        }
-                        else if(url == Constants.FAILURECODE){
+                        } else if (url == Constants.FAILURECODE) {
                             JsonUtils.parsingFailurecode(getActivity(), result);
-                        }
-                        else if(url == Constants.FAILURELIST){
+                        } else if (url == Constants.FAILURELIST) {
                             JsonUtils.parsingFailureList(getActivity(), result);
-                        }
-                        else if(url == Constants.JOBPLAN){
+                        } else if (url == Constants.JOBPLAN) {
                             JsonUtils.parsingJobPlan(getActivity(), result);
-                        }
-                        else if(url == Constants.JOBTASK){
+                        } else if (url == Constants.JOBTASK) {
                             JsonUtils.parsingJobTask(getActivity(), result);
-                        }
-                        else if(url == Constants.JOBMATERIAL){
+                        } else if (url == Constants.JOBMATERIAL) {
                             JsonUtils.parsingJobMaterial(getActivity(), result);
+                        } else if (url == Constants.PERSON) {
+                            JsonUtils.parsingErson(getActivity(), result);
+                        } else if(url == Constants.ALNDOMAIN){
+                            JsonUtils.parsingAlndomain(getActivity(),result);
+                            List<Alndomain>alndomains = new AlndomainDao(getActivity()).queryForAll();
+                            Log.i("s", String.valueOf(alndomains.size()));
                         }
-                        else if(url == Constants.PERSON){
-                            JsonUtils.parsingErson(getActivity(),result);
-                        }
-                        if(mProgressDialog.isShowing()) {
+                        if (mProgressDialog.isShowing()) {
                             mProgressDialog.dismiss();
                         }
 
@@ -196,14 +202,14 @@ public class DownloadFragment extends Fragment {
 
             @Override
             public void onSuccess(String data, int totalPages, int currentPage) {
-                if(mProgressDialog.isShowing()) {
+                if (mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(String error) {
-                if(mProgressDialog.isShowing()) {
+                if (mProgressDialog.isShowing()) {
                     mProgressDialog.dismiss();
                 }
                 button.setText(getResources().getString(R.string.download_fail));
@@ -214,7 +220,7 @@ public class DownloadFragment extends Fragment {
         });
     }
 
-    private void DownloadAll(){
+    private void DownloadAll() {
         locations.performClick();
         asset.performClick();
         workdw.performClick();

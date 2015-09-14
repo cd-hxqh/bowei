@@ -73,7 +73,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
-            <include layout="@layout/order_detail_two_layout"/>
+            <include layout="@layout/order_detail_serve_two_layout"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -90,53 +90,53 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_faultclass"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/order_detail_faultclass"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_error_coding"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/order_detail_error_coding"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_fault_rank"
-                android:textColor="@color/black"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_faultclass"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/order_detail_faultclass"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_error_coding"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/order_detail_error_coding"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_fault_rank"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

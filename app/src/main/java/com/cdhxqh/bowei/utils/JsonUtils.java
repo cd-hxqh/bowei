@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.cdhxqh.bowei.Dao.AcWorkTypeDao;
+import com.cdhxqh.bowei.Dao.AlndomainDao;
 import com.cdhxqh.bowei.Dao.AssetDao;
 import com.cdhxqh.bowei.Dao.ErsonDao;
 import com.cdhxqh.bowei.Dao.FailureListDao;
@@ -18,6 +19,7 @@ import com.cdhxqh.bowei.Dao.WorkdwDao;
 import com.cdhxqh.bowei.Dao.WorkzyDao;
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.AcWorkType;
+import com.cdhxqh.bowei.bean.Alndomain;
 import com.cdhxqh.bowei.bean.Asset;
 import com.cdhxqh.bowei.bean.Doclinks;
 import com.cdhxqh.bowei.bean.Erson;
@@ -26,6 +28,7 @@ import com.cdhxqh.bowei.bean.Failurecode;
 import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
+import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
@@ -83,7 +86,7 @@ public class JsonUtils {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
                 if(jsonObject.has("WONUM")) {
-                    orderMain.setNumber(Integer.parseInt(jsonObject.get("WONUM").toString()));
+                    orderMain.setNumber(jsonObject.get("WONUM").toString());
                 }
                 if(jsonObject.has("DESCRIPTION")) {
                     orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
@@ -113,7 +116,7 @@ public class JsonUtils {
                 orderMain.setDate(jsonObject.get("STATUSDATE").toString());
                 }
                 if(jsonObject.has("JPNUM")) {
-                orderMain.setWorkplan(jsonObject.getInt("JPNUM"));
+                orderMain.setWorkplan(jsonObject.getString("JPNUM"));
                 }
                 if(jsonObject.has("ONBEHALFOF")) {
 //                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
@@ -422,6 +425,24 @@ public class JsonUtils {
                 erson.setYWBZ(jsonObject.getString("YWBZ"));
                 erson.setYWFL(jsonObject.getString("YWFL"));
                 new ErsonDao(ctx).update(erson);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void parsingAlndomain(Context ctx, String str) {
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            Alndomain alndomain;
+            new AlndomainDao(ctx).deleteall();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                alndomain = new Alndomain();
+                jsonObject = jsonArray.getJSONObject(i);
+                alndomain.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
+                alndomain.setVALUE(jsonObject.getString("VALUE"));
+                new AlndomainDao(ctx).update(alndomain);
             }
         } catch (JSONException e) {
             e.printStackTrace();

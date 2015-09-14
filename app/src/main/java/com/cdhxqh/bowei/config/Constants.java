@@ -83,6 +83,8 @@ public class Constants {
     public static String WORKTYPE = "{appid:'WORKTYPE',objectname:'WORKTYPE',option:'read',condition:{WOCLASS:'WORKORDER'}}";
     //实际工作类型
     public static String ACWORKTYPE = "{appid:'ALNDOMAIN',objectname:'ALNDOMAIN',option:'read',condition:{DOMAINID:'ACWORKTYPE'}}";
+    //故障等级
+    public static String ALNDOMAIN = "{appid:'ALNDOMAIN',objectname:'ALNDOMAIN',option:'read',condition:{DOMAINID:'GZLX'}}";
     //故障代码
     public static String FAILURECODE = "{appid:'FAILURECODE',objectname:'FAILURECODE',option:'read'}";
     //故障代码关系

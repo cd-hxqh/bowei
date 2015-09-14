@@ -115,8 +115,8 @@ public class ServeDetailActivity extends BaseActivity {
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
         employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
         questiontogether = (EditText) findViewById(R.id.order_detail_questiontogether);
-        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
-        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
+//        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
+//        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
     }
 
     @Override

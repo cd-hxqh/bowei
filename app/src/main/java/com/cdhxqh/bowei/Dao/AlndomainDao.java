@@ -3,7 +3,7 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.Failurecode;
+import com.cdhxqh.bowei.bean.Alndomain;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -12,18 +12,18 @@ import java.util.List;
 /**
  * Created by think on 2015/9/7.
  */
-public class FailurecodeDao {
+public class AlndomainDao {
     private Context context;
-    private Dao<Failurecode, Integer> FailurecodeDaoOpe;
+    private Dao<Alndomain, Integer> AlndomainDaoOpe;
     private DatabaseHelper helper;
 
-    public FailurecodeDao(Context context)
+    public AlndomainDao(Context context)
     {
         this.context = context;
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            FailurecodeDaoOpe = helper.getDao(Failurecode.class);
+            AlndomainDaoOpe = helper.getDao(Alndomain.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -31,13 +31,13 @@ public class FailurecodeDao {
     }
 
     /**
-     * 更新故障代码信息
-     * @param failurecode
+     * 更新实际工作类型信息
+     * @param alndomain
      */
-    public void update(Failurecode failurecode) {
+    public void update(Alndomain alndomain) {
         try
         {
-            FailurecodeDaoOpe.create(failurecode);
+            AlndomainDaoOpe.create(alndomain);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -45,25 +45,12 @@ public class FailurecodeDao {
     }
 
     /**
-     * 查询所有故障代码信息
+     * 查询所有实际工作类型
      * @return
      */
-    public List<Failurecode> queryForAll(){
+    public List<Alndomain> queryForAll(){
         try {
-            return FailurecodeDaoOpe.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 根据code查询故障代码信息
-     * @return
-     */
-    public Failurecode queryByCode(String code){
-        try {
-            return FailurecodeDaoOpe.queryBuilder().where().eq("FAILURECODE",code).queryForFirst();
+            return AlndomainDaoOpe.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,7 +62,7 @@ public class FailurecodeDao {
      */
     public void deleteall(){
         try {
-            FailurecodeDaoOpe.delete(FailurecodeDaoOpe.queryForAll());
+            AlndomainDaoOpe.delete(AlndomainDaoOpe.queryForAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }

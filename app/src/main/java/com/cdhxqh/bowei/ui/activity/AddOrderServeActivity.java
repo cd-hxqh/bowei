@@ -1,9 +1,13 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +20,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.FailureListDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by think on 2015/9/2.
@@ -42,7 +50,7 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-//    private TextView reality_item;//实际班组
+    //    private TextView reality_item;//实际班组
 //    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
     private TextView date;//汇报时间
@@ -55,13 +63,23 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout reality_stoptimelayout;
     private EditText employee_id;//录入人工号
     private EditText questiontogether;//问题汇总
-    private EditText faultclass;
-    private EditText error_coding;
-    private EditText fault_rank;
+    private TextView faultclass;
+    private RelativeLayout faultclasslayout;
+    private TextView error_coding;
+    private RelativeLayout error_codinglayout;
+    private TextView cause;
+    private RelativeLayout causelayout;
+    private TextView remedy;
+    private RelativeLayout remedylayout;
+    private TextView fault_rank;
+    private RelativeLayout fault_ranklayout;
     private TextView reporttime;
     private RelativeLayout reporttimelayout;
     private EditText reporttimeedit;
 
+    private String parent;
+
+    private Button yuzhi;
     private Button inputbtn;
 
     private EditText showingedit;
@@ -72,6 +90,25 @@ public class AddOrderServeActivity extends BaseActivity {
     StringBuffer sb;
     private int layoutnum;
 
+    private OrderMain orderMain = new OrderMain();
+    private ProgressDialog mProgressDialog;
+    protected static final int S = 0;
+    protected static final int F = 1;
+    private String result;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case S:
+                    number.setText(result);
+                    Toast.makeText(AddOrderServeActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    break;
+                case F:
+                    Toast.makeText(AddOrderServeActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,13 +164,27 @@ public class AddOrderServeActivity extends BaseActivity {
         employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
-        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
-        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
-        fault_rank = (EditText) findViewById(R.id.order_detail_fault_rank);
+
+        faultclass = (TextView) findViewById(R.id.oder_detail_faultclass);
+        faultclasslayout = (RelativeLayout) findViewById(R.id.oder_detail_faultclass_layout);
+
+        error_coding = (TextView) findViewById(R.id.oder_detail_error_coding);
+        error_codinglayout = (RelativeLayout) findViewById(R.id.oder_detail_error_coding_layout);
+
+        cause = (TextView) findViewById(R.id.oder_detail_cause);
+        causelayout = (RelativeLayout) findViewById(R.id.oder_detail_cause_layout);
+
+        remedy = (TextView) findViewById(R.id.oder_detail_remedy);
+        remedylayout = (RelativeLayout) findViewById(R.id.oder_detail_remedy_layout);
+
+        fault_rank = (TextView) findViewById(R.id.oder_detail_fault_rank);
+        fault_ranklayout = (RelativeLayout) findViewById(R.id.oder_detail_fault_rank_layout);
+
         reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
         reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
         reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
 
+        yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -159,6 +210,11 @@ public class AddOrderServeActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
         datelayout.setOnClickListener(new MydateListener());
         workplanlayout.setOnClickListener(new MylayoutListener(9));
+        faultclasslayout.setOnClickListener(new MylayoutListener(11));
+        error_codinglayout.setOnClickListener(new MylayoutListener(12));
+        causelayout.setOnClickListener(new MylayoutListener(13));
+        remedylayout.setOnClickListener(new MylayoutListener(14));
+        fault_ranklayout.setOnClickListener(new MylayoutListener(15));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 //        placelayout.setOnClickListener(new MylayoutListener(placeedit, place));
@@ -175,18 +231,69 @@ public class AddOrderServeActivity extends BaseActivity {
 //        employee_idlayout.setOnClickListener(new MylayoutListener(employee_idedit,employee_id));
 //        reporttimelayout.setOnClickListener(new MylayoutListener(reporttimeedit,reporttime));
 
+        yuzhi.setOnClickListener(yuzhilistener);
         inputbtn.setOnClickListener(inputlistener);
 
     }
-    public class MylayoutListener implements View.OnClickListener {
-        int requestCode;
-        public MylayoutListener(int requestcode){
-            this.requestCode = requestcode;
-        }
+    private View.OnClickListener yuzhilistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(AddOrderServeActivity.this,ItemChooseListActivity.class);
-            intent.putExtra("requestCode",requestCode);
+            mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
+                    getString(R.string.requesting), true, true);
+            new AsyncTask<String, String, String>() {
+                @Override
+                protected String doInBackground(String... strings) {
+                    String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    if(S==null){
+                        return "false";
+                    }else {
+                        return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    if(!s.equals("false")) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if (object.getString("errorMsg").equals("成功")) {
+                                mHandler.sendEmptyMessage(S);
+                                result = object.getString("woNum");
+                            } else {
+                                mHandler.sendEmptyMessage(F);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        mHandler.sendEmptyMessage(F);
+                    }
+                    mProgressDialog.dismiss();
+                }
+            }.execute();
+        }
+    };
+
+    public class MylayoutListener implements View.OnClickListener {
+        int requestCode;
+        String parent;
+
+        public MylayoutListener(int requestcode) {
+            this.requestCode = requestcode;
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(AddOrderServeActivity.this, ItemChooseListActivity.class);
+            intent.putExtra("requestCode", requestCode);
+            this.parent = AddOrderServeActivity.this.parent;
+            if (faultclass.getText() != null && requestCode == 12) {
+                intent.putExtra("parent", new FailureListDao(AddOrderServeActivity.this).queryForClassByCode(faultclass.getText().toString()));
+            } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
+                intent.putExtra("parent", orderMain.getError_coding_list());
+            }
             startActivityForResult(intent, requestCode);
         }
     }
@@ -194,8 +301,12 @@ public class AddOrderServeActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
+        String number = null;
+        if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                number = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
@@ -221,11 +332,40 @@ public class AddOrderServeActivity extends BaseActivity {
             case 9:
                 workplan.setText(content);
                 break;
+            case 11:
+                faultclass.setText(content);
+//                parent = new FailureListDao(AddOrderServeActivity.this).queryForClassByCode(content);
+                error_coding.setText("");
+                orderMain.setError_coding_list("");
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
+                break;
+            case 12:
+                error_coding.setText(content);
+//                parent = number;
+                orderMain.setError_coding_list(number);
+                orderMain.setCause_list("");
+                orderMain.setRemedy_list("");
+                break;
+            case 13:
+                cause.setText(content);
+                orderMain.setCause_list(number);
+                break;
+            case 14:
+                remedy.setText(content);
+                orderMain.setRemedy_list(number);
+                break;
+            case 15:
+                fault_rank.setText(content);
+                break;
             default:
                 break;
         }
     }
-    public class MydateListener implements View.OnClickListener{
+
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -235,13 +375,13 @@ public class AddOrderServeActivity extends BaseActivity {
             datePickerDialog.show();
         }
     }
+
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String isok = isOK();
-            if(isok.equals("OK")) {
+            if (isok.equals("OK")) {
                 Intent intent = new Intent();
-                OrderMain orderMain = new OrderMain();
 //            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
                 orderMain.setDescribe(describe.getText().toString());
                 orderMain.setPlace(place.getText().toString());
@@ -253,68 +393,72 @@ public class AddOrderServeActivity extends BaseActivity {
 //            orderServe.setReality_item(reality_item.getText().toString());
                 orderMain.setState(state.getText().toString());
                 orderMain.setDate(date.getText().toString());
-                if (workplan.getText() != null) {
-                    orderMain.setWorkplan(workplan.getText().toString());
-                }
+                orderMain.setWorkplan(workplan.getText().toString());
                 orderMain.setReality_starttime(reality_starttime.getText().toString());
                 orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-//            orderMain.setEmployee_id(employee_id.getText().toString());
-//            orderMain.setQuestiontogether(questiontogether.getText().toString());
-//            orderMain.setFaultclass(faultclass.getText().toString());
-//            orderMain.setError_coding(error_coding.getText().toString());
-//            orderMain.setFault_rank(fault_rank.getText().toString());
+                orderMain.setEmployee_id(employee_id.getText().toString());
+                orderMain.setQuestiontogether(questiontogether.getText().toString());
+                orderMain.setFaultclass(faultclass.getText().toString());
+                orderMain.setError_coding(error_coding.getText().toString());
+                orderMain.setCause(cause.getText().toString());
+                orderMain.setRemedy(remedy.getText().toString());
+                orderMain.setFault_rank(fault_rank.getText().toString());
 //            orderMain.setReporttime(reporttime.getText().toString());
                 intent.putExtra("orderMain", orderMain);
                 AddOrderServeActivity.this.setResult(1, intent);
                 finish();
-            }else if(isok.equals("请完善信息")){
+            } else if (isok.equals("请完善信息")) {
                 Toast.makeText(AddOrderServeActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
         }
     };
+
     private class datelistener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 //                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
-            if(dayOfMonth<10){
-                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
-            }else {
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + monthOfYear + 1 + "-" + "0" + dayOfMonth);
+            } else {
                 sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
             }
             timePickerDialog.show();
         }
     }
+
     private class timelistener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             sb.append(" ");
-            if(i1<10){
-                sb.append(i+":"+"0"+i1+":00");
-            }else {
-                sb.append(i+":"+i1+":00");
+            if (i1 < 10) {
+                sb.append(i + ":" + "0" + i1 + ":00");
+            } else {
+                sb.append(i + ":" + i1 + ":00");
             }
-            if(layoutnum == datelayout.getId()){
+            if (layoutnum == datelayout.getId()) {
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
         }
     }
+
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-                ||property.getText().equals("")||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
+    private String isOK() {
+        if (describe.getText().equals("") || place.equals("")
+                || property.getText().equals("") || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")) {
             return "请完善信息";
-        }else{
+        } else {
             return "OK";
         }
     }

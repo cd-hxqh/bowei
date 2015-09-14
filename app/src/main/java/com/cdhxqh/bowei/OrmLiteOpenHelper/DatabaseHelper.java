@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.cdhxqh.bowei.bean.AcWorkType;
+import com.cdhxqh.bowei.bean.Alndomain;
 import com.cdhxqh.bowei.bean.Asset;
 import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.FailureList1;
@@ -58,6 +59,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, OrderMain.class);
             TableUtils.createTable(connectionSource, OrderTask.class);
             TableUtils.createTable(connectionSource, WorkerInfo.class);
+            TableUtils.createTable(connectionSource, Alndomain.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,6 +87,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, OrderMain.class, true);
             TableUtils.dropTable(connectionSource, OrderTask.class, true);
             TableUtils.dropTable(connectionSource, WorkerInfo.class, true);
+            TableUtils.dropTable(connectionSource, Alndomain.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

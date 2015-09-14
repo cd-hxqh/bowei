@@ -74,7 +74,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
-            <include layout="@layout/order_detail_two_layout"/>
+            <include layout="@layout/order_detail_serve_two_layout"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -107,54 +107,54 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_faultclass"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/order_detail_faultclass"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_error_coding"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/order_detail_error_coding"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_fault_rank"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/order_detail_fault_rank"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_faultclass"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/order_detail_faultclass"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_error_coding"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/order_detail_error_coding"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_fault_rank"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/order_detail_fault_rank"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
             <RelativeLayout
                 android:id="@+id/order_detail_reporttime_layout"
                 android:layout_width="match_parent"
@@ -189,10 +189,19 @@
                     android:textColor="@color/gray"/>
             </RelativeLayout>
             <Button
-                android:id="@+id/order_detail_input"
+                android:id="@+id/order_detail_yuzhi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/yuzhi"
+                android:background="@color/start_back_color"/>
+            <Button
+                android:id="@+id/order_detail_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/OK"

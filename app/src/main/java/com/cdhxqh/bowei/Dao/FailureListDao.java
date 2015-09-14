@@ -58,6 +58,100 @@ public class FailureListDao {
     }
 
     /**
+     * 查询故障类别
+     * @return
+     */
+    public List<FailureList1> queryForClass(){
+        try {
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE","").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据选择的故障类别查询对应的list值
+     * @return
+     */
+    public String queryForClassByCode(String code){
+        try {
+            return FailureListDaoOpe.queryBuilder()
+                    .where().eq("TYPE","").and().eq("FAILURECODE", code).queryForFirst().getFAILURELIST();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据patent查询故障现象
+     * @return
+     */
+    public List<FailureList1> queryForProblem(String parent){
+        try {
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE", "PROBLEM").and().eq("PARENT", parent).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 查询故障原因
+     * @return
+     */
+    public List<FailureList1> queryForCause(){
+        try {
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE","PROBLEM").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据选择的故障现象查询对应的原因
+     * @return
+     */
+    public List<FailureList1> queryForCauseByPatent(String parent){
+        try {
+            return FailureListDaoOpe.queryBuilder()
+                    .where().eq("TYPE", "CAUSE").and().eq("PARENT", parent).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 查询故障措施
+     * @return
+     */
+    public List<FailureList1> queryForRemedy(){
+        try {
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE","REMEDY").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据选择的故障现象查询对应的措施
+     * @return
+     */
+    public List<FailureList1> queryForRemedyByPatent(String parent){
+        try {
+            return FailureListDaoOpe.queryBuilder()
+                    .where().eq("TYPE", "REMEDY").and().eq("PARENT", parent).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){
