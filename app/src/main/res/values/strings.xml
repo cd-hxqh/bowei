@@ -142,4 +142,11 @@
     <string name="document_name_text">文件名称:</string>
     <string name="title_activity_search">SearchActivity</string>
 
+
+    <!--公司库存-->
+    <string name="item_number_text">编号:</string>
+    <string name="item_name_text">名称:</string>
+    <string name="inventory_text">库房:</string>
+    <string name="count_text">数量:</string>
+
 </resources>

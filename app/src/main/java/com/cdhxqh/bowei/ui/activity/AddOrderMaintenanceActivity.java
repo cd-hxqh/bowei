@@ -39,6 +39,7 @@ import java.util.Calendar;
  * Created by think on 2015/8/26.新增维保工单
  */
 public class AddOrderMaintenanceActivity extends BaseActivity {
+    private static final String TAG="AddOrderMaintenanceActivity";
     private ScrollView scrollView;
     private ImageView backimg;
     private TextView titlename;
@@ -367,7 +368,10 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             }else {
                 sb.append(i+":"+i1+":00");
             }
+
+            Log.i(TAG,"sb="+sb);
             if(layoutnum == datelayout.getId()){
+
                 date.setText(sb);
             }else if(layoutnum == reality_starttimelayout.getId()){
                 reality_starttime.setText(sb);

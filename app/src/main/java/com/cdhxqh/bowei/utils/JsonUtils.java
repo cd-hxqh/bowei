@@ -25,6 +25,7 @@ import com.cdhxqh.bowei.bean.Doclinks;
 import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.FailureList1;
 import com.cdhxqh.bowei.bean.Failurecode;
+import com.cdhxqh.bowei.bean.Inventory;
 import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
@@ -32,6 +33,7 @@ import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
+import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
 import com.cdhxqh.bowei.bean.Workzy;
@@ -85,52 +87,52 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
-                if(jsonObject.has("WONUM")) {
+                if (jsonObject.has("WONUM")) {
                     orderMain.setNumber(jsonObject.get("WONUM").toString());
                 }
-                if(jsonObject.has("DESCRIPTION")) {
+                if (jsonObject.has("DESCRIPTION")) {
                     orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
                 }
-                if(jsonObject.has("LOCATION")) {
-                orderMain.setPlace(jsonObject.get("LOCATION").toString());
+                if (jsonObject.has("LOCATION")) {
+                    orderMain.setPlace(jsonObject.get("LOCATION").toString());
                 }
-                if(jsonObject.has("ASSETNUM")) {
-                orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
+                if (jsonObject.has("ASSETNUM")) {
+                    orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
                 }
-                if(jsonObject.has("WORKTYPE")) {
-                orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
+                if (jsonObject.has("WORKTYPE")) {
+                    orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
                 }
-                if(jsonObject.has("ACWORKTYPE")) {
-                orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
+                if (jsonObject.has("ACWORKTYPE")) {
+                    orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
                 }
-                if(jsonObject.has("WORKDW")) {
-                orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
+                if (jsonObject.has("WORKDW")) {
+                    orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
                 }
-                if(jsonObject.has("WORKZY")) {
-                orderMain.setMajor(jsonObject.get("WORKZY").toString());
+                if (jsonObject.has("WORKZY")) {
+                    orderMain.setMajor(jsonObject.get("WORKZY").toString());
                 }
-                if(jsonObject.has("WOSTATUS")) {
-                orderMain.setState(jsonObject.get("WOSTATUS").toString());
+                if (jsonObject.has("WOSTATUS")) {
+                    orderMain.setState(jsonObject.get("WOSTATUS").toString());
                 }
-                if(jsonObject.has("STATUSDATE")) {
-                orderMain.setDate(jsonObject.get("STATUSDATE").toString());
+                if (jsonObject.has("STATUSDATE")) {
+                    orderMain.setDate(jsonObject.get("STATUSDATE").toString());
                 }
-                if(jsonObject.has("JPNUM")) {
-                orderMain.setWorkplan(jsonObject.getString("JPNUM"));
+                if (jsonObject.has("JPNUM")) {
+                    orderMain.setWorkplan(jsonObject.getString("JPNUM"));
                 }
-                if(jsonObject.has("ONBEHALFOF")) {
+                if (jsonObject.has("ONBEHALFOF")) {
 //                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
 //                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
-                orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                    orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
                 }
-                if(jsonObject.has("BZ")) {
-                orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
+                if (jsonObject.has("BZ")) {
+                    orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
                 }
-                if(jsonObject.has("ESTDUR")) {
-                orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
+                if (jsonObject.has("ESTDUR")) {
+                    orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
                 }
-                if(jsonObject.has("PMNUM")) {
-                orderMain.setPm(jsonObject.get("PMNUM").toString());
+                if (jsonObject.has("PMNUM")) {
+                    orderMain.setPm(jsonObject.get("PMNUM").toString());
                 }
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
@@ -454,11 +456,11 @@ public class JsonUtils {
      * 解析知识库数据*
      */
     public static ArrayList<Knowledge> parsingKnowKedge(Context ctx, String data) {
-        ArrayList<Knowledge> list=null;
+        ArrayList<Knowledge> list = null;
         try {
             JSONArray jsonArray = new JSONArray(data);
             JSONObject jsonObject;
-            list=new ArrayList<Knowledge>();
+            list = new ArrayList<Knowledge>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 Knowledge knowledge = new Knowledge();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -479,19 +481,18 @@ public class JsonUtils {
     }
 
 
-
     /**
      * 解析知识库附件*
      */
     public static Doclinks parsingDoclinks(Context ctx, String data) {
-        ArrayList<Doclinks> list=null;
-        Doclinks doclinks=null;
+        ArrayList<Doclinks> list = null;
+        Doclinks doclinks = null;
         try {
             JSONArray jsonArray = new JSONArray(data);
             JSONObject jsonObject;
-            list=new ArrayList<Doclinks>();
+            list = new ArrayList<Doclinks>();
             for (int i = 0; i < jsonArray.length(); i++) {
-                 doclinks = new Doclinks();
+                doclinks = new Doclinks();
                 jsonObject = jsonArray.getJSONObject(i);
                 doclinks.setDocument(Integer.valueOf(jsonObject.getString("DOCUMENT"))); //编号
                 doclinks.setDescription(jsonObject.getString("DESCRIPTION")); //名称
@@ -506,15 +507,17 @@ public class JsonUtils {
 
     }
 
-    /**解析返回的数据结果**/
+    /**
+     * 解析返回的数据结果*
+     */
 
-    public static String  parsing(Context ctx,String data){
-        String result=null;
+    public static String parsing(Context ctx, String data) {
+        String result = null;
         try {
             JSONObject json = new JSONObject(data);
             String jsonString = json.getString("errcode");
-            if (jsonString.equals(Constants.GETDATASUCCESS)){
-                result=json.getString("result");
+            if (jsonString.equals(Constants.GETDATASUCCESS)) {
+                result = json.getString("result");
             }
 
             return result;
@@ -527,15 +530,80 @@ public class JsonUtils {
     }
 
 
-
-    /**替换数据格式**/
-    private static String replace(String data){
-        String newData=data.replaceAll("\\\\", "/");
-        Log.i(TAG,"newData="+newData);
+    /**
+     * 替换数据格式*
+     */
+    private static String replace(String data) {
+        String newData = data.replaceAll("\\\\", "/");
+        Log.i(TAG, "newData=" + newData);
 
 
         return newData;
     }
 
+
+    /**
+     * 分页解析返回的结果*
+     */
+    public static Results parsingResults(Context ctx, String data) {
+        String result = null;
+        Results results = null;
+        try {
+            JSONObject json = new JSONObject(data);
+            String jsonString = json.getString("errcode");
+            if (jsonString.equals(Constants.GETDATASUCCESS)) {
+                result = json.getString("result");
+                JSONObject rJson = new JSONObject(result);
+                String curpage = rJson.getString("curpage");
+                String totalresult = rJson.getString("totalresult");
+                String resultlist = rJson.getString("resultlist");
+                String totalpage = rJson.getString("totalpage");
+                String showcount = rJson.getString("showcount");
+                results=new Results();
+                results.setCurpage(Integer.valueOf(curpage));
+                results.setTotalresult(totalresult);
+                results.setResultlist(resultlist);
+                results.setTotalpage(totalpage);
+                results.setShowcount(Integer.valueOf(showcount));
+            }
+
+            return results;
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return results;
+        }
+    }
+
+
+    /**解析公司库存信息**/
+    public static ArrayList<Inventory> parsingInventory(Context ctx, String data){
+        Log.i(TAG,"data="+data);
+        ArrayList<Inventory> list = null;
+        Inventory inventory = null;
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            JSONObject jsonObject;
+            list = new ArrayList<Inventory>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                inventory = new Inventory();
+                jsonObject = jsonArray.getJSONObject(i);
+                inventory.setItemnum(jsonObject.getString("ITEMNUM")); //物料编号
+                inventory.setDescription(jsonObject.getString("ITEMDESC")); //名称
+                inventory.setLocation(jsonObject.getString("LOCATION")); //库房
+                inventory.setCurbaltotal(jsonObject.getString("CURBALTOTAL")); //当前余量
+
+                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                list.add(inventory);
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
 }

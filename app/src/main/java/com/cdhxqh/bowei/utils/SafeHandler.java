@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.utils;
 
+import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 
 /**
@@ -29,4 +30,5 @@ public class SafeHandler {
             e.printStackTrace();
         }
     }
+
 }

@@ -3,6 +3,7 @@ package com.cdhxqh.bowei.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.utils.JsonUtils;
 import com.cdhxqh.bowei.utils.SafeHandler;
@@ -99,6 +100,30 @@ public class HttpManager {
 
                 Log.i(TAG,"result="+result);
                 SafeHandler.onSuccess(handler,result);
+            }
+        });
+    }
+
+    /**解析返回的结果--分页**/
+    public static void getDataPagingInfo(final Context cxt,String data,final HttpRequestHandler<Results> handler){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("data",data);
+        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
+                SafeHandler.onFailure(handler, "查询失败");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
+
+                Results  result=JsonUtils.parsingResults(cxt, responseString);
+
+                Log.i(TAG,"result="+result);
+                SafeHandler.onSuccess(handler,result,result.getCurpage(),result.getShowcount());
             }
         });
     }
