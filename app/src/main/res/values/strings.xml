@@ -148,5 +148,6 @@
     <string name="item_name_text">名称:</string>
     <string name="inventory_text">库房:</string>
     <string name="count_text">数量:</string>
+    <string name="deptinventory_text">捷运库存</string>
 
 </resources>

@@ -67,8 +67,12 @@ public class Constants {
         return "{appid:'INV',objectname:'INVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
 
     }
+    /**捷运库存列表**/
 
+    public static String get_deptinventory(int curpage,int showcount){
+        return "{appid:'DEPTINVENTORY',objectname:'DEPTINVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
 
+    }
 
 
     //位置信息

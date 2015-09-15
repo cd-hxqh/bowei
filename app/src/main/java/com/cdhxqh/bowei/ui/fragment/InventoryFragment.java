@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.ui.activity.In_Company_Activity;
+import com.cdhxqh.bowei.ui.activity.In_Deptinventory_Activity;
 
 /**
  * 库存查询*
@@ -62,7 +63,9 @@ public class InventoryFragment extends Fragment {
     private View.OnClickListener m_linearlayoutOnClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent=new Intent();
+            intent.setClass(getActivity(),In_Deptinventory_Activity.class);
+            startActivityForResult(intent,0);
         }
     };
 

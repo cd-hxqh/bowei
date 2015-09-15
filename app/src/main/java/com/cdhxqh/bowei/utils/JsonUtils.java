@@ -21,6 +21,7 @@ import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.AcWorkType;
 import com.cdhxqh.bowei.bean.Alndomain;
 import com.cdhxqh.bowei.bean.Asset;
+import com.cdhxqh.bowei.bean.Deptinventory;
 import com.cdhxqh.bowei.bean.Doclinks;
 import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.FailureList1;
@@ -593,6 +594,37 @@ public class JsonUtils {
                 inventory.setDescription(jsonObject.getString("ITEMDESC")); //名称
                 inventory.setLocation(jsonObject.getString("LOCATION")); //库房
                 inventory.setCurbaltotal(jsonObject.getString("CURBALTOTAL")); //当前余量
+
+                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                list.add(inventory);
+            }
+
+            return list;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    /**解析捷运库存信息**/
+    public static ArrayList<Deptinventory> parsingDeptinventory(Context ctx, String data){
+        Log.i(TAG,"data="+data);
+        ArrayList<Deptinventory> list = null;
+        Deptinventory inventory = null;
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            JSONObject jsonObject;
+            list = new ArrayList<Deptinventory>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                inventory = new Deptinventory();
+                jsonObject = jsonArray.getJSONObject(i);
+
+                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                inventory.setItemnum(jsonObject.getString("ITEMNUM")); //物料编号
+                inventory.setBjmc(jsonObject.getString("BJMC")); //名称
+                inventory.setLocation(jsonObject.getString("LOCATION")); //库房
+                inventory.setCurbaltotal(jsonObject.getString("CURBALTOTAL")); //当前余量
+                inventory.setLocdesc(jsonObject.getString("LOCDESC")); //库房名称
 
                 Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
                 list.add(inventory);
