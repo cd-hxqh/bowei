@@ -157,5 +157,10 @@
     <string name="results_title_text">查询结果</string>
     <string name="location_text">位置:</string>
     <string name="order_type">工单类型</string>
+    <string name="about_text">关于我们</string>
+    <string name="update_text">版本更新</string>
+    <string name="network_text">网络设置</string>
+    <string name="clear_text">清除缓存</string>
+    <string name="data_text">数据下载</string>
 
 </resources>

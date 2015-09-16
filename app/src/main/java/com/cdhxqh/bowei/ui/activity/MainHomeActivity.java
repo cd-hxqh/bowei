@@ -27,6 +27,7 @@ import com.cdhxqh.bowei.ui.fragment.DownloadFragment;
 import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
 import com.cdhxqh.bowei.ui.fragment.KnowKedge_Fragment;
 import com.cdhxqh.bowei.ui.fragment.OrderFragment;
+import com.cdhxqh.bowei.ui.fragment.SettingFragment;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
@@ -56,6 +57,11 @@ public class MainHomeActivity extends BaseActivity {
     private DownloadFragment downloadFragment = new DownloadFragment();
     /**资产扫描**/
     private AssetFragment assetFragment=new AssetFragment();
+
+    /**设置界面**/
+    private SettingFragment settingFragment=new SettingFragment();
+
+
     private ProgressDialog mProgressDialog;
     TextView nameview;
     TextView dateview;
@@ -155,6 +161,13 @@ public class MainHomeActivity extends BaseActivity {
                     fragmentTransaction.replace(R.id.container, downloadFragment);
                     fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.download));
+                    break;
+                case 6://设置
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container, settingFragment);
+                    fragmentTransaction.commit();
+                    titlename.setText(getResources().getString(R.string.setting));
                     break;
                 case 7://退出
                     AppManager.AppExit(MainHomeActivity.this);
