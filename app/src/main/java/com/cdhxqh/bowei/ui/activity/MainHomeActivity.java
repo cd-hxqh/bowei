@@ -22,6 +22,7 @@ import com.cdhxqh.bowei.manager.AppManager;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.MenuItemAdapter;
+import com.cdhxqh.bowei.ui.fragment.AssetFragment;
 import com.cdhxqh.bowei.ui.fragment.DownloadFragment;
 import com.cdhxqh.bowei.ui.fragment.InventoryFragment;
 import com.cdhxqh.bowei.ui.fragment.KnowKedge_Fragment;
@@ -53,6 +54,8 @@ public class MainHomeActivity extends BaseActivity {
     /**知识库**/
     private KnowKedge_Fragment knowKedge_Fragment=new KnowKedge_Fragment();
     private DownloadFragment downloadFragment = new DownloadFragment();
+    /**资产扫描**/
+    private AssetFragment assetFragment=new AssetFragment();
     private ProgressDialog mProgressDialog;
     TextView nameview;
     TextView dateview;
@@ -124,10 +127,10 @@ public class MainHomeActivity extends BaseActivity {
                     fragmentTransaction.commit();
                     break;
                 case 2://资产查询
-//                    fragmentTransaction = getFragmentManager().beginTransaction();
-//                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//                    fragmentTransaction.replace(R.id.container,orderFragment);
-//                    fragmentTransaction.commit();
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container,assetFragment);
+                    fragmentTransaction.commit();
                     titlename.setText(getResources().getString(R.string.property));
                     break;
                 case 3://库存查询

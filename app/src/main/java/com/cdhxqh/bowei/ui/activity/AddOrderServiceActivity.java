@@ -20,6 +20,7 @@ import com.cdhxqh.bowei.bean.OrderServe;
 
 /**
  * Created by think on 2015/9/2.
+ * 新增服务
  */
 public class AddOrderServiceActivity extends BaseActivity {
     private ImageView backimg;

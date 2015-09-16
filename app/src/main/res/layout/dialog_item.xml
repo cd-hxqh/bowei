@@ -1,0 +1,12 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/order_layout_background"
+
+    android:gravity="center"
+    android:padding="10dp"
+    android:text="维修"
+    android:textColor="@color/radiobg_normal"
+    android:textSize="18dip" />

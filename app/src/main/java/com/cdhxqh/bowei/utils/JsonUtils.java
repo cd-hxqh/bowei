@@ -560,7 +560,7 @@ public class JsonUtils {
                 String resultlist = rJson.getString("resultlist");
                 String totalpage = rJson.getString("totalpage");
                 String showcount = rJson.getString("showcount");
-                results=new Results();
+                results = new Results();
                 results.setCurpage(Integer.valueOf(curpage));
                 results.setTotalresult(totalresult);
                 results.setResultlist(resultlist);
@@ -578,9 +578,11 @@ public class JsonUtils {
     }
 
 
-    /**解析公司库存信息**/
-    public static ArrayList<Inventory> parsingInventory(Context ctx, String data){
-        Log.i(TAG,"data="+data);
+    /**
+     * 解析公司库存信息*
+     */
+    public static ArrayList<Inventory> parsingInventory(Context ctx, String data) {
+        Log.i(TAG, "data=" + data);
         ArrayList<Inventory> list = null;
         Inventory inventory = null;
         try {
@@ -595,7 +597,7 @@ public class JsonUtils {
                 inventory.setLocation(jsonObject.getString("LOCATION")); //库房
                 inventory.setCurbaltotal(jsonObject.getString("CURBALTOTAL")); //当前余量
 
-                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                Log.i(TAG, "ITEMNUM=" + jsonObject.getString("ITEMNUM"));
                 list.add(inventory);
             }
 
@@ -606,9 +608,12 @@ public class JsonUtils {
         }
 
     }
-    /**解析捷运库存信息**/
-    public static ArrayList<Deptinventory> parsingDeptinventory(Context ctx, String data){
-        Log.i(TAG,"data="+data);
+
+    /**
+     * 解析捷运库存信息*
+     */
+    public static ArrayList<Deptinventory> parsingDeptinventory(Context ctx, String data) {
+        Log.i(TAG, "data=" + data);
         ArrayList<Deptinventory> list = null;
         Deptinventory inventory = null;
         try {
@@ -619,14 +624,14 @@ public class JsonUtils {
                 inventory = new Deptinventory();
                 jsonObject = jsonArray.getJSONObject(i);
 
-                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                Log.i(TAG, "ITEMNUM=" + jsonObject.getString("ITEMNUM"));
                 inventory.setItemnum(jsonObject.getString("ITEMNUM")); //物料编号
                 inventory.setBjmc(jsonObject.getString("BJMC")); //名称
                 inventory.setLocation(jsonObject.getString("LOCATION")); //库房
                 inventory.setCurbaltotal(jsonObject.getString("CURBALTOTAL")); //当前余量
                 inventory.setLocdesc(jsonObject.getString("LOCDESC")); //库房名称
 
-                Log.i(TAG,"ITEMNUM="+jsonObject.getString("ITEMNUM"));
+                Log.i(TAG, "ITEMNUM=" + jsonObject.getString("ITEMNUM"));
                 list.add(inventory);
             }
 
@@ -638,4 +643,28 @@ public class JsonUtils {
 
     }
 
+
+    /**
+     * 解析资产信息*
+     */
+
+    public static Asset parsingAssets(Context ctx, String data) {
+        Log.i(TAG, "data=" + data);
+        Asset asset = null;
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            asset = new Asset();
+            asset.setASSETNUM(jsonObject.getString("ASSETNUM")); //编号
+            asset.setDESCRIPTION(jsonObject.getString("DESCRIPTION")); //名称
+            asset.setLOCATION(jsonObject.getString("LOCATION")); //位置
+            return asset;
+
+        } catch (JSONException e)
+
+        {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
 }

@@ -142,12 +142,19 @@
     <string name="document_name_text">文件名称:</string>
     <string name="title_activity_search">SearchActivity</string>
 
-
-    <!--公司库存-->
+    <!-- 公司库存 -->
     <string name="item_number_text">编号:</string>
     <string name="item_name_text">名称:</string>
     <string name="inventory_text">库房:</string>
     <string name="count_text">数量:</string>
     <string name="deptinventory_text">捷运库存</string>
+
+    <!-- 二微码扫描 -->
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scanning_text">二维码扫描</string>
+    <string name="title_activity_results_">Results_Activity</string>
+    <string name="results_title_text">查询结果</string>
+    <string name="location_text">位置:</string>
+    <string name="order_type">工单类型</string>
 
 </resources>

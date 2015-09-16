@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/order_layout_background"
+    android:orientation="vertical"
+    tools:context="com.cdhxqh.bowei.ui.activity.Results_Activity">
+
+    <include layout="@layout/order_info_title"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/order_info_title_id"
+        android:layout_margin="@dimen/dimens_10dp"
+        android:background="@drawable/content_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_number_text"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/asset_number_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/line"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name_text"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/asset_name_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/line"></View>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_text"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/asset_location_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimens_10dp"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/search_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:text="查询对应工单" />
+
+        <Button
+            android:id="@+id/add_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimens_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:text="新建工单" />
+    </LinearLayout>
+</RelativeLayout>

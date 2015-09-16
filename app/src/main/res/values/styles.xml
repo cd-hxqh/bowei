@@ -42,4 +42,10 @@
         <item name="android:button">@null</item>
         <item name="android:textColor">@drawable/radiobtn_selector</item>
     </style>
+
+
+    <style name="CustomAlertDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:background">@color/order_layout_background</item>
+    </style>
+
 </resources>
