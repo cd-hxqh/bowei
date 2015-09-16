@@ -13,9 +13,12 @@ import com.cdhxqh.bowei.Dao.JobMaterialDao;
 import com.cdhxqh.bowei.Dao.JobPlanDao;
 import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.LocationsDao;
+import com.cdhxqh.bowei.Dao.MaterialInfoDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
+import com.cdhxqh.bowei.Dao.OrderTaskDao;
 import com.cdhxqh.bowei.Dao.WorkTypeDao;
 import com.cdhxqh.bowei.Dao.WorkdwDao;
+import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.Dao.WorkzyDao;
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.AcWorkType;
@@ -32,11 +35,13 @@ import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.bean.Locations;
+import com.cdhxqh.bowei.bean.MaterialInfo;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
+import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.cdhxqh.bowei.bean.Workzy;
 import com.cdhxqh.bowei.config.Constants;
 
@@ -145,7 +150,7 @@ public class JsonUtils {
         }
     }
 
-    public static ArrayList<OrderTask> parsingOrderTask(String data) {
+    public static void parsingOrderTask(Context cxt,String data,int num) {
         try {
             JSONArray jsonArray = new JSONArray(data);
             OrderTask orderTask;
@@ -161,13 +166,12 @@ public class JsonUtils {
                 orderTask.setWosequence(jsonObject.get("WOSEQUENCE").toString());
                 orderTask.setZxr(jsonObject.get("ZXR").toString());
                 orderTask.setWorkorderid(jsonObject.get("WORKORDERID").toString());
-                list.add(i, orderTask);
+                orderTask.setBelongordermain(num);
+                new OrderTaskDao(cxt).update(orderTask);
             }
-            return list;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public static void parsingWenerId(String str) {
@@ -407,6 +411,7 @@ public class JsonUtils {
                 jobPlan.setJOBITEMID(jsonObject.getString("JOBITEMID"));
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
+                jobPlan.setWarehouse(jsonObject.getString("LOCATION"));
                 new JobMaterialDao(ctx).update(jobPlan);
             }
         } catch (JSONException e) {
@@ -446,6 +451,87 @@ public class JsonUtils {
                 alndomain.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 alndomain.setVALUE(jsonObject.getString("VALUE"));
                 new AlndomainDao(ctx).update(alndomain);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解析员工信息数据
+     * @param ctx
+     * @param str
+     * @param id
+     */
+    public static void parsingWorkInfo(Context ctx, String str,int id){
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            WorkerInfo workerInfo;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                workerInfo = new WorkerInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                if(!new WorkerInfoDao(ctx).queryByLabtransId(jsonObject.getString("LABTRANSID"),id)){//
+                    workerInfo.setBelongorderid(id);
+                    workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
+                    workerInfo.setName(jsonObject.getString("LABORCODE"));
+                    workerInfo.setStarttime(jsonObject.getString("STARTTIME"));
+                    workerInfo.setStoptime(jsonObject.getString("FINISHTIME"));
+                    workerInfo.setWorktime(jsonObject.getString("REGULARHRS"));
+                    new WorkerInfoDao(ctx).update(workerInfo);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解析计划物料消耗数据
+     * @param ctx
+     * @param str
+     * @param id
+     */
+    public static void parsingWpMaterial(Context ctx,String str,int id){
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            MaterialInfo materialInfo;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                materialInfo = new MaterialInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                if(!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"),id)){//
+                    materialInfo.setBelongorderid(id);
+                    materialInfo.setName(jsonObject.getString("DESCRIPTION"));
+                    materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
+                    materialInfo.setSize(jsonObject.getInt("ITEMQTY"));
+                    materialInfo.setWarehouse(jsonObject.getString("LOCATION"));
+                    materialInfo.setIsPlan(true);
+                    new MaterialInfoDao(ctx).update(materialInfo);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+//    DEPTMATUSETRANS
+    public static void parsingDeptmatusetrans(Context ctx,String str,int id){
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            MaterialInfo materialInfo;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                materialInfo = new MaterialInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                if(!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"),id)){//
+                    materialInfo.setBelongorderid(id);
+                    materialInfo.setName(jsonObject.getString("BJMC"));
+                    materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
+                    materialInfo.setSize(jsonObject.getInt("COUNT"));
+                    materialInfo.setWarehouse(jsonObject.getString("LOCATION"));
+                    materialInfo.setIsPlan(false);
+                    new MaterialInfoDao(ctx).update(materialInfo);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

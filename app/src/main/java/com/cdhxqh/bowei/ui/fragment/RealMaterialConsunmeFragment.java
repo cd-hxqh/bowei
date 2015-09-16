@@ -11,28 +11,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdhxqh.bowei.Dao.MaterialInfoDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.MaterialInfo;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.RealMaterialConsumeAdapter;
+import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * 实际物料信息页面
  * Created by think on 2015/8/25.
  */
 public class RealMaterialConsunmeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RealMaterialConsumeAdapter materialConsumeAdapter;
     private ProgressDialog mProgressDialog;
-    private String num;
-    public RealMaterialConsunmeFragment(String num){
-        this.num = num;
+    String num;
+    private int id;
+    private OrderMain orderMain;
+    public RealMaterialConsunmeFragment(OrderMain orderMain){
+        this.orderMain = orderMain;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,9 +73,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        addData(jsonObject.getString("result"));
-
+                        JsonUtils.parsingDeptmatusetrans(getActivity(), jsonObject.getString("result"), id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -84,22 +89,19 @@ public class RealMaterialConsunmeFragment extends Fragment {
                 mProgressDialog.dismiss();
             }
         });
+        addData(id);
     }
-    private void addData(String string) {
+    private void addData(int id) {
         ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-        for (int i = 0; i < 6; i++) {
-            MaterialInfo materialInfo = new MaterialInfo();
-            materialInfo.setNumber("LSD888"+i);
-            materialInfo.setName("螺丝刀");
-            materialInfo.setSize(50+i);
-            materialInfo.setWarehouse("仓库"+i);
-            list.add(i,materialInfo);
+        List<MaterialInfo> materialInfoList = new MaterialInfoDao(getActivity()).queryByLabtransId(id,false);
+        for (int i = 0; i < materialInfoList.size(); i++) {
+            list.add(i,materialInfoList.get(i));
         }
         materialConsumeAdapter.update(list, true);
     }
-    public void adddata(MaterialInfo materialInfo){
-        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-        list.add(0,materialInfo);
-        materialConsumeAdapter.update(list, true);
-    }
+//    public void adddata(MaterialInfo materialInfo){
+//        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
+//        list.add(0,materialInfo);
+//        materialConsumeAdapter.update(list, true);
+//    }
 }

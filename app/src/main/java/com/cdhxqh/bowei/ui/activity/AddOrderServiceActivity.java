@@ -40,9 +40,15 @@ public class AddOrderServiceActivity extends BaseActivity {
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-//    private TextView reality_item;//实际班组
-//    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
+    private TextView date;//汇报时间
+    private RelativeLayout datelayout;
+    private TextView reality_starttime;//实际开始时间
+    private RelativeLayout reality_starttimelayout;
+    private TextView reality_stoptime;//实际完成时间
+    private RelativeLayout reality_stoptimelayout;
+    private EditText employee_id;//录入人工号
+    private EditText questiontogether;//问题汇总
 
     private Button inputbtn;
 
@@ -90,7 +96,18 @@ public class AddOrderServiceActivity extends BaseActivity {
 //        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
 
         state = (EditText) findViewById(R.id.order_detail_state);
+        date = (TextView) findViewById(R.id.oder_detail_date);
+        datelayout = (RelativeLayout) findViewById(R.id.oder_detail_date_layout);
 
+        reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
+        reality_starttimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_starttime_layout);
+
+        reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
+        reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
+
+        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
+
+        questiontogether = (EditText) findViewById(R.id.questiontogether);
 
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
@@ -112,26 +129,12 @@ public class AddOrderServiceActivity extends BaseActivity {
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
         worktypelayout.setOnClickListener(new MylayoutListener(3));
-        reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
+        reality_worktypelayout.setOnClickListener(new MylayoutListener(8));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
-//        datelayout.setOnClickListener(new MydateListener());
-//        workplanlayout.setOnClickListener(new MylayoutListener(9));
-//        reality_starttimelayout.setOnClickListener(new MydateListener());
-//        reality_stoptimelayout.setOnClickListener(new MydateListener());
-//        placelayout.setOnClickListener(new MylayoutListener(placeedit, place));
-//        propertylayout.setOnClickListener(new MylayoutListener(propertyedit,property));
-//        wordtypelayout.setOnClickListener(new MylayoutListener(wordtypeedit,wordtype));
-//        reality_worktypelayout.setOnClickListener(new MylayoutListener(reality_worktypeedit,reality_worktype));
-//        applyunitylayout.setOnClickListener(new MylayoutListener(applyunityedit,applyunity));
-//        majorlayout.setOnClickListener(new MylayoutListener(majoredit,major));
-//        reality_itemlayout.setOnClickListener(new MylayoutListener(reality_itemedit,reality_item));
-//        datelayout.setOnClickListener(new MylayoutListener(dateedit,date));
-//        workplanlayout.setOnClickListener(new MylayoutListener(workplanedit,workplan));
-//        reality_starttimelayout.setOnClickListener(new MylayoutListener(reality_starttimeedit,reality_starttime));
-//        reality_stoptimelayout.setOnClickListener(new MylayoutListener(reality_stoptimeedit,reality_stoptime));
-//        employee_idlayout.setOnClickListener(new MylayoutListener(employee_idedit,employee_id));
-//        reporttimelayout.setOnClickListener(new MylayoutListener(reporttimeedit,reporttime));
+        datelayout.setOnClickListener(new MydateListener());
+        reality_starttimelayout.setOnClickListener(new MydateListener());
+        reality_stoptimelayout.setOnClickListener(new MydateListener());
 
         inputbtn.setOnClickListener(inputlistener);
 
@@ -168,13 +171,16 @@ public class AddOrderServiceActivity extends BaseActivity {
                 worktype.setText(content);
                 break;
             case 4:
-                reality_worktype.setText(content);
+//                reality_worktype.setText(content);
                 break;
             case 5:
                 applyunity.setText(content);
                 break;
             case 6:
                 major.setText(content);
+                break;
+            case 8:
+                reality_worktype.setText(content);
                 break;
             case 9:
 //                workplan.setText(content);
@@ -198,7 +204,7 @@ public class AddOrderServiceActivity extends BaseActivity {
         public void onClick(View v) {
             Intent intent = new Intent();
             OrderMain orderMain = new OrderMain();
-//            orderServe.setNumber(Integer.parseInt(number.getText().toString()));
+            orderMain.setNumber(number.getText().toString());
             orderMain.setDescribe(describe.getText().toString());
             orderMain.setPlace(place.getText().toString());
             orderMain.setProperty(property.getText().toString());
@@ -206,18 +212,13 @@ public class AddOrderServiceActivity extends BaseActivity {
             orderMain.setReality_worktype(reality_worktype.getText().toString());
             orderMain.setApplyunity(applyunity.getText().toString());
             orderMain.setMajor(major.getText().toString());
-//            orderServe.setReality_item(reality_item.getText().toString());
             orderMain.setState(state.getText().toString());
-//            orderServe.setDate(date.getText().toString());
-//            orderServe.setWorkplan(workplan.getText().toString());
-//            orderServe.setReality_starttime(reality_starttime.getText().toString());
-//            orderServe.setReality_stoptime(reality_stoptime.getText().toString());
-//            orderServe.setEmployee_id(employee_id.getText().toString());
-//            orderServe.setQuestiontogether(questiontogether.getText().toString());
-//            orderServe.setFaultclass(faultclass.getText().toString());
-//            orderServe.setError_coding(error_coding.getText().toString());
-//            orderServe.setFault_rank(fault_rank.getText().toString());
-//            orderServe.setReporttime(reporttime.getText().toString());
+            orderMain.setDate(date.getText().toString());
+            orderMain.setReality_starttime(reality_starttime.getText().toString());
+            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+            orderMain.setEmployee_id(employee_id.getText().toString());
+            orderMain.setQuestiontogether(questiontogether.getText().toString());
+            orderMain.setIsNew(true);
             intent.putExtra("orderMain", orderMain);
             AddOrderServiceActivity.this.setResult(1, intent);
             finish();
@@ -245,14 +246,29 @@ public class AddOrderServiceActivity extends BaseActivity {
             }else {
                 sb.append(i+":"+i1+":00");
             }
-//            if(layoutnum == datelayout.getId()){
-//                date.setText(sb);
-//            }else if(layoutnum == reality_starttimelayout.getId()){
-//                reality_starttime.setText(sb);
-//            }else if(layoutnum ==reality_stoptimelayout.getId()){
-//                reality_stoptime.setText(sb);
-//            }
+            if(layoutnum == datelayout.getId()){
+                date.setText(sb);
+            }else if(layoutnum == reality_starttimelayout.getId()){
+                reality_starttime.setText(sb);
+            }else if(layoutnum ==reality_stoptimelayout.getId()){
+                reality_stoptime.setText(sb);
+            }
 
+        }
+    }
+
+    /**
+     * 提交时判断填写是否合格
+     * @return
+     */
+    private String isOK(){
+        if (describe.getText().equals("")||place.equals("")
+                ||property.getText().equals("")||worktype.getText().equals("")
+                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+                ||major.getText().equals("")||date.getText().equals("")){
+            return "请完善信息";
+        }else{
+            return "OK";
         }
     }
 }

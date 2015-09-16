@@ -115,13 +115,13 @@ public class OrderMainDao {
     }
 
     /**
-     * 按照工单编号查询工单
-     * @param num
+     * 按照工单id查询工单
+     * @param id
      * @return
      */
-    public OrderMain SearchByNum(String num){
+    public OrderMain SearchByNum(int id){
         try {
-            return OrderMainDaoOpe.queryBuilder().where().eq("number",num).queryForFirst();
+            return OrderMainDaoOpe.queryBuilder().where().eq("id",id).queryForFirst();
         } catch (SQLException e) {
             e.printStackTrace();
         }

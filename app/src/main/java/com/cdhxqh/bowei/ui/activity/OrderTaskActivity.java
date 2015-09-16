@@ -1,8 +1,11 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.Dao.JobTaskDao;
@@ -40,11 +44,13 @@ public class OrderTaskActivity extends BaseActivity {
     private ImageView addimg;
     private Button choosebtn;
     public RecyclerView recyclerView;
+    private SwipeRefreshLayout refreshLayout = null;
     private OrderTaskAdapter orderTaskAdapter;
     LinearLayoutManager layoutManager;
     private ProgressDialog mProgressDialog;
     String name;
-    String num;
+    int id;
+    OrderMain orderMain;
     boolean isMultiple = false;
 
     @Override
@@ -57,23 +63,28 @@ public class OrderTaskActivity extends BaseActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        initView();
+    }
+
+    @Override
     protected void findViewById() {
         backimg = (ImageView) findViewById(R.id.maintenance_title_back);
         titlename = (TextView) findViewById(R.id.title_name);
         addimg = (ImageView) findViewById(R.id.maintenance_title_add);
         choosebtn = (Button) findViewById(R.id.choose_btn);
         recyclerView = (RecyclerView) findViewById(R.id.task_list);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
     }
 
     @Override
     protected void initView() {
         name = (String) getIntent().getExtras().get("fromname");
-        num = (String) getIntent().getExtras().get("ordernum");
-        OrderMain orderMain = new OrderMainDao(this).SearchByNum(num);
-
-//        if (name.equals(getResources().getString(R.string.maintenance))) {
-            addimg.setVisibility(View.GONE);
-//        }
+        id = getIntent().getExtras().getInt("orderid");
+        orderMain = new OrderMainDao(this).SearchByNum(id);
+        addimg.setVisibility(View.GONE);
         titlename.setText(getResources().getString(R.string.task_list));
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -82,19 +93,12 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         orderTaskAdapter = new OrderTaskAdapter(this, this);
         recyclerView.setAdapter(orderTaskAdapter);
-        if(!num.equals("0")&&!orderMain.isyuzhi()){
+        if(orderMain.isNew()){//本地新建工单
+            addLocationTask(orderMain.getId());
+        }else{//接收的工单
             getData();
-        }else if(orderMain.isyuzhi()){
-            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(Integer.parseInt(orderMain.getWorkplan()));
-            OrderTask orderTask = new OrderTask();
-            orderTask.setNum(num);
-//            orderTask.setTask(task.getJPNUM());
-//            orderTask.setDigest(task.getDESCRIPTION());
-//            new OrderTaskDao(this).update(orderTask);
-//            ArrayList<OrderTask> list = new ArrayList<OrderTask>();
-//            list.add(0,orderTask);
-//            orderTaskAdapter.update(list,true);
         }
+
 
 
         backimg.setOnClickListener(new View.OnClickListener() {
@@ -110,12 +114,14 @@ public class OrderTaskActivity extends BaseActivity {
 //                Intent intent = new Intent(OrderTaskActivity.this,)
             }
         });
+
+//        refreshLayout.setOnRefreshListener(this);
     }
 
     private void getData() {
         mProgressDialog = ProgressDialog.show(this, null,
                 getString(R.string.requesting), true, true);
-        HttpManager.getData(this, Constants.getOrderTaskUrl(num), new HttpRequestHandler<String>() {
+        HttpManager.getData(this, Constants.getOrderTaskUrl(orderMain.getNumber()), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 JSONObject jsonObject = null;
@@ -123,7 +129,7 @@ public class OrderTaskActivity extends BaseActivity {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
 //                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        addData(jsonObject.getString("result"));
+                        JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"),orderMain.getId());
                         mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
@@ -137,21 +143,40 @@ public class OrderTaskActivity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-
             }
         });
+        addData(orderMain.getId());
     }
 
-    private void addData(String str) {
+    private void addData(int id) {
         ArrayList<OrderTask> list = new ArrayList<OrderTask>();
-        list = JsonUtils.parsingOrderTask(str);
-//        for (int i = 0; i < 3; i++) {
-//            OrderTask orderTask = new OrderTask();
-//            orderTask.setTask(100+i*10);
-//            orderTask.setDigest("导入装置");
-//            list.add(i,orderTask);
-//        }
+        List<OrderTask>orderTaskList = new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id);
+        for(int i = 0;i < orderTaskList.size();i++){
+            list.add(i,orderTaskList.get(i));
+        }
         orderTaskAdapter.update(list, true);
+    }
+
+    private void addLocationTask(int id) {
+        if(new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size()>0){
+            addData(id);
+        }else {
+            ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+            OrderTask orderTask;
+            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
+            for (int i = 0; i < task.size(); i++) {
+                orderTask = new OrderTask();
+                orderTask.setBelongordermain(id);
+                orderTask.setNum(orderMain.getNumber());
+                orderTask.setDigest(task.get(i).getDESCRIPTION());
+                orderTask.setOrdermainid(String.valueOf(task.get(i).getJOBTASKID()));
+                orderTask.setTask(task.get(i).getJPTASK());
+//            orderTask.setWosequence();
+                new OrderTaskDao(OrderTaskActivity.this).update(orderTask);
+                list.add(i, orderTask);
+            }
+            orderTaskAdapter.update(list, true);
+        }
     }
 
     public void changeitem() {
@@ -163,7 +188,7 @@ public class OrderTaskActivity extends BaseActivity {
         }
     }
 
-    public void changeitenback(){
+    public void changeitenback() {
         isMultiple = false;
         choosebtn.setVisibility(View.GONE);
         for (int i = 0; i < orderTaskAdapter.getItemCount(); i++) {
@@ -172,12 +197,37 @@ public class OrderTaskActivity extends BaseActivity {
         }
     }
 
+
+    //下拉刷新触发事件
+//    @Override
+//    public void onRefresh() {
+//        if (orderTaskAdapter.getItemCount() > 0) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(OrderTaskActivity.this);
+//            builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
+//                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                            getData();
+//                        }
+//                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    refreshLayout.setRefreshing(false);
+//                    dialogInterface.dismiss();
+//                }
+//            }).create().show();
+//        } else {
+//            getData();
+//        }
+//    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0
-                &&isMultiple == true) {
+                && isMultiple == true) {
             changeitenback();
             return true;
         }

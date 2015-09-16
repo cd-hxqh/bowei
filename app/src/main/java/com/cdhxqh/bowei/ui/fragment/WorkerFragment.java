@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.WorkerInfo;
@@ -18,13 +19,16 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.WorkerInfoAdapter;
+import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * 员工信息页面
  * Created by think on 2015/8/25.
  */
 public class WorkerFragment extends Fragment {
@@ -32,8 +36,10 @@ public class WorkerFragment extends Fragment {
     private WorkerInfoAdapter workerInfoAdapter;
     private ProgressDialog mProgressDialog;
     private String num;
-    public WorkerFragment(String num){
-        this.num = num;
+    private int id;
+    private OrderMain orderMain;
+    public WorkerFragment(OrderMain orderMain){
+        this.orderMain = orderMain;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,8 @@ public class WorkerFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         workerInfoAdapter = new WorkerInfoAdapter(getActivity());
         recyclerView.setAdapter(workerInfoAdapter);
+        id = orderMain.getId();
+        num = orderMain.getNumber();
         getData();
         return view;
     }
@@ -67,9 +75,7 @@ public class WorkerFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        addData(jsonObject.getString("result"));
-
+                        JsonUtils.parsingWorkInfo(getActivity(), jsonObject.getString("result"), id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -85,16 +91,15 @@ public class WorkerFragment extends Fragment {
                 mProgressDialog.dismiss();
             }
         });
+        addData(id);
     }
-    private void addData(String string) {
+    private void addData(int id) {
         ArrayList<WorkerInfo> list = new ArrayList<WorkerInfo>();
-//        for (int i = 0; i < 3; i++) {
-//            WorkerInfo workerInfo = new WorkerInfo();
-//            workerInfo.setNumber(100+i);
-//            workerInfo.setName("李丽");
-//            list.add(i,workerInfo);
-//        }
-//        workerInfoAdapter.update(list, true);
+        List<WorkerInfo>workerInfoList = new WorkerInfoDao(getActivity()).queryByOrdermainId(id);
+        for (int i = 0; i < workerInfoList.size(); i++) {
+            list.add(i,workerInfoList.get(i));
+        }
+        workerInfoAdapter.update(list, true);
     }
     public void adddata(WorkerInfo workerInfo){
         ArrayList<WorkerInfo> list = new ArrayList<WorkerInfo>();

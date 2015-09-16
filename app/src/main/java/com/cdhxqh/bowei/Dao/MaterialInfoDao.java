@@ -3,7 +3,7 @@ package com.cdhxqh.bowei.Dao;
 import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
-import com.cdhxqh.bowei.bean.WorkerInfo;
+import com.cdhxqh.bowei.bean.MaterialInfo;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -12,18 +12,18 @@ import java.util.List;
 /**
  * Created by think on 2015/9/7.
  */
-public class WorkerInfoDao {
+public class MaterialInfoDao {
     private Context context;
-    private Dao<WorkerInfo, Integer> WorkerInfoDaoOpe;
+    private Dao<MaterialInfo, Integer> MaterialInfoDaoOpe;
     private DatabaseHelper helper;
 
-    public WorkerInfoDao(Context context)
+    public MaterialInfoDao(Context context)
     {
         this.context = context;
         try
         {
             helper = DatabaseHelper.getHelper(context);
-            WorkerInfoDaoOpe = helper.getDao(WorkerInfo.class);
+            MaterialInfoDaoOpe = helper.getDao(MaterialInfo.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -31,13 +31,13 @@ public class WorkerInfoDao {
     }
 
     /**
-     * 更新员工信息
-     * @param workerInfo
+     * 更新物料信息
+     * @param materialInfo
      */
-    public void update(WorkerInfo workerInfo) {
+    public void update(MaterialInfo materialInfo) {
         try
         {
-            WorkerInfoDaoOpe.createOrUpdate(workerInfo);
+            MaterialInfoDaoOpe.createOrUpdate(materialInfo);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -45,12 +45,12 @@ public class WorkerInfoDao {
     }
 
     /**
-     * 查询所有员工信息
+     * 查询所有物料信息
      * @return
      */
-    public List<WorkerInfo> queryForAll(){
+    public List<MaterialInfo> queryForAll(){
         try {
-            return WorkerInfoDaoOpe.queryForAll();
+            return MaterialInfoDaoOpe.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,25 +58,13 @@ public class WorkerInfoDao {
     }
 
     /**
-     * 根据工单id查询员工信息
-     * @return
-     */
-    public List<WorkerInfo> queryByOrdermainId(int id){
-        try {
-            return WorkerInfoDaoOpe.queryBuilder().where().eq("belongorderid",id).query();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    /**
-     * 根据LABTRANSID查询存在员工信息
+     * 根据LABTRANSID查询是否存在员工信息
      * @return
      */
     public boolean queryByLabtransId(String LabtransId,int id){
         try {
-            List<WorkerInfo> workerInfos = WorkerInfoDaoOpe.
-                    queryBuilder().where().eq("LabtransId", LabtransId).and().eq("belongorderid",id).and().query();
+            List<MaterialInfo> workerInfos = MaterialInfoDaoOpe.
+                    queryBuilder().where().eq("ITEMNUM", LabtransId).and().eq("belongorderid",id).and().query();
             if (workerInfos.size()>0){
                 return true;
             }else {
@@ -88,12 +76,22 @@ public class WorkerInfoDao {
         return false;
     }
 
+    public List<MaterialInfo> queryByLabtransId(int id,boolean isPlan){
+        try {
+            return MaterialInfoDaoOpe.queryBuilder()
+                    .where().eq("belongorderid",id).and().eq("isPlan",isPlan).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
-     * 删除所有员工信息
+     * 删除所有信息
      */
     public void deleteall(){
         try {
-            WorkerInfoDaoOpe.delete(WorkerInfoDaoOpe.queryForAll());
+            MaterialInfoDaoOpe.delete(MaterialInfoDaoOpe.queryForAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }

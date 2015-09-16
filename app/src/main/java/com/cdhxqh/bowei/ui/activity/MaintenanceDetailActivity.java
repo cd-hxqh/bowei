@@ -140,7 +140,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this,getResources().getString(R.string.maintenance),
-                        orderMain.getNumber()+"");
+                        orderMain.getId());
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
@@ -152,9 +152,8 @@ public class MaintenanceDetailActivity extends BaseActivity {
         reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
-//        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(10));
+//        workplanlayout.setOnClickListener(new MylayoutListener(9));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 
@@ -193,7 +192,13 @@ public class MaintenanceDetailActivity extends BaseActivity {
             String isok = isOK();
             if(isok.equals("OK")){
                 OrderMain orderMain = SaveData();
-                String data = WebserviceDataUtils.updateData(MaintenanceDetailActivity.this,orderMain);
+                String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(),MaintenanceDetailActivity.this,orderMain);
+                String result;
+                if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
+                    result = getBaseApplication().getWsService().InsertWO(data);
+                }else {
+                    result = getBaseApplication().getWsService().UpdataWO(data);
+                }
 
             }else if(isok.equals("请完善信息")){
                 Toast.makeText(MaintenanceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
@@ -262,7 +267,6 @@ public class MaintenanceDetailActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
             if(dayOfMonth<10){
                 sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
             }else {
@@ -309,6 +313,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
 
     private OrderMain SaveData(){
         OrderMain orderMain = new OrderMain();
+        orderMain.setId(this.orderMain.getId());
         if (number.getText().toString()!=null){
             orderMain.setNumber(number.getText().toString());
         }
@@ -333,6 +338,8 @@ public class MaintenanceDetailActivity extends BaseActivity {
         orderMain.setPm(pm.getText().toString());
         orderMain.setNotinspection_device(notinspection_device.getText().toString());
         orderMain.setInspect_result(inspect_result.getText().toString());
+        orderMain.setIsNew(this.orderMain.isNew());
+        orderMain.setIsyuzhi(this.orderMain.isyuzhi());
         return orderMain;
     }
 }

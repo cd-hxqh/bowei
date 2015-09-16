@@ -68,9 +68,9 @@ public class JobTaskDao {
         }
     }
 
-    public List<JobTask> QueryByJobTaskId(int value){
+    public List<JobTask> QueryByJobTaskId(String  value){
         try {
-            return JobTaskDaoOpe.queryBuilder().where().eq("JOBTASKID",value).query();
+            return JobTaskDaoOpe.queryBuilder().where().eq("JPNUM",value).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

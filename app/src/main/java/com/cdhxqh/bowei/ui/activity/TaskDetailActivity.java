@@ -3,10 +3,12 @@ package com.cdhxqh.bowei.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cdhxqh.bowei.Dao.OrderTaskDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderTask;
 
@@ -22,6 +24,7 @@ public class TaskDetailActivity extends BaseActivity{
     private EditText taskzxr;
     private EditText taskjcr;
     OrderTask orderTask;
+    private Button okbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class TaskDetailActivity extends BaseActivity{
         taskdigest = (EditText) findViewById(R.id.task_digest);
         taskzxr = (EditText) findViewById(R.id.task_zxr);
         taskjcr = (EditText) findViewById(R.id.task_jcr);
+        okbtn = (Button) findViewById(R.id.task_ok);
     }
 
     @Override
@@ -57,5 +61,17 @@ public class TaskDetailActivity extends BaseActivity{
         taskdigest.setText(orderTask.getDigest());
         taskzxr.setText(orderTask.getZxr());
         taskjcr.setText(orderTask.getJcr());
+        okbtn.setOnClickListener(oklistener);
     }
+
+    private View.OnClickListener oklistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            orderTask.setJcr(taskjcr.getText().toString());
+            orderTask.setZxr(taskzxr.getText().toString());
+            orderTask.setIschange(true);
+            new OrderTaskDao(TaskDetailActivity.this).update(orderTask);
+            finish();
+        }
+    };
 }

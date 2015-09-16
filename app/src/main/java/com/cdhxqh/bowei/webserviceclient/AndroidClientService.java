@@ -78,6 +78,7 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0", string);
+        soapReq.addProperty("in1",null);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {

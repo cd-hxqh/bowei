@@ -4,19 +4,28 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.FailureListDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by think on 2015/8/18.
@@ -50,18 +59,49 @@ public class ServeDetailActivity extends BaseActivity {
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
     private RelativeLayout reality_stoptimelayout;
-    private TextView employee_id;//录入人工号
+    private EditText employee_id;//录入人工号
     private EditText questiontogether;//问题汇总
-    private EditText faultclass;
-    private EditText error_coding;
-    private EditText fault_rank;
+    private TextView faultclass;
+    private RelativeLayout faultclasslayout;
+    private TextView error_coding;
+    private RelativeLayout error_codinglayout;
+    private TextView cause;
+    private RelativeLayout causelayout;
+    private TextView remedy;
+    private RelativeLayout remedylayout;
+    private TextView fault_rank;
+    private RelativeLayout fault_ranklayout;
     private TextView reporttime;
+    private RelativeLayout reporttimelayout;
+
+    private String parent;
 
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     StringBuffer sb;
     private int layoutnum;
     private ProgressDialog mProgressDialog;
+
+    private Button inputbtn;
+
+    protected static final int S = 0;
+    protected static final int F = 1;
+    private String result;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case S:
+                    number.setText(result);
+                    Toast.makeText(ServeDetailActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    orderMain.setIsyuzhi(true);
+                    break;
+                case F:
+                    Toast.makeText(ServeDetailActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +153,30 @@ public class ServeDetailActivity extends BaseActivity {
 
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
-        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
-        questiontogether = (EditText) findViewById(R.id.order_detail_questiontogether);
-//        faultclass = (EditText) findViewById(R.id.order_detail_faultclass);
-//        error_coding = (EditText) findViewById(R.id.order_detail_error_coding);
+
+        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
+
+        questiontogether = (EditText) findViewById(R.id.questiontogether);
+
+        faultclass = (TextView) findViewById(R.id.oder_detail_faultclass);
+        faultclasslayout = (RelativeLayout) findViewById(R.id.oder_detail_faultclass_layout);
+
+        error_coding = (TextView) findViewById(R.id.oder_detail_error_coding);
+        error_codinglayout = (RelativeLayout) findViewById(R.id.oder_detail_error_coding_layout);
+
+        cause = (TextView) findViewById(R.id.oder_detail_cause);
+        causelayout = (RelativeLayout) findViewById(R.id.oder_detail_cause_layout);
+
+        remedy = (TextView) findViewById(R.id.oder_detail_remedy);
+        remedylayout = (RelativeLayout) findViewById(R.id.oder_detail_remedy_layout);
+
+        fault_rank = (TextView) findViewById(R.id.oder_detail_fault_rank);
+        fault_ranklayout = (RelativeLayout) findViewById(R.id.oder_detail_fault_rank_layout);
+
+        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
+        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
+
+        inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
     @Override
@@ -134,7 +194,7 @@ public class ServeDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this,getResources().getString(R.string.serve),
-                        orderMain.getNumber() + "");
+                        orderMain.getId());
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
@@ -148,17 +208,67 @@ public class ServeDetailActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
 //        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(10));
+        workplanlayout.setOnClickListener(new MylayoutListener(9));
+        faultclasslayout.setOnClickListener(new MylayoutListener(11));
+        error_codinglayout.setOnClickListener(new MylayoutListener(12));
+        causelayout.setOnClickListener(new MylayoutListener(13));
+        remedylayout.setOnClickListener(new MylayoutListener(14));
+        fault_ranklayout.setOnClickListener(new MylayoutListener(15));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
+
+        inputbtn.setOnClickListener(inputlistener);
     }
+
+    private View.OnClickListener inputlistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            OrderMain orderMain1 = SaveData();
+            mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
+                    getString(R.string.inputing), true, true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            new AsyncTask<String, String, String>() {
+                @Override
+                protected String doInBackground(String... strings) {
+
+                    String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    if(S==null){
+                        return "false";
+                    }else {
+                        return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    if(!s.equals("false")) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if (object.getString("errorMsg").equals("成功")) {
+                                mHandler.sendEmptyMessage(S);
+                                result = object.getString("woNum");
+                            } else {
+                                mHandler.sendEmptyMessage(F);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        mHandler.sendEmptyMessage(F);
+                    }
+                    mProgressDialog.dismiss();
+                }
+            }.execute();
+        }
+    };
 
     private void getData(){
         orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
     private void setview(){
-        number.setText(orderMain.getNumber() + "");
+        number.setText(orderMain.getNumber());
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
         property.setText(orderMain.getProperty());
@@ -167,13 +277,17 @@ public class ServeDetailActivity extends BaseActivity {
         applyunity.setText(orderMain.getApplyunity());
         major.setText(orderMain.getMajor());
         state.setText(orderMain.getState());
-//        date.setText(orderMain.getDate());
-//        workplan.setText(orderMain.getWorkplan());
-//        reality_starttime.setText(orderMain.getReality_starttime());
-//        reality_stoptime.setText(orderMain.getReality_stoptime());
-//        employee_id.setText(orderMain.getEmployee_id());
-//        questiontogether.setText(orderMain.getQuestiontogether());
-//        faultclass.setText(orderMain.getFaultclass());
+        date.setText(orderMain.getDate());
+        workplan.setText(orderMain.getWorkplan());
+        reality_starttime.setText(orderMain.getReality_starttime());
+        reality_stoptime.setText(orderMain.getReality_stoptime());
+        employee_id.setText(orderMain.getEmployee_id());
+        questiontogether.setText(orderMain.getQuestiontogether());
+        faultclass.setText(orderMain.getFaultclass());
+        error_coding.setText(orderMain.getError_coding());
+        cause.setText(orderMain.getCause());
+        remedy.setText(orderMain.getRemedy());
+        fault_rank.setText(orderMain.getFault_rank());
     }
 
     public class MydateListener implements View.OnClickListener{
@@ -188,13 +302,28 @@ public class ServeDetailActivity extends BaseActivity {
     }
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
-        public MylayoutListener(int requestcode){
+        String parent;
+
+        public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(ServeDetailActivity.this,ItemChooseListActivity.class);
-            intent.putExtra("requestCode",requestCode);
+            if(faultclass.getText().equals("")&&requestCode==12){
+                Toast.makeText(ServeDetailActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(error_coding.getText().equals("")&&(requestCode==13||requestCode==14)){
+                Toast.makeText(ServeDetailActivity.this,"请选择问题代码",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(ServeDetailActivity.this, ItemChooseListActivity.class);
+            intent.putExtra("requestCode", requestCode);
+            this.parent = ServeDetailActivity.this.parent;
+            if (faultclass.getText() != null && requestCode == 12) {
+                intent.putExtra("parent", new FailureListDao(ServeDetailActivity.this).queryForClassByCode(faultclass.getText().toString()));
+            } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
+                intent.putExtra("parent", orderMain.getError_coding_list());
+            }
             startActivityForResult(intent, requestCode);
         }
     }
@@ -202,8 +331,12 @@ public class ServeDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
+        String number = null;
+        if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                number = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
@@ -226,8 +359,37 @@ public class ServeDetailActivity extends BaseActivity {
             case 6:
                 major.setText(content);
                 break;
-            case 10:
+            case 9:
                 workplan.setText(content);
+                break;
+            case 11:
+                faultclass.setText(content);
+                error_coding.setText("");
+                orderMain.setError_coding_list("");
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
+                break;
+            case 12:
+                error_coding.setText(content);
+//                parent = number;
+                orderMain.setError_coding_list(number);
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
+                break;
+            case 13:
+                cause.setText(content);
+                orderMain.setCause_list(number);
+                break;
+            case 14:
+                remedy.setText(content);
+                orderMain.setRemedy_list(number);
+                break;
+            case 15:
+                fault_rank.setText(content);
                 break;
             default:
                 break;
@@ -285,9 +447,7 @@ public class ServeDetailActivity extends BaseActivity {
 
     private OrderMain SaveData(){
         OrderMain orderMain = new OrderMain();
-        if (number.getText().toString()!=null){
-            orderMain.setNumber(number.getText().toString());
-        }
+        orderMain.setNumber(number.getText().toString());
         orderMain.setDescribe(describe.getText().toString());
         orderMain.setPlace(place.getText().toString());
         orderMain.setProperty(property.getText().toString());
@@ -298,13 +458,16 @@ public class ServeDetailActivity extends BaseActivity {
 //            orderMain.setReality_item(reality_item.getText().toString());
         orderMain.setState(state.getText().toString());
         orderMain.setDate(date.getText().toString());
-        if(workplan.getText()!=null) {
-            orderMain.setWorkplan(workplan.getText().toString());
-        }
+        orderMain.setWorkplan(workplan.getText().toString());
         orderMain.setReality_starttime(reality_starttime.getText().toString());
         orderMain.setReality_stoptime(reality_stoptime.getText().toString());
         orderMain.setEmployee_id(employee_id.getText().toString());
         orderMain.setQuestiontogether(questiontogether.getText().toString());
+        orderMain.setFaultclass(faultclass.getText().toString());
+        orderMain.setError_coding(error_coding.getText().toString());
+        orderMain.setCause(cause.getText().toString());
+        orderMain.setRemedy(remedy.getText().toString());
+        orderMain.setFault_rank(fault_rank.getText().toString());
 
         return orderMain;
     }

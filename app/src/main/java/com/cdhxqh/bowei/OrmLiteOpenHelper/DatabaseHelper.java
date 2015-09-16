@@ -13,6 +13,7 @@ import com.cdhxqh.bowei.bean.Jobmaterial;
 import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
+import com.cdhxqh.bowei.bean.MaterialInfo;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.bean.WorkType;
@@ -37,7 +38,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Map<String, Dao> daos = new HashMap<String, Dao>();
 
     private DatabaseHelper(Context context) {
-        super(context, TABLE_NAME, null, 4);
+        super(context, TABLE_NAME, null, 5);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, OrderTask.class);
             TableUtils.createTable(connectionSource, WorkerInfo.class);
             TableUtils.createTable(connectionSource, Alndomain.class);
+            TableUtils.createTable(connectionSource, MaterialInfo.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,6 +90,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, OrderTask.class, true);
             TableUtils.dropTable(connectionSource, WorkerInfo.class, true);
             TableUtils.dropTable(connectionSource, Alndomain.class, true);
+            TableUtils.dropTable(connectionSource, MaterialInfo.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -14,6 +14,8 @@ public class OrderTask implements Serializable {
     private int id;
     @DatabaseField(columnName = "num")
     private String num;
+    @DatabaseField(columnName = "ordermainid")
+    private String ordermainid;
     @DatabaseField(columnName = "task")
     private String task;//任务名
     @DatabaseField(columnName = "digest")
@@ -26,6 +28,10 @@ public class OrderTask implements Serializable {
     private String jcr;//检查人
     @DatabaseField(columnName = "workorderid")
     private String workorderid;
+    @DatabaseField(columnName = "belongordermain")
+    private int belongordermain;//所属工单id
+    @DatabaseField(columnName = "ischange")
+    private boolean ischange;
 
 
     public String getNum() {
@@ -34,6 +40,22 @@ public class OrderTask implements Serializable {
 
     public void setNum(String num) {
         this.num = num;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getOrdermainid() {
+        return ordermainid;
+    }
+
+    public void setOrdermainid(String ordermainid) {
+        this.ordermainid = ordermainid;
     }
 
     public String getTask() {
@@ -82,5 +104,21 @@ public class OrderTask implements Serializable {
 
     public void setWorkorderid(String workorderid) {
         this.workorderid = workorderid;
+    }
+
+    public int getBelongordermain() {
+        return belongordermain;
+    }
+
+    public void setBelongordermain(int belongordermain) {
+        this.belongordermain = belongordermain;
+    }
+
+    public boolean ischange() {
+        return ischange;
+    }
+
+    public void setIschange(boolean ischange) {
+        this.ischange = ischange;
     }
 }

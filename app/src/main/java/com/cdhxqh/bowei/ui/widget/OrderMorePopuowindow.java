@@ -23,7 +23,7 @@ import com.cdhxqh.bowei.ui.activity.ServeRealInfoActivity;
 public class OrderMorePopuowindow extends PopupWindow {
     private View conentView;
 
-    public OrderMorePopuowindow(final Activity context, final String fromname, final String number) {
+    public OrderMorePopuowindow(final Activity context, final String fromname, final int id) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         conentView = inflater.inflate(R.layout.popup_order_more, null);
@@ -58,7 +58,7 @@ public class OrderMorePopuowindow extends PopupWindow {
                 OrderMorePopuowindow.this.dismiss();
                 Intent intent = new Intent(context, OrderTaskActivity.class);
                 intent.putExtra("fromname", fromname);
-                intent.putExtra("ordernum", number);
+                intent.putExtra("orderid", id);
                 context.startActivity(intent);
 
             }
@@ -71,15 +71,15 @@ public class OrderMorePopuowindow extends PopupWindow {
                 OrderMorePopuowindow.this.dismiss();
                 if (fromname.equals(context.getResources().getString(R.string.maintenance))) {
                     Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
-                    intent.putExtra("ordernum", number);
+                    intent.putExtra("orderid", id);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.serve))){
                     Intent intent = new Intent(context, ServeRealInfoActivity.class);
-                    intent.putExtra("ordernum", number);
+                    intent.putExtra("orderid", id);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.service))){
                     Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
-                    intent.putExtra("ordernum", number);
+                    intent.putExtra("orderid", id);
                     context.startActivity(intent);
                 }
             }

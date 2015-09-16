@@ -37,7 +37,7 @@ public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.task.setText(list.get(position).getTask()+"");
+        holder.task.setText(list.get(position).getTask());
         holder.digest.setText(list.get(position).getDigest());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

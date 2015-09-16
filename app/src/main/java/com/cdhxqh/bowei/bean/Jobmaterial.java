@@ -22,6 +22,8 @@ public class Jobmaterial {
     private String JOBPLANID;
     @DatabaseField(columnName = "JPNUM")
     private String JPNUM;
+    @DatabaseField(columnName = "Warehouse")
+    private String Warehouse;
 
 
     public int getId() {
@@ -78,5 +80,13 @@ public class Jobmaterial {
 
     public void setJPNUM(String JPNUM) {
         this.JPNUM = JPNUM;
+    }
+
+    public String getWarehouse() {
+        return Warehouse;
+    }
+
+    public void setWarehouse(String warehouse) {
+        Warehouse = warehouse;
     }
 }

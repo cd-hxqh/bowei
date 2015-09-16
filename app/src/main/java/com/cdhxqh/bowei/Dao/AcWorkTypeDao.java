@@ -58,6 +58,21 @@ public class AcWorkTypeDao {
     }
 
     /**
+     * 查询服务工单实际工作类型
+     * @return
+     */
+    public List<AcWorkType> queryForSVR(){
+        try {
+            return AcWorkTypeDaoOpe.queryBuilder().where()
+                    .eq("VALUE", "FGZ").or().eq("VALUE","LFW")
+                    .or().eq("VALUE","RDFW").or().eq("VALUE","ZJFW").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){

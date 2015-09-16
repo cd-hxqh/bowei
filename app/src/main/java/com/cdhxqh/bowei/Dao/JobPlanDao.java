@@ -57,6 +57,14 @@ public class JobPlanDao {
         return null;
     }
 
+    public Jobplan queryByJobNum(String num){
+        try {
+            return JobPlanDaoOpe.queryBuilder().where().eq("JPNUM",num).queryForFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 删除所有信息
      */

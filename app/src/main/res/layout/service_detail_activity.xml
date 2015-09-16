@@ -63,6 +63,7 @@
                 android:text="@string/order_detail_state"
                 android:textColor="@color/black"/>
             <EditText
+                android:id="@+id/order_detail_state"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
@@ -80,40 +81,7 @@
                 android:text="@string/order_detail_questiontogether"
                 android:textColor="@color/black"/>
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/content_bg02">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_centerVertical="true"
-                    android:text="@string/order_detail_reporttime"
-                    android:textColor="@color/black"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/gray"/>
-            </RelativeLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_faultclass"
-                android:textColor="@color/black"/>
-            <EditText
+                android:id="@+id/questiontogether"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"
@@ -126,24 +94,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="@string/order_detail_error_coding"
+                android:text="@string/order_detail_employeeID"
                 android:textColor="@color/black"/>
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_fault_rank"
-                android:textColor="@color/black"/>
-            <EditText
+                android:id="@+id/oder_detail_employee_id"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"

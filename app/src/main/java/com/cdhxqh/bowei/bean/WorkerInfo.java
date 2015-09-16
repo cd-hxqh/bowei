@@ -16,7 +16,7 @@ public class WorkerInfo implements Serializable {
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(columnName = "number")
-    private int number;//员工编号
+    private String number;//员工编号
     @DatabaseField(columnName = "name")
     private String name;//员工名称
     @DatabaseField(columnName = "startdate")
@@ -28,13 +28,17 @@ public class WorkerInfo implements Serializable {
     @DatabaseField(columnName = "stoptime")
     private String stoptime;//结束时间
     @DatabaseField(columnName = "worktime")
-    private int worktime;//工时
+    private String worktime;//工时
+    @DatabaseField(columnName = "LabtransId")
+    private String LabtransId;
+    @DatabaseField(columnName = "belongorderid")
+    private int belongorderid;//所属工单id
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -78,11 +82,35 @@ public class WorkerInfo implements Serializable {
         this.stoptime = stoptime;
     }
 
-    public int getWorktime() {
+    public String getWorktime() {
         return worktime;
     }
 
-    public void setWorktime(int worktime) {
+    public void setWorktime(String worktime) {
         this.worktime = worktime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getBelongorderid() {
+        return belongorderid;
+    }
+
+    public void setBelongorderid(int belongorderid) {
+        this.belongorderid = belongorderid;
+    }
+
+    public String getLabtransId() {
+        return LabtransId;
+    }
+
+    public void setLabtransId(String labtransId) {
+        LabtransId = labtransId;
     }
 }

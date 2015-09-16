@@ -15,8 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.MaterialInfo;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.cdhxqh.bowei.ui.fragment.ConsumeMaterialFragment;
 import com.cdhxqh.bowei.ui.fragment.GiveMaterialFragment;
@@ -50,7 +52,9 @@ public class ServeRealInfoActivity extends BaseActivity {
     private JieyunFragment jieyunFragment = new JieyunFragment();
     private Intent intent;
     private int requestCode;
-    private String num;
+    public int id;
+    public String num;
+    OrderMain orderMain;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,8 @@ public class ServeRealInfoActivity extends BaseActivity {
     @Override
     protected void initView() {
         titlename.setText(getResources().getString(R.string.real_info));
-        num = (String) getIntent().getExtras().get("ordernum");
+        id = getIntent().getExtras().getInt("orderid");
+        orderMain = new OrderMainDao(this).SearchByNum(id);
         currentIndex = 0;
         backimg.setOnClickListener(new OnClickListener() {
             @Override
@@ -92,6 +97,7 @@ public class ServeRealInfoActivity extends BaseActivity {
             public void onClick(View v) {
                 requestCode = 1;
                 intent = new Intent(ServeRealInfoActivity.this,AddWorkerInfoActivity.class);
+                intent.putExtra("orderid",id);
                 startActivityForResult(intent, requestCode);
             }
         });
@@ -107,8 +113,8 @@ public class ServeRealInfoActivity extends BaseActivity {
                 mViewPager.setCurrentItem(1);
             }
         });
-        workerFragment = new WorkerFragment(num);
-        realMaterialConsunmeFragment = new RealMaterialConsunmeFragment(num);
+        workerFragment = new WorkerFragment(orderMain);
+        realMaterialConsunmeFragment = new RealMaterialConsunmeFragment(orderMain);
         fragmentlist.add(workerFragment);
 //        fragmentlist.add(giveMaterialFragment);
 //        fragmentlist.add(consumeMaterialFragment);

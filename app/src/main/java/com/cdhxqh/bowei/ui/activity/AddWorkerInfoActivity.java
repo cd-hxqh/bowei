@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 
@@ -44,6 +45,8 @@ public class AddWorkerInfoActivity extends BaseActivity {
     private int layoutnum = 0;
     private long start;
     private long stop;
+
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class AddWorkerInfoActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        id = getIntent().getExtras().getInt("orderid");
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         titlename.setText(getResources().getString(R.string.worker_info_add_new));
@@ -100,14 +104,17 @@ public class AddWorkerInfoActivity extends BaseActivity {
                     } else {
                         intent = new Intent();
                         WorkerInfo workerInfo = new WorkerInfo();
-                        workerInfo.setNumber(Integer.parseInt(workernum.getText().toString()));
+                        workerInfo.setNumber(workernum.getText().toString());
                         workerInfo.setName(workername.getText().toString());
                         workerInfo.setStartdate(startdate.getText().toString());
                         workerInfo.setStopdate(stopdate.getText().toString());
                         workerInfo.setStarttime(starttime.getText().toString());
                         workerInfo.setStoptime(stoptime.getText().toString());
-                        workerInfo.setWorktime(Integer.parseInt(worktime.getText().toString()));
+                        workerInfo.setWorktime(worktime.getText().toString());
+                        workerInfo.setLabtransId("-1");
+                        workerInfo.setBelongorderid(id);
                         intent.putExtra("workinfo", workerInfo);
+                        new WorkerInfoDao(AddWorkerInfoActivity.this).update(workerInfo);
                         AddWorkerInfoActivity.this.setResult(1, intent);
                         finish();
                     }

@@ -170,8 +170,14 @@ public class ItemChooseListActivity extends BaseActivity{
 //                }
 
                 break;
-            case 8:
-
+            case 8://服务工单实际工作类型
+                List<AcWorkType>acWorkTypeList1 = new AcWorkTypeDao(this).queryForSVR();
+                for(int i = 0;i < acWorkTypeList1.size();i++){
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(acWorkTypeList1.get(i).getDESCRIPTION());
+                    chooseItem.setValue(acWorkTypeList1.get(i).getVALUE());
+                    list.add(i,chooseItem);
+                }
                 break;
             case 9:
                 List<Jobplan>jobplanList = new JobPlanDao(this).queryForAll();

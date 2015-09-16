@@ -38,7 +38,7 @@ public class OrderTaskDao {
     public void update(OrderTask orderTask) {
         try
         {
-            OrderTaskDaoOpe.create(orderTask);
+            OrderTaskDaoOpe.createOrUpdate(orderTask);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -52,6 +52,19 @@ public class OrderTaskDao {
     public List<OrderTask> queryForAll(){
         try {
             return OrderTaskDaoOpe.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据工单id查询任务
+     * @return
+     */
+    public List<OrderTask> queryByOrderId(int id){
+        try {
+            return OrderTaskDaoOpe.queryBuilder().where().eq("belongordermain",id).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

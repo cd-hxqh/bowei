@@ -333,4 +333,6 @@ public class OrderMain implements Serializable {
     public void setIsyuzhi(boolean isyuzhi) {
         this.isyuzhi = isyuzhi;
     }
+
+
 }

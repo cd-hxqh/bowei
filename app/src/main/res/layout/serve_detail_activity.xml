@@ -78,10 +78,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
+                android:text="@string/order_detail_employeeID"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/oder_detail_employee_id"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:paddingLeft="3dp"
+                android:textSize="14dp"
+                android:textCursorDrawable="@null"
+                android:gravity="center_vertical"
+                android:background="@drawable/content_bg01"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:text="@string/order_detail_questiontogether"
                 android:textColor="@color/black"/>
             <EditText
-                android:id="@+id/order_detail_questiontogether"
+                android:id="@+id/questiontogether"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:paddingLeft="3dp"
@@ -157,6 +173,7 @@
                     android:textColor="@color/gray"/>
             </RelativeLayout>
             <Button
+                android:id="@+id/order_detail_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"

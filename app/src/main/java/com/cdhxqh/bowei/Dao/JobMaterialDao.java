@@ -57,6 +57,14 @@ public class JobMaterialDao {
         return null;
     }
 
+    public List<Jobmaterial> queryByJobPlanId(String id){
+        try {
+            return JobMaterialDaoOpe.queryBuilder().where().eq("JOBPLANID",id).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 删除所有信息
      */

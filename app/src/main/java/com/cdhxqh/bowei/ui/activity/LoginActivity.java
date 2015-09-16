@@ -65,6 +65,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (isChecked) {
             mUsername.setText(AccountUtils.getUserName(LoginActivity.this));
             mPassword.setText(AccountUtils.getUserPassword(LoginActivity.this));
+            checkBox.setChecked(true);
         }
     }
 
@@ -128,6 +129,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 AccountUtils.setChecked(LoginActivity.this, isRemember);
                                 //记住密码
                                 AccountUtils.setUserNameAndPassWord(LoginActivity.this, mUsername.getText().toString(), mPassword.getText().toString());
+                                getBaseApplication().setUsername(mUsername.getText().toString());
                             }
 
                             startIntent();

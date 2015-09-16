@@ -103,6 +103,7 @@ public class AddOrderServeActivity extends BaseActivity {
                 case S:
                     number.setText(result);
                     Toast.makeText(AddOrderServeActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    orderMain.setIsyuzhi(true);
                     break;
                 case F:
                     Toast.makeText(AddOrderServeActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
@@ -144,9 +145,6 @@ public class AddOrderServeActivity extends BaseActivity {
 
         major = (TextView) findViewById(R.id.oder_detail_major);
         majorlayout = (RelativeLayout) findViewById(R.id.oder_detail_major_layout);
-
-//        reality_item = (TextView) findViewById(R.id.oder_detail_reality_item);
-//        reality_itemlayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_item_layout);
 
         state = (EditText) findViewById(R.id.order_detail_state);
 
@@ -201,6 +199,7 @@ public class AddOrderServeActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("EM");
+        orderMain.setIsNew(true);
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
@@ -218,19 +217,6 @@ public class AddOrderServeActivity extends BaseActivity {
         fault_ranklayout.setOnClickListener(new MylayoutListener(15));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
-//        placelayout.setOnClickListener(new MylayoutListener(placeedit, place));
-//        propertylayout.setOnClickListener(new MylayoutListener(propertyedit,property));
-//        wordtypelayout.setOnClickListener(new MylayoutListener(wordtypeedit,wordtype));
-//        reality_worktypelayout.setOnClickListener(new MylayoutListener(reality_worktypeedit,reality_worktype));
-//        applyunitylayout.setOnClickListener(new MylayoutListener(applyunityedit,applyunity));
-//        majorlayout.setOnClickListener(new MylayoutListener(majoredit,major));
-//        reality_itemlayout.setOnClickListener(new MylayoutListener(reality_itemedit,reality_item));
-//        datelayout.setOnClickListener(new MylayoutListener(dateedit,date));
-//        workplanlayout.setOnClickListener(new MylayoutListener(workplanedit,workplan));
-//        reality_starttimelayout.setOnClickListener(new MylayoutListener(reality_starttimeedit,reality_starttime));
-//        reality_stoptimelayout.setOnClickListener(new MylayoutListener(reality_stoptimeedit,reality_stoptime));
-//        employee_idlayout.setOnClickListener(new MylayoutListener(employee_idedit,employee_id));
-//        reporttimelayout.setOnClickListener(new MylayoutListener(reporttimeedit,reporttime));
 
         yuzhi.setOnClickListener(yuzhilistener);
         inputbtn.setOnClickListener(inputlistener);
@@ -241,6 +227,7 @@ public class AddOrderServeActivity extends BaseActivity {
         public void onClick(View view) {
             mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
                     getString(R.string.requesting), true, true);
+            mProgressDialog.setCanceledOnTouchOutside(false);
             new AsyncTask<String, String, String>() {
                 @Override
                 protected String doInBackground(String... strings) {
@@ -287,6 +274,13 @@ public class AddOrderServeActivity extends BaseActivity {
 
         @Override
         public void onClick(View view) {
+            if(faultclass.getText().equals("")&&requestCode==12){
+                Toast.makeText(AddOrderServeActivity.this,"请选择故障类",Toast.LENGTH_SHORT).show();
+                return;
+            }else if(error_coding.getText().equals("")&&(requestCode==13||requestCode==14)){
+                Toast.makeText(AddOrderServeActivity.this,"请选择问题代码",Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(AddOrderServeActivity.this, ItemChooseListActivity.class);
             intent.putExtra("requestCode", requestCode);
             this.parent = AddOrderServeActivity.this.parent;
@@ -335,7 +329,6 @@ public class AddOrderServeActivity extends BaseActivity {
                 break;
             case 11:
                 faultclass.setText(content);
-//                parent = new FailureListDao(AddOrderServeActivity.this).queryForClassByCode(content);
                 error_coding.setText("");
                 orderMain.setError_coding_list("");
                 cause.setText("");
@@ -347,7 +340,9 @@ public class AddOrderServeActivity extends BaseActivity {
                 error_coding.setText(content);
 //                parent = number;
                 orderMain.setError_coding_list(number);
+                cause.setText("");
                 orderMain.setCause_list("");
+                remedy.setText("");
                 orderMain.setRemedy_list("");
                 break;
             case 13:
@@ -383,7 +378,7 @@ public class AddOrderServeActivity extends BaseActivity {
             String isok = isOK();
             if (isok.equals("OK")) {
                 Intent intent = new Intent();
-//            orderMain.setNumber(Integer.parseInt(number.getText().toString()));
+            orderMain.setNumber(number.getText().toString());
                 orderMain.setDescribe(describe.getText().toString());
                 orderMain.setPlace(place.getText().toString());
                 orderMain.setProperty(property.getText().toString());
@@ -391,7 +386,6 @@ public class AddOrderServeActivity extends BaseActivity {
                 orderMain.setReality_worktype(reality_worktype.getText().toString());
                 orderMain.setApplyunity(applyunity.getText().toString());
                 orderMain.setMajor(major.getText().toString());
-//            orderServe.setReality_item(reality_item.getText().toString());
                 orderMain.setState(state.getText().toString());
                 orderMain.setDate(date.getText().toString());
                 orderMain.setWorkplan(workplan.getText().toString());

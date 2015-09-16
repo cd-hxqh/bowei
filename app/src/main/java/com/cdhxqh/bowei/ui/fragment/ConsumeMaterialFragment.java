@@ -11,21 +11,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cdhxqh.bowei.Dao.JobMaterialDao;
+import com.cdhxqh.bowei.Dao.JobPlanDao;
+import com.cdhxqh.bowei.Dao.MaterialInfoDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.Jobmaterial;
+import com.cdhxqh.bowei.bean.Jobplan;
 import com.cdhxqh.bowei.bean.MaterialInfo;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.ConsumeMaterialAdapter;
 import com.cdhxqh.bowei.ui.adapter.GiveMaterialAdapter;
+import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * 计划物料消耗页面
  * Created by think on 2015/8/25.
  */
 public class ConsumeMaterialFragment extends Fragment {
@@ -33,8 +42,10 @@ public class ConsumeMaterialFragment extends Fragment {
     private ConsumeMaterialAdapter consumeMaterialAdapter;
     private ProgressDialog mProgressDialog;
     String num;
-    public ConsumeMaterialFragment(String num){
-        this.num = num;
+    private int id;
+    private OrderMain orderMain;
+    public ConsumeMaterialFragment(OrderMain orderMain){
+        this.orderMain = orderMain;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +64,13 @@ public class ConsumeMaterialFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         consumeMaterialAdapter = new ConsumeMaterialAdapter(getActivity());
         recyclerView.setAdapter(consumeMaterialAdapter);
-        getData();
+        id = orderMain.getId();
+        num = orderMain.getNumber();
+        if(orderMain.isNew()){
+            getlocationData();
+        }else {
+            getData();
+        }
         return view;
     }
 
@@ -68,8 +85,8 @@ public class ConsumeMaterialFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        addData(jsonObject.getString("result"));
+                        JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
+
 
                     }
                 } catch (JSONException e) {
@@ -86,21 +103,32 @@ public class ConsumeMaterialFragment extends Fragment {
                 mProgressDialog.dismiss();
             }
         });
+        addData(id);
     }
-    private void addData(String string) {
-        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-        for (int i = 0; i < 4; i++) {
-            MaterialInfo materialInfo = new MaterialInfo();
-            materialInfo.setNumber("LSD688"+i);
-            materialInfo.setName("螺丝刀");
-            materialInfo.setSize(30+i);
-            list.add(i,materialInfo);
+    private void getlocationData(){
+        Jobplan jobplan = new JobPlanDao(getActivity()).queryByJobNum(orderMain.getWorkplan());
+        List<Jobmaterial>jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
+        MaterialInfo materialInfo;
+        for(int i = 0;i < jobmaterialList.size();i++){
+            materialInfo = new MaterialInfo();
+            materialInfo.setBelongorderid(orderMain.getId());
+            materialInfo.setName(jobmaterialList.get(i).getITEMDESC());
+            materialInfo.setNumber(jobmaterialList.get(i).getITEMNUM());
+            if(jobmaterialList.get(i).getITEMQTY()!=null) {
+                materialInfo.setSize(Integer.parseInt(jobmaterialList.get(i).getITEMQTY()));
+            }
+            materialInfo.setWarehouse(jobmaterialList.get(i).getWarehouse());
+            materialInfo.setIsPlan(true);
+            new MaterialInfoDao(getActivity()).update(materialInfo);
         }
-        consumeMaterialAdapter.update(list, true);
+        addData(id);
     }
-    public void adddata(MaterialInfo materialInfo){
+    private void addData(int id) {
         ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-        list.add(0,materialInfo);
+        List<MaterialInfo>materialInfoList = new MaterialInfoDao(getActivity()).queryByLabtransId(id,true);
+        for (int i = 0; i < materialInfoList.size(); i++) {
+            list.add(i,materialInfoList.get(i));
+        }
         consumeMaterialAdapter.update(list, true);
     }
 }
