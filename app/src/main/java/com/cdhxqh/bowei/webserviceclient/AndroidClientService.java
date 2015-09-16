@@ -78,7 +78,7 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0", string);
-        soapReq.addProperty("in1",null);
+        soapReq.addProperty("in1",0);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
@@ -108,7 +108,7 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0","");
-        soapReq.addProperty("in1", string);
+        soapReq.addProperty("in1", 1);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
@@ -138,6 +138,37 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "UpdateWO");
         soapReq.addProperty("in0", string);
+        soapReq.addProperty("in1", 1);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        try {
+            httpTransport.call("", soapEnvelope);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        String obj = null;
+        try {
+            obj = soapEnvelope.getResponse().toString();
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * 修改预置工单方法
+     * @param string
+     * @return
+     */
+    public String UpdataWOyz(String string){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject(NAMESPACE, "UpdateWO");
+        soapReq.addProperty("in0", string);
+        soapReq.addProperty("in1", 0);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {

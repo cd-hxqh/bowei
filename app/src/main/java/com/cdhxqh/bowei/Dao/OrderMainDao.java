@@ -115,6 +115,17 @@ public class OrderMainDao {
     }
 
     /**
+     * 删除所有信息
+     */
+    public void deleteById(int id){
+        try {
+            OrderMainDaoOpe.delete(OrderMainDaoOpe.queryBuilder().where().eq("id",id).query());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 按照工单id查询工单
      * @param id
      * @return

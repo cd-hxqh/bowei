@@ -4,7 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,10 +18,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
 import com.cdhxqh.bowei.utils.WebserviceDataUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by think on 2015/8/18.
@@ -65,6 +72,24 @@ public class MaintenanceDetailActivity extends BaseActivity {
     StringBuffer sb;
     private int layoutnum;
     private ProgressDialog mProgressDialog;
+    protected static final int S = 0;
+    protected static final int F = 1;
+    private String result;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case S:
+                    Toast.makeText(MaintenanceDetailActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                    new OrderMainDao(MaintenanceDetailActivity.this).deleteById(orderMain.getId());
+                    MaintenanceDetailActivity.this.finish();
+                    break;
+                case F:
+                    Toast.makeText(MaintenanceDetailActivity.this,"提交失败",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,15 +216,46 @@ public class MaintenanceDetailActivity extends BaseActivity {
         public void onClick(View view) {
             String isok = isOK();
             if(isok.equals("OK")){
-                OrderMain orderMain = SaveData();
-                String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(),MaintenanceDetailActivity.this,orderMain);
-                String result;
-                if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
-                    result = getBaseApplication().getWsService().InsertWO(data);
-                }else {
-                    result = getBaseApplication().getWsService().UpdataWO(data);
-                }
+                final OrderMain orderMain = SaveData();
+                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(),MaintenanceDetailActivity.this,orderMain);
+                mProgressDialog = ProgressDialog.show(MaintenanceDetailActivity.this, null,
+                        getString(R.string.inputing), true, true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                new AsyncTask<String, String, String>() {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
+                            result = getBaseApplication().getWsService().InsertWO(data);
+                        }else if (orderMain.isNew()&&orderMain.isyuzhi()){
+                            result = getBaseApplication().getWsService().UpdataWOyz(data);
+                        }else if(!orderMain.isNew()){
+                            result = getBaseApplication().getWsService().UpdataWO(data);
+                        } else {
+                            result = "false";
+                        }
+                        return result;
+                    }
 
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if(s.equals("false")){
+                            mHandler.sendEmptyMessage(F);
+                            return;
+                        }
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if(object.getString("errorMsg").equals("成功")){
+                                mHandler.sendEmptyMessage(S);
+                            }else {
+                                mHandler.sendEmptyMessage(F);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.execute();
+                mProgressDialog.dismiss();
             }else if(isok.equals("请完善信息")){
                 Toast.makeText(MaintenanceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
             }

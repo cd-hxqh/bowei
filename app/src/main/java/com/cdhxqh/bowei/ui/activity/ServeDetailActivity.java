@@ -19,10 +19,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.FailureListDao;
+import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
+import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,12 +94,12 @@ public class ServeDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    number.setText(result);
-                    Toast.makeText(ServeDetailActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
-                    orderMain.setIsyuzhi(true);
+                    Toast.makeText(ServeDetailActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                    new OrderMainDao(ServeDetailActivity.this).deleteById(orderMain.getId());
+                    ServeDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(ServeDetailActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServeDetailActivity.this,"提交失败",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -223,43 +225,51 @@ public class ServeDetailActivity extends BaseActivity {
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            OrderMain orderMain1 = SaveData();
-            mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
-                    getString(R.string.inputing), true, true);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            new AsyncTask<String, String, String>() {
-                @Override
-                protected String doInBackground(String... strings) {
-
-                    String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
-                    if(S==null){
-                        return "false";
-                    }else {
-                        return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+            String isok = isOK();
+            if(isok.equals("OK")){
+                final OrderMain orderMain = SaveData();
+                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServeDetailActivity.this, orderMain);
+                mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
+                        getString(R.string.inputing), true, true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                new AsyncTask<String, String, String>() {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
+                            result = getBaseApplication().getWsService().InsertWO(data);
+                        }else if (orderMain.isNew()&&orderMain.isyuzhi()){
+                            result = getBaseApplication().getWsService().UpdataWOyz(data);
+                        }else if(!orderMain.isNew()){
+                            result = getBaseApplication().getWsService().UpdataWO(data);
+                        } else {
+                            result = "false";
+                        }
+                        return result;
                     }
-                }
 
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    if(!s.equals("false")) {
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if(s.equals("false")){
+                            mHandler.sendEmptyMessage(F);
+                            return;
+                        }
                         try {
                             JSONObject object = new JSONObject(s);
-                            if (object.getString("errorMsg").equals("成功")) {
+                            if(object.getString("errorMsg").equals("成功")){
                                 mHandler.sendEmptyMessage(S);
-                                result = object.getString("woNum");
-                            } else {
+                            }else {
                                 mHandler.sendEmptyMessage(F);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else {
-                        mHandler.sendEmptyMessage(F);
                     }
-                    mProgressDialog.dismiss();
-                }
-            }.execute();
+                }.execute();
+                mProgressDialog.dismiss();
+            }else if(isok.equals("请完善信息")){
+                Toast.makeText(ServeDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -447,6 +457,7 @@ public class ServeDetailActivity extends BaseActivity {
 
     private OrderMain SaveData(){
         OrderMain orderMain = new OrderMain();
+        orderMain = this.orderMain;
         orderMain.setNumber(number.getText().toString());
         orderMain.setDescribe(describe.getText().toString());
         orderMain.setPlace(place.getText().toString());

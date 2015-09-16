@@ -107,6 +107,7 @@
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
             <Button
+                android:id="@+id/order_detail_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
