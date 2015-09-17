@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +42,7 @@ import java.util.Calendar;
  * 新增维保工单
  */
 public class AddOrderMaintenanceActivity extends BaseActivity {
-    private static final String TAG="AddOrderMaintenanceActivity";
+    private static final String TAG = "AddOrderMaintenanceActivity";
     private ScrollView scrollView;
     private ImageView backimg;
     private TextView titlename;
@@ -59,7 +61,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-//    private TextView reality_item;//实际班组
+    //    private TextView reality_item;//实际班组
 //    private RelativeLayout reality_itemlayout;
     private EditText state;//状态
     private TextView date;//汇报时间
@@ -80,8 +82,13 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private Button inputbtn;
 
     private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
+    private CumTimePickerDialog timePickerDialog;
+
+
     StringBuffer sb;
+
+
+
     private int layoutnum;
     private ProgressDialog mProgressDialog;
 
@@ -94,14 +101,15 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             switch (msg.what) {
                 case S:
                     number.setText(result);
-                    Toast.makeText(AddOrderMaintenanceActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
                     break;
                 case F:
-                    Toast.makeText(AddOrderMaintenanceActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,8 +191,10 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         worktype.setText("CM");
         applyunity.setText("JY");
         inspect_result.setText(getResources().getString(R.string.order_qualified));
-        datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
-        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
+
+        /**设置日期控件**/
+        setDataListener();
+
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
 //        worktypelayout.setOnClickListener(new MylayoutListener(3));
@@ -192,7 +202,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
 //        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
+
+
         datelayout.setOnClickListener(new MydateListener());
+
+
         workplanlayout.setOnClickListener(new MylayoutListener(9));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
@@ -206,15 +220,15 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private View.OnClickListener yuzhilistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-                    mProgressDialog = ProgressDialog.show(AddOrderMaintenanceActivity.this, null,
-                            getString(R.string.requesting), true, true);
+            mProgressDialog = ProgressDialog.show(AddOrderMaintenanceActivity.this, null,
+                    getString(R.string.requesting), true, true);
             new AsyncTask<String, String, String>() {
                 @Override
                 protected String doInBackground(String... strings) {
                     String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
-                    if(S==null){
+                    if (S == null) {
                         return "false";
-                    }else {
+                    } else {
                         return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
                     }
                 }
@@ -222,7 +236,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 @Override
                 protected void onPostExecute(String s) {
                     super.onPostExecute(s);
-                    if(!s.equals("false")) {
+                    if (!s.equals("false")) {
                         try {
                             JSONObject object = new JSONObject(s);
                             if (object.getString("errorMsg").equals("成功")) {
@@ -234,7 +248,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    } else {
                         mHandler.sendEmptyMessage(F);
                     }
                     mProgressDialog.dismiss();
@@ -246,10 +260,10 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             String isok = isOK();
-            if(isok.equals("OK")) {
+            if (isok.equals("OK")) {
                 Intent intent = new Intent();
                 OrderMain orderMain = new OrderMain();
-                if (number.getText().toString()!=null){
+                if (number.getText().toString() != null) {
                     orderMain.setNumber(number.getText().toString());
                 }
                 orderMain.setDescribe(describe.getText().toString());
@@ -262,7 +276,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 //            orderMain.setReality_item(reality_item.getText().toString());
                 orderMain.setState(state.getText().toString());
                 orderMain.setDate(date.getText().toString());
-                if(workplan.getText()!=null) {
+                if (workplan.getText() != null) {
                     orderMain.setWorkplan(workplan.getText().toString());
                 }
                 orderMain.setReality_starttime(reality_starttime.getText().toString());
@@ -274,30 +288,32 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 orderMain.setNotinspection_device(notinspection_device.getText().toString());
                 orderMain.setInspect_result(inspect_result.getText().toString());
                 orderMain.setIsNew(true);
-                if(number.getText()!=null){
+                if (number.getText() != null) {
                     orderMain.setIsyuzhi(true);
-                }else {
+                } else {
                     orderMain.setIsyuzhi(false);
                 }
                 intent.putExtra("orderMain", orderMain);
                 AddOrderMaintenanceActivity.this.setResult(1, intent);
                 finish();
-            }else if (isok.equals("请完善信息")){
-                Toast.makeText(AddOrderMaintenanceActivity.this,isok,Toast.LENGTH_SHORT).show();
+            } else if (isok.equals("请完善信息")) {
+                Toast.makeText(AddOrderMaintenanceActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
         }
     };
 
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
-        public MylayoutListener(int requestcode){
+
+        public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
+
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(AddOrderMaintenanceActivity.this,ItemChooseListActivity.class);
-            intent.putExtra("requestCode",requestCode);
-            intent.putExtra("OrderType",getResources().getString(R.string.maintenance));
+            Intent intent = new Intent(AddOrderMaintenanceActivity.this, ItemChooseListActivity.class);
+            intent.putExtra("requestCode", requestCode);
+            intent.putExtra("OrderType", getResources().getString(R.string.maintenance));
             if(place.getText()==null&&view.getId()==property.getId()){
                 Toast.makeText(AddOrderMaintenanceActivity.this,"请选择位置",Toast.LENGTH_SHORT).show();
                 return;
@@ -308,7 +324,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         }
     }
 
-    public class MydateListener implements View.OnClickListener{
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -322,8 +338,8 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
-             content = data.getCharSequenceExtra("result").toString();
+        if (resultCode != 0) {
+            content = data.getCharSequenceExtra("result").toString();
         }
         switch (resultCode) {
             case 0:
@@ -354,19 +370,48 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * 设置时间选择器*
+     */
+    private void setDataListener() {
+
+        final Calendar objTime = Calendar.getInstance();
+        int iYear = objTime.get(Calendar.YEAR);
+        int iMonth = objTime.get(Calendar.MONTH);
+        int iDay = objTime.get(Calendar.DAY_OF_MONTH);
+        int hour = objTime.get(Calendar.HOUR_OF_DAY);
+
+        int minute = objTime.get(Calendar.MINUTE);
+
+
+        datePickerDialog = new DatePickerDialog(this, new datelistener(), iYear, iMonth, iDay);
+        timePickerDialog = new CumTimePickerDialog(this, new timelistener(), hour, minute, true);
+    }
+
+
+    /**
+     * 日期选择*
+     */
     private class datelistener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            if(dayOfMonth<10){
-                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
-            }else {
-                sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
+            sb = new StringBuffer();
+            monthOfYear = monthOfYear + 1;
+
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + monthOfYear + "-" + "0" + dayOfMonth);
+            } else {
+                sb.append(year + "-" + monthOfYear  + "-" + dayOfMonth);
             }
-                timePickerDialog.show();
+            timePickerDialog.show();
         }
     }
 
+    /**
+     * 时间选择*
+     */
     private class timelistener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
@@ -377,30 +422,33 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 sb.append(i+":"+i1+":00");
             }
 
-//            Log.i(TAG,"sb="+sb);
-            if(layoutnum == datelayout.getId()){
+
+            if (layoutnum == datelayout.getId()) {
+
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
         }
     }
 
+
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
+    private String isOK() {
 //        if (describe.getText().equals("")||place.equals("")
 //                ||property.getText().equals("")||worktype.getText().equals("")
 //                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
 //                ||major.getText().equals("")||date.getText().equals("")){
 //            return "请完善信息";
 //        }else{
-            return "OK";
+        return "OK";
 //        }
     }
 }

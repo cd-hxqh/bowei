@@ -17,6 +17,9 @@ import android.widget.TimePicker;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
+import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
+
+import java.util.Calendar;
 
 /**
  * Created by think on 2015/9/2.
@@ -53,7 +56,7 @@ public class AddOrderServiceActivity extends BaseActivity {
     private Button inputbtn;
 
     private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
+    private CumTimePickerDialog timePickerDialog;
     StringBuffer sb;
     private int layoutnum;
 
@@ -112,6 +115,26 @@ public class AddOrderServiceActivity extends BaseActivity {
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
+
+    /**
+     * 设置时间选择器*
+     */
+    private void setDataListener() {
+
+        final Calendar objTime = Calendar.getInstance();
+        int iYear = objTime.get(Calendar.YEAR);
+        int iMonth = objTime.get(Calendar.MONTH);
+        int iDay = objTime.get(Calendar.DAY_OF_MONTH);
+        int hour = objTime.get(Calendar.HOUR_OF_DAY);
+
+        int minute = objTime.get(Calendar.MINUTE);
+
+
+        datePickerDialog = new DatePickerDialog(this, new datelistener(), iYear, iMonth, iDay);
+        timePickerDialog = new CumTimePickerDialog(this, new timelistener(), hour, minute, true);
+    }
+
+
     @Override
     protected void initView() {
         titlename.setText(getResources().getString(R.string.service_add_new));
@@ -124,8 +147,9 @@ public class AddOrderServiceActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("SVR");
-        datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
-        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
+
+        setDataListener();
+
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
 //        worktypelayout.setOnClickListener(new MylayoutListener(3));
@@ -229,11 +253,11 @@ public class AddOrderServiceActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
+            sb=new StringBuffer();
             if(dayOfMonth<10){
-                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
+                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
             }else {
-                sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
         }

@@ -23,11 +23,14 @@ import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderService;
+import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 import com.cdhxqh.bowei.ui.widget.OrderMorePopuowindow;
 import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
 
 /**
  * Created by think on 2015/8/18.
@@ -160,8 +163,10 @@ public class ServiceDetailActivity extends BaseActivity {
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
-        datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
-        timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
+
+        setDataListener();
+
+
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
         worktypelayout.setOnClickListener(new MylayoutListener(3));
@@ -175,6 +180,28 @@ public class ServiceDetailActivity extends BaseActivity {
 
         inputbtn.setOnClickListener(inputlistener);
     }
+
+
+    /**
+     * 设置时间选择器*
+     */
+    private void setDataListener() {
+
+        final Calendar objTime = Calendar.getInstance();
+        int iYear = objTime.get(Calendar.YEAR);
+        int iMonth = objTime.get(Calendar.MONTH);
+        int iDay = objTime.get(Calendar.DAY_OF_MONTH);
+        int hour = objTime.get(Calendar.HOUR_OF_DAY);
+
+        int minute = objTime.get(Calendar.MINUTE);
+
+
+        datePickerDialog = new DatePickerDialog(this, new datelistener(), iYear, iMonth, iDay);
+        timePickerDialog = new CumTimePickerDialog(this, new timelistener(), hour, minute, true);
+    }
+
+
+
 
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
@@ -313,10 +340,11 @@ public class ServiceDetailActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            sb=new StringBuffer();
             if(dayOfMonth<10){
-                sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
+                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
             }else {
-                sb.append(year + "-" + monthOfYear + 1 + "-" + dayOfMonth);
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
         }
