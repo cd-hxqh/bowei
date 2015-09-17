@@ -3,6 +3,7 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.AcWorkTypeDao;
+import com.cdhxqh.bowei.Dao.AlndomainDao;
+import com.cdhxqh.bowei.Dao.AssetDao;
+import com.cdhxqh.bowei.Dao.ErsonDao;
+import com.cdhxqh.bowei.Dao.FailureListDao;
+import com.cdhxqh.bowei.Dao.FailurecodeDao;
+import com.cdhxqh.bowei.Dao.JobMaterialDao;
+import com.cdhxqh.bowei.Dao.JobPlanDao;
+import com.cdhxqh.bowei.Dao.JobTaskDao;
+import com.cdhxqh.bowei.Dao.LocationsDao;
+import com.cdhxqh.bowei.Dao.WorkTypeDao;
+import com.cdhxqh.bowei.Dao.WorkdwDao;
+import com.cdhxqh.bowei.Dao.WorkzyDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.AppManager;
@@ -87,6 +101,7 @@ public class MainHomeActivity extends BaseActivity {
         findViewById();
         initView();
         getOwnerId();
+        DataisDownLoad();
     }
 
 
@@ -255,6 +270,25 @@ public class MainHomeActivity extends BaseActivity {
         });
     }
 
+    private void DataisDownLoad(){
+        Context context = MainHomeActivity.this;
+        if(new LocationsDao(context).queryForAll().size() == 0
+                ||new AssetDao(context).queryForAll().size() == 0
+                ||new WorkdwDao(context).queryForAll().size() == 0
+                ||new WorkzyDao(context).queryForAll().size() == 0
+                ||new WorkTypeDao(context).queryForAll().size() == 0
+                ||new AcWorkTypeDao(context).queryForAll().size() == 0
+                ||new FailurecodeDao(context).queryForAll().size() == 0
+                ||new FailureListDao(context).queryForAll().size() == 0
+                ||new JobPlanDao(context).queryForAll().size() == 0
+                ||new JobTaskDao(context).queryForAll().size() == 0
+                ||new JobMaterialDao(context).queryForAll().size() == 0
+                ||new ErsonDao(context).queryForAll().size() == 0
+                ||new AlndomainDao(context).queryForAll().size() == 0){
+            Toast.makeText(MainHomeActivity.this,"有基本信息未下载，请下载",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -275,7 +309,7 @@ public class MainHomeActivity extends BaseActivity {
             /**知识库搜索**/
             Intent intent = new Intent();
             intent.setClass(MainHomeActivity.this, SearchActivity.class);
-            intent.putExtra("search_mark",Constants.KNOWKEDGE_SEARCH);
+            intent.putExtra("search_mark", Constants.KNOWKEDGE_SEARCH);
             startActivityForResult(intent, 0);
         }
     };

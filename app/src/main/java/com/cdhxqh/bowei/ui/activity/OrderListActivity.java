@@ -104,8 +104,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 startActivityForResult(intent, 1);
             }
         });
-//        getData();
-        addData();
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +111,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
         refresh_layout.setOnRefreshListener(this);
+        getData();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,6 +152,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             public void onFailure(String error) {
                 Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_fail),Toast.LENGTH_SHORT).show();
                 refresh_layout.setRefreshing(false);
+                refreshData();
             }
         });
     }

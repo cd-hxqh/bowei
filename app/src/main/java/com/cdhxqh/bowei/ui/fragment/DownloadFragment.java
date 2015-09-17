@@ -196,20 +196,14 @@ public class DownloadFragment extends Fragment {
                             JsonUtils.parsingErson(getActivity(), result);
                         } else if(url == Constants.ALNDOMAIN){
                             JsonUtils.parsingAlndomain(getActivity(),result);
-                            List<Alndomain>alndomains = new AlndomainDao(getActivity()).queryForAll();
-                            Log.i("s", String.valueOf(alndomains.size()));
                         }
-//                        if (mProgressDialog.isShowing()) {
-//                            mProgressDialog.dismiss();
-//                        }
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                downedCount++;
                 if(isall==false||(isall==true&&downedCount==13)){
                     if(mProgressDialog.isShowing()){
-                        Log.i(TAG,"123"+downedCount);
                         mProgressDialog.dismiss();
                         mProgressDialog = null;
                         isall = false;

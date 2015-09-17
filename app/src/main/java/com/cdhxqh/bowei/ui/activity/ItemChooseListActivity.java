@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class ItemChooseListActivity extends BaseActivity{
     public int requestCode;
     public String OrderType;
     private String parent;
+    private LinearLayout nodatalayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class ItemChooseListActivity extends BaseActivity{
         backimg = (ImageView) findViewById(R.id.info_title_img_left);
         titlename = (TextView) findViewById(R.id.info_title_name);
         recyclerView = (RecyclerView) findViewById(R.id.item_choose_list);
+        nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
     }
 
     @Override
@@ -263,7 +266,8 @@ public class ItemChooseListActivity extends BaseActivity{
         }
         itemListAdapter.update(list, true);
         if(itemListAdapter.getItemCount()==0){
-
+            nodatalayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
         }
     }
 
