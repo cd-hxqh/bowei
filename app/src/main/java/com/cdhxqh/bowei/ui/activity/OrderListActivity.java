@@ -13,7 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
@@ -48,6 +50,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private OrderMaintenanceAdapter orderMainAdapter;
     private ArrayList<OrderMain> orderMainArrayList;
     private ProgressDialog mProgressDialog;
+    private LinearLayout nodatalayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     protected void onRestart() {
         super.onRestart();
         orderMainAdapter.notifyDataSetChanged();
+        refreshData();
     }
 
     @Override
@@ -72,6 +76,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         chooseitembtn = (Button) findViewById(R.id.activity_chooser_view_content);
         recyclerView = (RecyclerView) findViewById(R.id.maintenance_list);
         refresh_layout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
+        nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
     }
 
     @Override
@@ -123,8 +128,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void getData(){
-//        mProgressDialog = ProgressDialog.show(this, null,
-//                getString(R.string.requesting), true, true);
         HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
@@ -133,11 +136,9 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 try {
                     jsonObject = new JSONObject(data);
                     if(jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))){
-//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-//                        addData(jsonObject.getString("result"));
+                        Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_ok),Toast.LENGTH_SHORT).show();
                         JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
                         refreshData();
-//                        mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -150,6 +151,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
             @Override
             public void onFailure(String error) {
+                Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_fail),Toast.LENGTH_SHORT).show();
                 refresh_layout.setRefreshing(false);
             }
         });
@@ -171,10 +173,20 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             list = new OrderMainDao(this).queryForAll();
         }
         orderMainArrayList = new ArrayList<OrderMain>();
-        for(int i = 0;i < list.size();i++){
-            orderMainArrayList.add(i,list.get(i));
+        if(list.size()==0){
+            Toast.makeText(OrderListActivity.this,getResources().getString(R.string.order_null),Toast.LENGTH_SHORT).show();
+            nodatalayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }else {
+            if(nodatalayout.getVisibility()==View.VISIBLE){
+                nodatalayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            for (int i = 0; i < list.size(); i++) {
+                orderMainArrayList.add(i, list.get(i));
+            }
+            orderMainAdapter.update(orderMainArrayList, true);
         }
-        orderMainAdapter.update(orderMainArrayList, true);
     }
 
     private void additem(OrderMain orderMain){
@@ -186,25 +198,25 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 //下拉刷新触发事件
     @Override
     public void onRefresh() {
-        if(orderMainAdapter.getItemCount()>0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(OrderListActivity.this);
-            builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
-                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            getData();
-                        }
-                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    refresh_layout.setRefreshing(false);
-                    dialogInterface.dismiss();
-                }
-            }).create().show();
-        }else {
+//        if(orderMainAdapter.getItemCount()>0) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(OrderListActivity.this);
+//            builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
+//                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                            getData();
+//                        }
+//                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    refresh_layout.setRefreshing(false);
+//                    dialogInterface.dismiss();
+//                }
+//            }).create().show();
+//        }else {
             getData();
-        }
+//        }
     }
 
 //    public void changeitem(){

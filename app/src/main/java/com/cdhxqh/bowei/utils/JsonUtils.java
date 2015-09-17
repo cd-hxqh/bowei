@@ -89,7 +89,7 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(data);
             OrderMain orderMain;
             JSONObject jsonObject;
-            new OrderMainDao(ctx).deleteall();
+//            new OrderMainDao(ctx).deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -143,7 +143,10 @@ public class JsonUtils {
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
                 orderMain.setIsNew(false);
-                new OrderMainDao(ctx).update(orderMain);
+                if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber())){//如果本地不存在此工单则添加
+                    new OrderMainDao(ctx).update(orderMain);
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

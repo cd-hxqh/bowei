@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 /**
+ * 基本信息下载页面
  * Created by think on 2015/9/6.
  */
 public class DownloadFragment extends Fragment {

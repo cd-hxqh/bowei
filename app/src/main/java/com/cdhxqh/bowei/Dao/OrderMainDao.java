@@ -39,7 +39,7 @@ public class OrderMainDao {
     public void update(OrderMain orderMain) {
         try
         {
-            OrderMainDaoOpe.create(orderMain);
+            OrderMainDaoOpe.createOrUpdate(orderMain);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -137,5 +137,24 @@ public class OrderMainDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 按照工单编号查询本地是否存在此工单
+     * @param num
+     * @return
+     */
+    public boolean isexitByNum(String num){
+        try {
+            List<OrderMain>orderMainList = OrderMainDaoOpe.queryBuilder().where().eq("number",num).query();
+            if(orderMainList.size()>0){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

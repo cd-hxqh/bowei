@@ -58,6 +58,32 @@ public class AcWorkTypeDao {
     }
 
     /**
+     * 查询维保工单实际工作类型
+     * @return
+     */
+    public List<AcWorkType> queryForCMorPM(){
+        try {
+            return AcWorkTypeDaoOpe.queryBuilder().where()
+                    .eq("VALUE", "XJ").or().eq("VALUE","WB").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * 查询维修工单实际工作类型
+     * @return
+     */
+    public List<AcWorkType> queryForEM(){
+        try {
+            return AcWorkTypeDaoOpe.queryBuilder().where()
+                    .eq("VALUE", "EM").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
      * 查询服务工单实际工作类型
      * @return
      */

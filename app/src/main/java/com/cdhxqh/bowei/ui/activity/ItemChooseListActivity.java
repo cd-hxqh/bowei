@@ -59,6 +59,7 @@ public class ItemChooseListActivity extends BaseActivity{
     ChooseItem chooseItem;
     Intent intent;
     public int requestCode;
+    public String OrderType;
     private String parent;
 
     @Override
@@ -87,6 +88,7 @@ public class ItemChooseListActivity extends BaseActivity{
             }
         });
         requestCode = (int) getIntent().getExtras().get("requestCode");
+        OrderType = getIntent().getExtras().getString("OrderType");
         parent = getIntent().getExtras().getString("parent");
         titlename.setText(getResources().getString(R.string.item_list));
         layoutManager = new LinearLayoutManager(this);
@@ -131,7 +133,16 @@ public class ItemChooseListActivity extends BaseActivity{
 
                 break;
             case 4:
-                List<AcWorkType>acWorkTypeList = new AcWorkTypeDao(this).queryForAll();
+                List<AcWorkType>acWorkTypeList;
+                if(OrderType.equals(getResources().getString(R.string.maintenance))){
+                    acWorkTypeList = new AcWorkTypeDao(this).queryForAll();
+                }else if(OrderType.equals(getResources().getString(R.string.serve))){
+                    acWorkTypeList = new AcWorkTypeDao(this).queryForEM();
+                }else if(OrderType.equals(getResources().getString(R.string.service))){
+                    acWorkTypeList = new AcWorkTypeDao(this).queryForSVR();
+                }else {
+                    acWorkTypeList = null;
+                }
                 for(int i = 0;i < acWorkTypeList.size();i++){
                     chooseItem = new ChooseItem();
                     chooseItem.setName(acWorkTypeList.get(i).getDESCRIPTION());
@@ -251,6 +262,9 @@ public class ItemChooseListActivity extends BaseActivity{
                 break;
         }
         itemListAdapter.update(list, true);
+        if(itemListAdapter.getItemCount()==0){
+
+        }
     }
 
     public void responseData(String data){

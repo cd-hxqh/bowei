@@ -180,13 +180,14 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         });
 //        scrollView.scrollTo();
         number.setText("");
+        worktype.setText("CM");
         applyunity.setText("JY");
         inspect_result.setText(getResources().getString(R.string.order_qualified));
         datePickerDialog = new DatePickerDialog(this, new datelistener(), 2015, 0, 1);
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
+//        worktypelayout.setOnClickListener(new MylayoutListener(3));
         reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
@@ -296,6 +297,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         public void onClick(View view) {
             Intent intent = new Intent(AddOrderMaintenanceActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
+            intent.putExtra("OrderType",getResources().getString(R.string.maintenance));
             startActivityForResult(intent, requestCode);
         }
     }

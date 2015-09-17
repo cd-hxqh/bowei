@@ -29,6 +29,7 @@
     <string name="download">下载</string>
     <string name="setting">设置</string>
     <string name="out">退出</string>
+    <string name="order_null">无工单记录</string>
     <string name="maintenance_name">维保工单</string>
     <string name="maintenance_add_new">新建维保工单</string>
     <string name="order_qualified">合格</string>
@@ -109,6 +110,8 @@
     <string name="company_title_text">公司库存</string>
     <string name="item_list">选项列表</string>
     <string name="request_ok">请求成功</string>
+    <string name="request_fail">请求失败</string>
+    <string name="client_sucess">连接服务器成功</string>
     <string name="requesting">正在获取数据...</string>
     <string name="inputing">正在提交数据</string>
 

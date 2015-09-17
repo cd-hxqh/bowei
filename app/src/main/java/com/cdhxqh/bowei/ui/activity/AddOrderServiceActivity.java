@@ -128,7 +128,7 @@ public class AddOrderServiceActivity extends BaseActivity {
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
+//        worktypelayout.setOnClickListener(new MylayoutListener(3));
         reality_worktypelayout.setOnClickListener(new MylayoutListener(8));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
@@ -148,6 +148,7 @@ public class AddOrderServiceActivity extends BaseActivity {
         public void onClick(View view) {
             Intent intent = new Intent(AddOrderServiceActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
+            intent.putExtra("OrderType",getResources().getString(R.string.service));
             startActivityForResult(intent, requestCode);
         }
     }

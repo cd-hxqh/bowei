@@ -204,7 +204,7 @@ public class AddOrderServeActivity extends BaseActivity {
         timePickerDialog = new TimePickerDialog(this, new timelistener(), 0, 0, true);
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
+//        worktypelayout.setOnClickListener(new MylayoutListener(3));
         reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
@@ -289,6 +289,7 @@ public class AddOrderServeActivity extends BaseActivity {
             } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
             }
+            intent.putExtra("OrderType",getResources().getString(R.string.serve));
             startActivityForResult(intent, requestCode);
         }
     }

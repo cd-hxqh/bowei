@@ -10,7 +10,6 @@
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/chooseitem_relativelayout"
         android:layout_below="@+id/relativeLayout_id">
 
         <android.support.v7.widget.RecyclerView
@@ -20,6 +19,21 @@
             android:background="@color/white">
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/have_not_data_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/radiobg_normal"
+            android:layout_gravity="center"
+            android:textSize="@dimen/abc_action_bar_content_inset_material"
+            android:text="暂无相关数据"/>
+    </LinearLayout>
     <!--<RelativeLayout-->
     <!--android:id="@+id/chooseitem_relativelayout"-->
     <!--android:layout_width="match_parent"-->

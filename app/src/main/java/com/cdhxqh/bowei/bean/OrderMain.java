@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by think on 2015/8/17.
  */
-@DatabaseTable(tableName = "ORSERMAIN")
+@DatabaseTable(tableName = "ORDERMAIN")
 public class OrderMain implements Serializable {
     @DatabaseField(generatedId = true)
     private int id;
