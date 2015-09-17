@@ -67,10 +67,24 @@ public class Constants {
         return "{appid:'INV',objectname:'INVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
 
     }
+
+    /**公司库存搜索**/
+    public static String search_commany_inv(String description,int curpage,int showcount){
+        return "{'appid':'INV','objectname':'INVENTORY','option':'read','condition':{'item.description':'"+description+"'},'curpage':'"+curpage+"','showcount':'"+showcount+"'}";
+
+    }
+
+
     /**捷运库存列表**/
 
     public static String get_deptinventory(int curpage,int showcount){
         return "{appid:'DEPTINVENTORY',objectname:'DEPTINVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
+
+    }
+
+    /**捷运库存搜索**/
+    public static String search_deptinventory(String description,int curpage,int showcount){
+        return "{'appid':'DEPTINVENTORY','objectname':'DEPTINVENTORY','option':'read','condition':{'item.bjmc':'"+description+"'},'curpage':'"+curpage+"','showcount':'"+showcount+"'}";
 
     }
 
@@ -125,4 +139,10 @@ public class Constants {
     public static final String GETDATASUCCESS = "GLOBAL-S-0";//获取数据成功
     /**用户登录表识--结束**/
 
+
+
+    /**搜索标识**/
+    public static final int KNOWKEDGE_SEARCH=1000; //知识库搜索
+    public static final int CINVENTORY_SEARCH=1001; //公司库存搜索
+    public static final int DINVENTORY_SEARCH=1002; //捷运库存搜索
 }

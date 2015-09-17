@@ -13,6 +13,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -126,6 +127,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString("result", resultString);
+            Log.i("MipcaActivityCapture","resultIntent="+resultIntent);
             bundle.putParcelable("bitmap", barcode);
             resultIntent.putExtras(bundle);
             resultIntent.setClass(MipcaActivityCapture.this,Results_Activity.class);

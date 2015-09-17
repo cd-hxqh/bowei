@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -44,6 +45,7 @@ public class In_Company_Activity extends BaseActivity {
     /**暂无数据**/
     private LinearLayout notdatalayout;
 
+    /**公司库存适配器**/
     InventoryAdapter inventoryAdapter;
 
     @Override
@@ -109,7 +111,10 @@ public class In_Company_Activity extends BaseActivity {
     private View.OnClickListener seachOnClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent=new Intent();
+            intent.setClass(In_Company_Activity.this,SearchActivity.class);
+            intent.putExtra("search_mark",Constants.CINVENTORY_SEARCH);
+            startActivityForResult(intent,0);
         }
     };
 

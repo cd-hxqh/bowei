@@ -106,6 +106,7 @@ public class HttpManager {
 
     /**解析返回的结果--分页**/
     public static void getDataPagingInfo(final Context cxt,String data,final HttpRequestHandler<Results> handler){
+        Log.i(TAG,"dddddddddddata="+data);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("data",data);

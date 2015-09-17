@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -45,6 +46,7 @@ public class In_Deptinventory_Activity extends BaseActivity {
     /**暂无数据**/
     private LinearLayout notdatalayout;
 
+    /**捷运库存**/
     DeptinventoryAdapter inventoryAdapter;
 
     @Override
@@ -110,7 +112,10 @@ public class In_Deptinventory_Activity extends BaseActivity {
     private View.OnClickListener seachOnClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent=new Intent();
+            intent.setClass(In_Deptinventory_Activity.this,SearchActivity.class);
+            intent.putExtra("search_mark",Constants.DINVENTORY_SEARCH);
+            startActivityForResult(intent,0);
         }
     };
 
@@ -123,7 +128,6 @@ public class In_Deptinventory_Activity extends BaseActivity {
         HttpManager.getDataPagingInfo(In_Deptinventory_Activity.this, Constants.get_deptinventory(1, 20), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results data) {
-                Log.i(TAG, "data=" + data);
 
             }
 
@@ -141,7 +145,6 @@ public class In_Deptinventory_Activity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-                Log.i(TAG, "error=" + error);
                 mSwipeLayout.setRefreshing(false);
                 notdatalayout.setVisibility(View.VISIBLE);
             }

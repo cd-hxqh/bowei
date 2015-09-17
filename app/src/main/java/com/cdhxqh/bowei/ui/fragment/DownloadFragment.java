@@ -72,9 +72,6 @@ public class DownloadFragment extends Fragment {
         erson.setOnClickListener(buttonclick);
         download_all.setOnClickListener(buttonclick);
         alndomain.setOnClickListener(buttonclick);
-
-        isall = false;
-        downedCount = 0;
         return view;
     }
 
@@ -167,7 +164,6 @@ public class DownloadFragment extends Fragment {
         HttpManager.getData(getActivity(), url, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
-                downedCount++;
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(data);
