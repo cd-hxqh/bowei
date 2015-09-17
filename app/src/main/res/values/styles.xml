@@ -44,8 +44,5 @@
     </style>
 
 
-    <style name="CustomAlertDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:background">@color/order_layout_background</item>
-    </style>
 
 </resources>
