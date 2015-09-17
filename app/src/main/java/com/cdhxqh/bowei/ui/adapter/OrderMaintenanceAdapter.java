@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.activity.OrderListActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
+import com.cdhxqh.bowei.ui.activity.OrderSearchActivity;
 import com.cdhxqh.bowei.ui.activity.ServeDetailActivity;
 import com.cdhxqh.bowei.ui.activity.ServiceDetailActivity;
 
@@ -25,12 +28,13 @@ import java.util.ArrayList;
  */
 public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenanceAdapter.ViewHolder> {
     Context mContext;
-    OrderListActivity activity;
-    ArrayList<OrderMain> list=new ArrayList<OrderMain>();
-    public OrderMaintenanceAdapter(Context context,OrderListActivity activity){
+    ArrayList<OrderMain> list = new ArrayList<OrderMain>();
+
+    public OrderMaintenanceAdapter(Context context) {
         this.mContext = context;
-        this.activity = activity;
     }
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_main_adpter, parent, false);
@@ -39,20 +43,25 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.number.setText(list.get(position).getNumber()+"");
-        holder.describe.setText(list.get(position).getDescribe());
+        final OrderMain orderMain = list.get(position);
+        holder.number.setText(orderMain.getNumber() + "");
+        holder.describe.setText(orderMain.getDescribe());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(holder.imageView.getVisibility()==View.VISIBLE){
+                if (holder.imageView.getVisibility() == View.VISIBLE) {
                     Intent intent = new Intent();
-                    intent.putExtra("ordermain", list.get(position));
-                    if(activity.name.equals(activity.getResources().getString(R.string.maintenance))){
+                    intent.putExtra("ordermain", orderMain);
+                    if (!orderMain.getWordtype().equals("")) {
+                        if (orderMain.getWordtype().equals(Constants.MAINTENANCE_TYPE) || orderMain.getWordtype().equals(Constants.MAINTENANCE_TYPE1)) {
+                            intent.setClass(mContext, MaintenanceDetailActivity.class);
+                        } else if (orderMain.getWordtype().equals(Constants.SERVE_TYPE)) {
+                            intent.setClass(mContext, ServeDetailActivity.class);
+                        } else if (orderMain.getWordtype().equals(Constants.SERVICE_TYPE)) {
+                            intent.setClass(mContext, ServiceDetailActivity.class);
+                        }
+                    } else {
                         intent.setClass(mContext, MaintenanceDetailActivity.class);
-                    }else if(activity.name.equals(activity.getResources().getString(R.string.serve))){
-                        intent.setClass(mContext, ServeDetailActivity.class);
-                    }else if(activity.name.equals(activity.getResources().getString(R.string.service))){
-                        intent.setClass(mContext, ServiceDetailActivity.class);
                     }
                     mContext.startActivity(intent);
                 }
@@ -68,14 +77,19 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         public RelativeLayout relativeLayout;
-        /**编号**/
+        /**
+         * 编号*
+         */
         public TextView number;
-        /**描述**/
+        /**
+         * 描述*
+         */
         public TextView describe;
 
         public ImageView imageView;
 
         public CheckBox checkBox;
+
         public ViewHolder(final View itemView) {
             super(itemView);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.order_main_content);

@@ -143,7 +143,7 @@ public class JsonUtils {
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
                 orderMain.setIsNew(false);
-                if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber())){//如果本地不存在此工单则添加
+                if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber())) {//如果本地不存在此工单则添加
                     new OrderMainDao(ctx).update(orderMain);
                 }
 
@@ -153,7 +153,7 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingOrderTask(Context cxt,String data,int num) {
+    public static void parsingOrderTask(Context cxt, String data, int num) {
         try {
             JSONArray jsonArray = new JSONArray(data);
             OrderTask orderTask;
@@ -462,11 +462,12 @@ public class JsonUtils {
 
     /**
      * 解析员工信息数据
+     *
      * @param ctx
      * @param str
      * @param id
      */
-    public static void parsingWorkInfo(Context ctx, String str,int id){
+    public static void parsingWorkInfo(Context ctx, String str, int id) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
@@ -474,7 +475,7 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 workerInfo = new WorkerInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-                if(!new WorkerInfoDao(ctx).queryByLabtransId(jsonObject.getString("LABTRANSID"),id)){//
+                if (!new WorkerInfoDao(ctx).queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {//
                     workerInfo.setBelongorderid(id);
                     workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
                     workerInfo.setName(jsonObject.getString("LABORCODE"));
@@ -491,11 +492,12 @@ public class JsonUtils {
 
     /**
      * 解析计划物料消耗数据
+     *
      * @param ctx
      * @param str
      * @param id
      */
-    public static void parsingWpMaterial(Context ctx,String str,int id){
+    public static void parsingWpMaterial(Context ctx, String str, int id) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
@@ -503,7 +505,7 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 materialInfo = new MaterialInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-                if(!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"),id)){//
+                if (!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"), id)) {//
                     materialInfo.setBelongorderid(id);
                     materialInfo.setName(jsonObject.getString("DESCRIPTION"));
                     materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
@@ -517,8 +519,9 @@ public class JsonUtils {
             e.printStackTrace();
         }
     }
-//    DEPTMATUSETRANS
-    public static void parsingDeptmatusetrans(Context ctx,String str,int id){
+
+    //    DEPTMATUSETRANS
+    public static void parsingDeptmatusetrans(Context ctx, String str, int id) {
         try {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
@@ -526,7 +529,7 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 materialInfo = new MaterialInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-                if(!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"),id)){//
+                if (!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"), id)) {//
                     materialInfo.setBelongorderid(id);
                     materialInfo.setName(jsonObject.getString("BJMC"));
                     materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
@@ -756,4 +759,49 @@ public class JsonUtils {
 
         }
     }
+
+
+    /**
+     * 解析工单任务*
+     */
+    public static ArrayList<OrderMain> parsingOrderMain(Context ctx, String data) {
+        Log.i(TAG, "data=" + data);
+        ArrayList<OrderMain> list = null;
+        OrderMain orderMain = null;
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            JSONObject jsonObject;
+            list = new ArrayList<OrderMain>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                orderMain = new OrderMain();
+                jsonObject = jsonArray.getJSONObject(i);
+
+
+                orderMain.setNumber(jsonObject.get("WONUM").toString());
+                orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
+                orderMain.setPlace(jsonObject.get("LOCATION").toString());
+                orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
+                orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
+                orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
+                orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
+                orderMain.setMajor(jsonObject.get("WORKZY").toString());
+                orderMain.setState(jsonObject.get("WOSTATUS").toString());
+                orderMain.setDate(jsonObject.get("STATUSDATE").toString());
+                orderMain.setWorkplan(jsonObject.getString("JPNUM"));
+                orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
+                orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
+                orderMain.setPm(jsonObject.get("PMNUM").toString());
+                list.add(orderMain);
+            }
+
+            return list;
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

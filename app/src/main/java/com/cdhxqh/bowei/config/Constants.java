@@ -147,7 +147,11 @@ public class Constants {
     public static final String GETDATASUCCESS = "GLOBAL-S-0";//获取数据成功
     /**用户登录表识--结束**/
 
-
+    /**工单类型**/
+    public static final String MAINTENANCE_TYPE = "PM";//维保工单1
+    public static final String MAINTENANCE_TYPE1 = "CM";//维保工单2
+    public static final String SERVE_TYPE = "EM";//维修
+    public static final String SERVICE_TYPE = "SVR";//服务
 
     /**搜索标识**/
     public static final int KNOWKEDGE_SEARCH=1000; //知识库搜索

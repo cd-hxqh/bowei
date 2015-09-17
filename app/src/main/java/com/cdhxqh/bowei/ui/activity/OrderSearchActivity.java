@@ -14,14 +14,12 @@ import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
-import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
-import com.cdhxqh.bowei.ui.adapter.InventoryAdapter;
+import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
 import com.cdhxqh.bowei.ui.adapter.OrderSearchAdapter;
-import com.cdhxqh.bowei.ui.adapter.OrderTaskAdapter;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class OrderSearchActivity extends BaseActivity {
     private LinearLayout notdatalayout;
 
     /**工单适配器**/
-    OrderSearchAdapter orderSearchAdapter;
+    OrderMaintenanceAdapter orderMaintenanceAdapter;
 
     /**资产编号**/
     private String assetNum;
@@ -82,7 +80,7 @@ public class OrderSearchActivity extends BaseActivity {
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
         notdatalayout=(LinearLayout)findViewById(R.id.have_not_data_id);
-        orderSearchAdapter=new OrderSearchAdapter(OrderSearchActivity.this);
+        orderMaintenanceAdapter=new OrderMaintenanceAdapter(OrderSearchActivity.this);
         getCompanyInfo(assetNum);
 
     }
@@ -99,7 +97,7 @@ public class OrderSearchActivity extends BaseActivity {
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(orderSearchAdapter);
+        recyclerView.setAdapter(orderMaintenanceAdapter);
 
 
         mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
@@ -135,12 +133,12 @@ public class OrderSearchActivity extends BaseActivity {
             public void onSuccess(Results data, int totalPages, int currentPage) {
                 Log.i(TAG, "order data=" + data.getResultlist());
                 mSwipeLayout.setRefreshing(false);
-//                /**解析返回的数据**/
-                ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+                /**解析返回的数据**/
+                ArrayList<OrderMain> list =JsonUtils.parsingOrderMain(OrderSearchActivity.this,data.getResultlist());
                 if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
                 } else {
-                    orderSearchAdapter.update(list, true);
+                    orderMaintenanceAdapter.update(list, true);
                 }
             }
 
