@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
@@ -35,6 +36,7 @@ public class WorkerFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorkerInfoAdapter workerInfoAdapter;
     private ProgressDialog mProgressDialog;
+    private LinearLayout nodatalayout;
     private String num;
     private int id;
     private OrderMain orderMain;
@@ -50,6 +52,7 @@ public class WorkerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_1, container, false);
+        nodatalayout = (LinearLayout) view.findViewById(R.id.have_not_data_id);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
@@ -99,11 +102,22 @@ public class WorkerFragment extends Fragment {
         for (int i = 0; i < workerInfoList.size(); i++) {
             list.add(i,workerInfoList.get(i));
         }
+        if(workerInfoList.size()==0){
+            nodatalayout.setVisibility(View.VISIBLE);
+        }else {
+            nodatalayout.setVisibility(View.GONE);
+        }
         workerInfoAdapter.update(list, true);
+
     }
     public void adddata(WorkerInfo workerInfo){
         ArrayList<WorkerInfo> list = new ArrayList<WorkerInfo>();
         list.add(0,workerInfo);
         workerInfoAdapter.update(list, true);
+        if(workerInfoAdapter.getItemCount()==0){
+            nodatalayout.setVisibility(View.VISIBLE);
+        }else {
+            nodatalayout.setVisibility(View.GONE);
+        }
     }
 }

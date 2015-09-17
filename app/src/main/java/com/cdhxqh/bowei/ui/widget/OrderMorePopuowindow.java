@@ -16,6 +16,7 @@ import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
 import com.cdhxqh.bowei.ui.activity.OrderTaskActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceRealInfoActivity;
 import com.cdhxqh.bowei.ui.activity.ServeRealInfoActivity;
+import com.cdhxqh.bowei.ui.activity.ServiceRealInfoActivity;
 
 /**
  * Created by think on 2015/8/20.
@@ -78,7 +79,7 @@ public class OrderMorePopuowindow extends PopupWindow {
                     intent.putExtra("orderid", id);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.service))){
-                    Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
+                    Intent intent = new Intent(context, ServiceRealInfoActivity.class);
                     intent.putExtra("orderid", id);
                     context.startActivity(intent);
                 }

@@ -133,7 +133,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void getData() {
-        if (Constants.ORDER_GETDATA.equals("")) {
+        if (Constants.ORDER_GETDATA.equals(Constants.ORDER_GETDATA_TEST)) {//判断ownerID是否已获取并已改变Constants.ORDER_GETDATA
             refreshData();
         } else {
             HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
@@ -144,7 +144,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                     try {
                         jsonObject = new JSONObject(data);
                         if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-//                        Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_ok),Toast.LENGTH_SHORT).show();
                             JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
                             refreshData();
                         }

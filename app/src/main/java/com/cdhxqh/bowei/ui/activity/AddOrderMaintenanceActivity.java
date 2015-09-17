@@ -298,6 +298,12 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             Intent intent = new Intent(AddOrderMaintenanceActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
             intent.putExtra("OrderType",getResources().getString(R.string.maintenance));
+            if(place.getText()==null&&view.getId()==property.getId()){
+                Toast.makeText(AddOrderMaintenanceActivity.this,"请选择位置",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            intent.putExtra("place",place.getText().toString());
+
             startActivityForResult(intent, requestCode);
         }
     }
@@ -352,7 +358,6 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                sb.append(sb.append(String.format("%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth)));
             if(dayOfMonth<10){
                 sb.append(year+"-"+monthOfYear+1+"-"+"0"+dayOfMonth);
             }else {
@@ -374,7 +379,6 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 
 //            Log.i(TAG,"sb="+sb);
             if(layoutnum == datelayout.getId()){
-
                 date.setText(sb);
             }else if(layoutnum == reality_starttimelayout.getId()){
                 reality_starttime.setText(sb);

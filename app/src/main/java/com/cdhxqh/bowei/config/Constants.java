@@ -4,6 +4,23 @@ import android.content.Context;
 
 public class Constants {
     public static String webserviceURL = "http://182.92.8.94:7001/maximo/services/WOService";//webservice接口地址
+    public static String YUZHI_VALUE = "{\"woNum\":\"test2\",\"description\":\"description\"," +
+            "\"location\":\"BPM3100\",\"assetnum\":\"13120\",\"worktype\":\"CM\"," +
+            "\"acworktype\":\"WXLL\",\"workdw\":\"CQ\",\"workzy\":\"CL\"," +
+            "\"actstart\":\"2015-08-01 11:11:11\",\"actfinish\":\"2015-08-10 11:11:11\"," +
+            "\"problem\":\"LIFT\",\"remedy\":\"TIMING\",\"cause\":\"SPILL\"," +
+            "\"reportedby\":\"MAXADMIN\",\"failurecode\":\"PKG\",\"failurelist1\":\"1005\"" +
+            ",\"failurelist2\":\"1015\",\"failurelist3\":\"1011\"," +
+            "\"reportdate\":\"2015-08-01 11:11:11\",\"onbehalfof\":\"CHANEY\"," +
+            "\"bz\":\"备注\",\"assetnumlist\":\"aaaaa\",\"jpnum\":\"JP11220\"," +
+            "\"gzdj\":\"aaa\",\"jcjg\":\"正常\",\" gzdj\":\"其他\"," +
+            "\"wotasks\":[{\"wosequence\":\"\",\"taskid\":\"10\",\"description\":\"步骤1\"," +
+            "\"zxr\":\"aaa\",\"jcr\":\"bbbb\",\"workorderid\":\"\"},{\"wosequence\":\"\"," +
+            "\"taskid\":\"20\",\"description\":\"步骤2\",\"zxr\":\"aaa\",\"jcr\":\"bbbb\"," +
+            "\"workorderid\":\"\"}],\"wpmaterials\":[{\"itemnum\":\"0-0031\",\"itemqty\":\"1\"," +
+            "\"location\":\"CENTRAL\"},{\"itemnum\":\"0-0048\",\"itemqty\":\"1\"," +
+            "\"location\":\"CENTRAL\"}],\"labtrans\":[{\"laborcode\":\"SATTLER\"," +
+            "\"starttime\":\"2015-08-2 11:11:11\",\"finishtime\":\"2015-08-3 11:11:11\"}]}";
 
     public static String loginURL = "http://182.92.8.94:7001/maximo/mobile/system/login";//登录接口地址
 
@@ -14,9 +31,9 @@ public class Constants {
     public static String SERVER_URL = "http://182.92.8.94:7001";//服务器地址
 
 
-
-
     /**工单测试接口**/
+    public static String ORDER_GETDATA_TEST = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
+    /**工单接口**/
     public static String ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
     /**工单接口**/
     public static void serOrderUrl(String num){

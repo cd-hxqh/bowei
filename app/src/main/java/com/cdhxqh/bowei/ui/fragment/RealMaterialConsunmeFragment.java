@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cdhxqh.bowei.Dao.MaterialInfoDao;
 import com.cdhxqh.bowei.R;
@@ -35,6 +36,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RealMaterialConsumeAdapter materialConsumeAdapter;
     private ProgressDialog mProgressDialog;
+    private LinearLayout nodatalayout;
     String num;
     private int id;
     private OrderMain orderMain;
@@ -50,6 +52,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_5, container, false);
+        nodatalayout = (LinearLayout) view.findViewById(R.id.have_not_data_id);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
@@ -96,6 +99,11 @@ public class RealMaterialConsunmeFragment extends Fragment {
         List<MaterialInfo> materialInfoList = new MaterialInfoDao(getActivity()).queryByLabtransId(id,false);
         for (int i = 0; i < materialInfoList.size(); i++) {
             list.add(i,materialInfoList.get(i));
+        }
+        if(materialInfoList.size()==0){
+            nodatalayout.setVisibility(View.VISIBLE);
+        }else {
+            nodatalayout.setVisibility(View.GONE);
         }
         materialConsumeAdapter.update(list, true);
     }

@@ -58,6 +58,19 @@ public class AssetDao {
     }
 
     /**
+     * 查询所有资产
+     * @return
+     */
+    public List<Asset> queryByLocations(String location){
+        try {
+            return AssetDaoOpe.queryBuilder().where().eq("LOCATION",location).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){

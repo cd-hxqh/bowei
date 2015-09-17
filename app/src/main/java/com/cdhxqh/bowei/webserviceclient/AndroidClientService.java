@@ -4,6 +4,8 @@ package com.cdhxqh.bowei.webserviceclient;
 
 import android.util.Log;
 
+import com.cdhxqh.bowei.config.Constants;
+
 import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -107,7 +109,7 @@ public class AndroidClientService {
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
-        soapReq.addProperty("in0","");
+        soapReq.addProperty("in0", Constants.YUZHI_VALUE);
         soapReq.addProperty("in1", 1);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);

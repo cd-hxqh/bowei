@@ -62,6 +62,7 @@ public class ItemChooseListActivity extends BaseActivity{
     public int requestCode;
     public String OrderType;
     private String parent;
+    private String place;
     private LinearLayout nodatalayout;
 
     @Override
@@ -93,6 +94,7 @@ public class ItemChooseListActivity extends BaseActivity{
         requestCode = (int) getIntent().getExtras().get("requestCode");
         OrderType = getIntent().getExtras().getString("OrderType");
         parent = getIntent().getExtras().getString("parent");
+        place = getIntent().getExtras().getString("place");
         titlename.setText(getResources().getString(R.string.item_list));
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -117,7 +119,12 @@ public class ItemChooseListActivity extends BaseActivity{
                 }
                 break;
             case 2:
-                List<Asset> assetList = new AssetDao(this).queryForAll();
+                List<Asset> assetList;
+                if(place!=null) {
+                    assetList = new AssetDao(this).queryByLocations(place);
+                }else {
+                    assetList = new AssetDao(this).queryForAll();
+                }
                 for(int i = 0;i < assetList.size();i++){
                     chooseItem = new ChooseItem();
                     chooseItem.setName(assetList.get(i).getDESCRIPTION());
