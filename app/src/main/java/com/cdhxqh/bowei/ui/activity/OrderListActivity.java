@@ -59,7 +59,9 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
 
-    /**获取上个界面传递的数据**/
+    /**
+     * 获取上个界面传递的数据*
+     */
     private void getInitData() {
         name = (String) getIntent().getExtras().get("ordername");
     }
@@ -77,7 +79,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         addimg = (ImageView) findViewById(R.id.maintenance_title_add);
         titlename = (TextView) findViewById(R.id.title_name);
         chooseitembtn = (Button) findViewById(R.id.activity_chooser_view_content);
-        recyclerView = (RecyclerView) findViewById(R.id.maintenance_list);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
         refresh_layout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
         nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
     }
@@ -97,11 +99,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                if(name.equals(getResources().getString(R.string.maintenance))){
+                if (name.equals(getResources().getString(R.string.maintenance))) {
                     intent.setClass(OrderListActivity.this, AddOrderMaintenanceActivity.class);
-                }else if(name.equals(getResources().getString(R.string.serve))){
+                } else if (name.equals(getResources().getString(R.string.serve))) {
                     intent.setClass(OrderListActivity.this, AddOrderServeActivity.class);
-                }else if(name.equals(getResources().getString(R.string.service))){
+                } else if (name.equals(getResources().getString(R.string.service))) {
                     intent.setClass(OrderListActivity.this, AddOrderServiceActivity.class);
                 }
                 startActivityForResult(intent, 1);
@@ -116,6 +118,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         refresh_layout.setOnRefreshListener(this);
         getData();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         OrderMain orderMain;
@@ -129,10 +132,10 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         }
     }
 
-    private void getData(){
-        if(Constants.ORDER_GETDATA.equals("")){
+    private void getData() {
+        if (Constants.ORDER_GETDATA.equals("")) {
             refreshData();
-        }else {
+        } else {
             HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
                 @Override
                 public void onSuccess(String data) {
@@ -163,29 +166,30 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             });
         }
     }
-    private void refreshData(){
+
+    private void refreshData() {
         orderMainAdapter = new OrderMaintenanceAdapter(this);
         recyclerView.setAdapter(orderMainAdapter);
         addData();
     }
+
     private void addData() {
-        List<OrderMain> list;
-        if(name.equals(getResources().getString(R.string.maintenance))){ //维保
+        List<OrderMain> list = null;
+        if (name.equals(getResources().getString(R.string.maintenance))) { //维保
             list = new OrderMainDao(this).queryForPMAndCM();
-        }else if(name.equals(getResources().getString(R.string.serve))){ //维修
+        } else if (name.equals(getResources().getString(R.string.serve))) { //维修
             list = new OrderMainDao(this).queryForEM();
-        }else if(name.equals(getResources().getString(R.string.service))){ //服务
+        } else if (name.equals(getResources().getString(R.string.service))) { //服务
             list = new OrderMainDao(this).queryForSVR();
-        }else {
+        } else {
             list = new OrderMainDao(this).queryForAll();
         }
         orderMainArrayList = new ArrayList<OrderMain>();
-        if(list.size()==0){
-//            Toast.makeText(OrderListActivity.this,getResources().getString(R.string.order_null),Toast.LENGTH_SHORT).show();
+        if (list == null || list.isEmpty()) {
             nodatalayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else {
-            if(nodatalayout.getVisibility()==View.VISIBLE){
+        } else {
+            if (nodatalayout.getVisibility() == View.VISIBLE) {
                 nodatalayout.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
@@ -196,41 +200,18 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         }
     }
 
-    private void additem(OrderMain orderMain){
+    private void additem(OrderMain orderMain) {
         new OrderMainDao(this).update(orderMain);
         ArrayList<OrderMain> list = new ArrayList<OrderMain>();
-        list.add(0,orderMain);
+        list.add(0, orderMain);
         orderMainAdapter.update(list, true);
     }
-//下拉刷新触发事件
+
+    //下拉刷新触发事件
     @Override
     public void onRefresh() {
-//        if(orderMainAdapter.getItemCount()>0) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(OrderListActivity.this);
-//            builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
-//                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                            getData();
-//                        }
-//                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    refresh_layout.setRefreshing(false);
-//                    dialogInterface.dismiss();
-//                }
-//            }).create().show();
-//        }else {
-            getData();
-//        }
+        getData();
     }
 
-//    public void changeitem(){
-//        for(int i = 0;i<orderMainAdapter.getItemCount();i++){
-//            layoutManager.findViewByPosition(i).findViewById(R.id.order_main_in).setVisibility(View.GONE);
-//            layoutManager.findViewByPosition(i).findViewById(R.id.order_checkbox).setVisibility(View.VISIBLE);
-//        }
-//    }
 
 }

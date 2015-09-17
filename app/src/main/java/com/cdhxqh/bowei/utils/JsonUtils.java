@@ -63,6 +63,7 @@ public class JsonUtils {
      * 解析登录信息*
      */
     public static String parsingAuthStr(final Context cxt, String data) {
+        Log.i(TAG,"login   data="+data);
         String isSuccess = null;
         try {
             JSONObject json = new JSONObject(data);

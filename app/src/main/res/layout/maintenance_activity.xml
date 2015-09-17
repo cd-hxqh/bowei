@@ -1,52 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.cdhxqh.bowei.ui.activity.In_Company_Activity">
 
     <include layout="@layout/maintenance_title" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayout_id">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/maintenance_list"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-        </android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-    <LinearLayout
-        android:id="@+id/have_not_data_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:gravity="center">
+    <include layout="@layout/fragment_know_kedge"></include>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/radiobg_normal"
-            android:layout_gravity="center"
-            android:textSize="@dimen/abc_action_bar_content_inset_material"
-            android:text="暂无相关数据"/>
-    </LinearLayout>
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/chooseitem_relativelayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:padding="10dp"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:background="@color/light_gray">-->
-    <!--<Button-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="40dp"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:text="@string/choose_item"-->
-    <!--android:textSize="18sp"-->
-    <!--android:background="@drawable/button_02_ico"/>-->
-    <!--</RelativeLayout>-->
-</RelativeLayout>
+</LinearLayout>

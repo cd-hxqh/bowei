@@ -169,5 +169,6 @@
     <string name="clear_text">清除缓存</string>
     <string name="data_text">数据下载</string>
     <string name="title_activity_order_search">OrderSearchActivity</string>
+    <string name="have_not_data_txt">暂无相关数据</string>
 
 </resources>
