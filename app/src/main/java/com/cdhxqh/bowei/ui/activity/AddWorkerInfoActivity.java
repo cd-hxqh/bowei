@@ -106,10 +106,10 @@ public class AddWorkerInfoActivity extends BaseActivity {
                         WorkerInfo workerInfo = new WorkerInfo();
                         workerInfo.setNumber(workernum.getText().toString());
                         workerInfo.setName(workername.getText().toString());
-                        workerInfo.setStartdate(startdate.getText().toString());
-                        workerInfo.setStopdate(stopdate.getText().toString());
-                        workerInfo.setStarttime(starttime.getText().toString());
-                        workerInfo.setStoptime(stoptime.getText().toString());
+//                        workerInfo.setStartdate(startdate.getText().toString());
+//                        workerInfo.setStopdate(stopdate.getText().toString());
+                        workerInfo.setStarttime(startdate.getText().toString()+" "+starttime.getText().toString());
+                        workerInfo.setStoptime(stopdate.getText().toString()+" "+stoptime.getText().toString());
                         workerInfo.setWorktime(worktime.getText().toString());
                         workerInfo.setLabtransId("-1");
                         workerInfo.setBelongorderid(id);

@@ -85,7 +85,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
                     MaintenanceDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(MaintenanceDetailActivity.this,"提交失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MaintenanceDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -250,6 +250,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
                             }else {
                                 mHandler.sendEmptyMessage(F);
                             }
+                            result = object.getString("errorMsg");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -357,14 +358,14 @@ public class MaintenanceDetailActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-                ||property.getText().equals("")||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
-            return "请完善信息";
-        }else{
+//        if (describe.getText().equals("")||place.equals("")
+//                ||property.getText().equals("")||worktype.getText().equals("")
+//                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+//                ||major.getText().equals("")||date.getText().equals("")){
+//            return "请完善信息";
+//        }else{
             return "OK";
-        }
+//        }
     }
 
     private OrderMain SaveData(){

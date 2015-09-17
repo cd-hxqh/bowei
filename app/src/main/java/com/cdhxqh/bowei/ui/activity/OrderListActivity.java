@@ -138,7 +138,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 try {
                     jsonObject = new JSONObject(data);
                     if(jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))){
-                        Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_ok),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_ok),Toast.LENGTH_SHORT).show();
                         JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
                         refreshData();
                     }
@@ -177,7 +177,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         }
         orderMainArrayList = new ArrayList<OrderMain>();
         if(list.size()==0){
-            Toast.makeText(OrderListActivity.this,getResources().getString(R.string.order_null),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OrderListActivity.this,getResources().getString(R.string.order_null),Toast.LENGTH_SHORT).show();
             nodatalayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }else {

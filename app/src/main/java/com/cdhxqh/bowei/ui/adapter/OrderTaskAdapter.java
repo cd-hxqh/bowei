@@ -42,6 +42,7 @@ public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.View
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(activity.isMultiple){}
                 Intent intent = new Intent();
                 intent.setClass(mContext,TaskDetailActivity.class);
                 intent.putExtra("orderTask",list.get(position));

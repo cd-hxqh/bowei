@@ -372,7 +372,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 sb.append(i+":"+i1+":00");
             }
 
-            Log.i(TAG,"sb="+sb);
+//            Log.i(TAG,"sb="+sb);
             if(layoutnum == datelayout.getId()){
 
                 date.setText(sb);
@@ -390,13 +390,13 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-                ||property.getText().equals("")||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
-            return "请完善信息";
-        }else{
+//        if (describe.getText().equals("")||place.equals("")
+//                ||property.getText().equals("")||worktype.getText().equals("")
+//                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+//                ||major.getText().equals("")||date.getText().equals("")){
+//            return "请完善信息";
+//        }else{
             return "OK";
-        }
+//        }
     }
 }

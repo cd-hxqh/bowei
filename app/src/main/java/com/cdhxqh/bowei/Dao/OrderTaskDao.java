@@ -71,6 +71,23 @@ public class OrderTaskDao {
         return null;
     }
 
+    public boolean isexit(OrderTask orderTask){
+        try {
+            List<OrderTask> orderTaskList = OrderTaskDaoOpe.queryBuilder()
+                    .where().eq("WONUM",orderTask.getNum()).and().
+                            eq("TASKID",orderTask.getTask()).and().
+                            eq("WORKORDERID",orderTask.getWorkorderid()).query();
+            if (orderTaskList.size()>0){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * 删除所有任务
      */

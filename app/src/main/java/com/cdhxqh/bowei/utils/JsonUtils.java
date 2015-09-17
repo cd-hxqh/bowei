@@ -170,7 +170,9 @@ public class JsonUtils {
                 orderTask.setZxr(jsonObject.get("ZXR").toString());
                 orderTask.setWorkorderid(jsonObject.get("WORKORDERID").toString());
                 orderTask.setBelongordermain(num);
-                new OrderTaskDao(cxt).update(orderTask);
+                if(!new OrderTaskDao(cxt).isexit(orderTask)){//如果本地不存在此工单则添加
+                    new OrderTaskDao(cxt).update(orderTask);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

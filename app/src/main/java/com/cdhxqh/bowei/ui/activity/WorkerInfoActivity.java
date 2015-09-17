@@ -12,6 +12,7 @@ import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 
 /**
+ * 员工信息页面
  * Created by think on 2015/8/31.
  */
 public class WorkerInfoActivity extends BaseActivity{

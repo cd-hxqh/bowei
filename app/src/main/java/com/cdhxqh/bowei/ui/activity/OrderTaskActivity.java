@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -48,10 +49,11 @@ public class OrderTaskActivity extends BaseActivity {
     private OrderTaskAdapter orderTaskAdapter;
     LinearLayoutManager layoutManager;
     private ProgressDialog mProgressDialog;
+    private LinearLayout nodatalayout;
     String name;
     int id;
     OrderMain orderMain;
-    boolean isMultiple = false;
+    public boolean isMultiple = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class OrderTaskActivity extends BaseActivity {
         choosebtn = (Button) findViewById(R.id.choose_btn);
         recyclerView = (RecyclerView) findViewById(R.id.task_list);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
     }
 
     @Override
@@ -155,6 +158,10 @@ public class OrderTaskActivity extends BaseActivity {
             list.add(i,orderTaskList.get(i));
         }
         orderTaskAdapter.update(list, true);
+        if(orderTaskList.size()==0){
+            nodatalayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 
     private void addLocationTask(int id) {
