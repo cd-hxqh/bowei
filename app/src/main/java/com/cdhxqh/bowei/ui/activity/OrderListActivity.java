@@ -59,6 +59,12 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        orderMainAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void findViewById() {
         backimg = (ImageView) findViewById(R.id.maintenance_title_back);
         addimg = (ImageView) findViewById(R.id.maintenance_title_add);

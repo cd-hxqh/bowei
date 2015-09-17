@@ -115,7 +115,7 @@ public class OrderMainDao {
     }
 
     /**
-     * 删除所有信息
+     * 根据工单id删除信息
      */
     public void deleteById(int id){
         try {

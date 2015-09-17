@@ -26,10 +26,13 @@ import java.util.List;
  * Created by think on 2015/9/6.
  */
 public class DownloadFragment extends Fragment {
+    private static final String TAG = "DownloadFragment";
     private Button locations, asset, workdw, workzy, worktype, acworktype, failurecode, failurelist,
             jobplan, jobtask, jobmaterial, erson, download_all, alndomain;
     private ProgressDialog mProgressDialog;
     private int downloading_item;
+    private int downedCount;
+    private boolean isall;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,9 @@ public class DownloadFragment extends Fragment {
         erson.setOnClickListener(buttonclick);
         download_all.setOnClickListener(buttonclick);
         alndomain.setOnClickListener(buttonclick);
+
+        isall = false;
+        downedCount = 0;
         return view;
     }
 
@@ -149,12 +155,18 @@ public class DownloadFragment extends Fragment {
     };
 
     private void downloaddata(final String url, final Button button) {
-        mProgressDialog = ProgressDialog.show(getActivity(), null,
-                getString(R.string.requesting), true, true);
-        mProgressDialog.setCanceledOnTouchOutside(false);
+
+        if(isall==false||(isall==true&&downedCount==0)){
+            if(mProgressDialog==null) {
+                mProgressDialog = ProgressDialog.show(getActivity(), null,
+                        getString(R.string.requesting), true, true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+            }
+        }
         HttpManager.getData(getActivity(), url, new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
+                downedCount++;
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(data);
@@ -190,27 +202,39 @@ public class DownloadFragment extends Fragment {
                             List<Alndomain>alndomains = new AlndomainDao(getActivity()).queryForAll();
                             Log.i("s", String.valueOf(alndomains.size()));
                         }
-                        if (mProgressDialog.isShowing()) {
-                            mProgressDialog.dismiss();
-                        }
+//                        if (mProgressDialog.isShowing()) {
+//                            mProgressDialog.dismiss();
+//                        }
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-
-            @Override
-            public void onSuccess(String data, int totalPages, int currentPage) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
+                if(isall==false||(isall==true&&downedCount==13)){
+                    if(mProgressDialog.isShowing()){
+                        Log.i(TAG,"123"+downedCount);
+                        mProgressDialog.dismiss();
+                        mProgressDialog = null;
+                        isall = false;
+                        downedCount = 0;
+                    }
                 }
             }
 
             @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+            }
+
+            @Override
             public void onFailure(String error) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
+                downedCount++;
+                if(isall==false||(isall==true&&downedCount==13)){
+                    if(mProgressDialog.isShowing()){
+                        mProgressDialog.dismiss();
+                        mProgressDialog = null;
+                        isall = false;
+                        downedCount = 0;
+                    }
                 }
                 button.setText(getResources().getString(R.string.download_fail));
 //                if(url==Constants.LOCATIONS){
@@ -221,6 +245,8 @@ public class DownloadFragment extends Fragment {
     }
 
     private void DownloadAll() {
+        isall = true;
+        downedCount = 0;
         locations.performClick();
         asset.performClick();
         workdw.performClick();
@@ -233,5 +259,6 @@ public class DownloadFragment extends Fragment {
         jobtask.performClick();
         jobmaterial.performClick();
         erson.performClick();
+        alndomain.performClick();
     }
 }
