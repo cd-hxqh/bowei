@@ -272,8 +272,10 @@ public class MainHomeActivity extends BaseActivity {
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            /**知识库搜索**/
             Intent intent = new Intent();
             intent.setClass(MainHomeActivity.this, SearchActivity.class);
+            intent.putExtra("search_mark",Constants.KNOWKEDGE_SEARCH);
             startActivityForResult(intent, 0);
         }
     };
