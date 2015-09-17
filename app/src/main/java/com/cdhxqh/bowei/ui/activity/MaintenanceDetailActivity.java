@@ -281,6 +281,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         public void onClick(View view) {
             Intent intent = new Intent(MaintenanceDetailActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
+            intent.putExtra("OrderType", getResources().getString(R.string.maintenance));
             startActivityForResult(intent, requestCode);
         }
     }

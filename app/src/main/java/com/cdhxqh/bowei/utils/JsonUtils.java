@@ -182,9 +182,6 @@ public class JsonUtils {
     public static void parsingWenerId(String str) {
         try {
             JSONArray fromarr = new JSONArray(str);
-            JSONObject object = new JSONObject(Constants.ORDER_GETDATA);
-//            JSONArray toweneridarr = new JSONArray();
-            JSONArray towenertablearr = new JSONArray();
             if (fromarr.length() == 1) {
                 Constants.serOrderUrl(fromarr.getJSONObject(0).get("OWNERID").toString());
             } else {
@@ -199,7 +196,6 @@ public class JsonUtils {
                 Constants.serOrderUrl(s);
             }
             Log.i(TAG, Constants.ORDER_GETDATA);
-            Log.i(TAG, fromarr.length() + "");
         } catch (JSONException e) {
             e.printStackTrace();
         }

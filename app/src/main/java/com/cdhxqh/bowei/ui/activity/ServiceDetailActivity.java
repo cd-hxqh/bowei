@@ -80,7 +80,7 @@ public class ServiceDetailActivity extends BaseActivity {
                     ServiceDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(ServiceDetailActivity.this,"提交失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -215,6 +215,7 @@ public class ServiceDetailActivity extends BaseActivity {
                             }else {
                                 mHandler.sendEmptyMessage(F);
                             }
+                            result = object.getString("errorMsg");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -268,6 +269,7 @@ public class ServiceDetailActivity extends BaseActivity {
         public void onClick(View view) {
             Intent intent = new Intent(ServiceDetailActivity.this, ItemChooseListActivity.class);
             intent.putExtra("requestCode", requestCode);
+            intent.putExtra("OrderType", getResources().getString(R.string.service));
             startActivityForResult(intent, requestCode);
         }
     }

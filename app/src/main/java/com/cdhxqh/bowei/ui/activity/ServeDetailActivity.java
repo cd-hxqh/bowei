@@ -99,7 +99,7 @@ public class ServeDetailActivity extends BaseActivity {
                     ServeDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(ServeDetailActivity.this,"提交失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServeDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -261,6 +261,7 @@ public class ServeDetailActivity extends BaseActivity {
                             }else {
                                 mHandler.sendEmptyMessage(F);
                             }
+                            result = object.getString("errorMsg");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -334,6 +335,7 @@ public class ServeDetailActivity extends BaseActivity {
             } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
             }
+            intent.putExtra("OrderType", getResources().getString(R.string.serve));
             startActivityForResult(intent, requestCode);
         }
     }

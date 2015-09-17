@@ -130,34 +130,38 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void getData(){
-        HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
-            @Override
-            public void onSuccess(String data) {
-                refresh_layout.setRefreshing(false);
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(data);
-                    if(jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))){
+        if(Constants.ORDER_GETDATA.equals("")){
+            refreshData();
+        }else {
+            HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
+                @Override
+                public void onSuccess(String data) {
+                    refresh_layout.setRefreshing(false);
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(data);
+                        if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
 //                        Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_ok),Toast.LENGTH_SHORT).show();
-                        JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
-                        refreshData();
+                            JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
+                            refreshData();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onSuccess(String data, int totalPages, int currentPage) {
-            }
+                @Override
+                public void onSuccess(String data, int totalPages, int currentPage) {
+                }
 
-            @Override
-            public void onFailure(String error) {
-                Toast.makeText(OrderListActivity.this,getResources().getString(R.string.request_fail),Toast.LENGTH_SHORT).show();
-                refresh_layout.setRefreshing(false);
-                refreshData();
-            }
-        });
+                @Override
+                public void onFailure(String error) {
+                    Toast.makeText(OrderListActivity.this, getResources().getString(R.string.request_fail), Toast.LENGTH_SHORT).show();
+                    refresh_layout.setRefreshing(false);
+                    refreshData();
+                }
+            });
+        }
     }
     private void refreshData(){
         orderMainAdapter = new OrderMaintenanceAdapter(this);

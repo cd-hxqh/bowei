@@ -270,22 +270,39 @@ public class MainHomeActivity extends BaseActivity {
         });
     }
 
-    private void DataisDownLoad(){
+    private void DataisDownLoad() {
         Context context = MainHomeActivity.this;
-        if(new LocationsDao(context).queryForAll().size() == 0
-                ||new AssetDao(context).queryForAll().size() == 0
-                ||new WorkdwDao(context).queryForAll().size() == 0
-                ||new WorkzyDao(context).queryForAll().size() == 0
-                ||new WorkTypeDao(context).queryForAll().size() == 0
-                ||new AcWorkTypeDao(context).queryForAll().size() == 0
-                ||new FailurecodeDao(context).queryForAll().size() == 0
-                ||new FailureListDao(context).queryForAll().size() == 0
-                ||new JobPlanDao(context).queryForAll().size() == 0
-                ||new JobTaskDao(context).queryForAll().size() == 0
-                ||new JobMaterialDao(context).queryForAll().size() == 0
-                ||new ErsonDao(context).queryForAll().size() == 0
-                ||new AlndomainDao(context).queryForAll().size() == 0){
-            Toast.makeText(MainHomeActivity.this,"有基本信息未下载，请下载",Toast.LENGTH_SHORT).show();
+        if (new LocationsDao(context).queryForAll().size() == 0
+                || new AssetDao(context).queryForAll().size() == 0
+                || new WorkdwDao(context).queryForAll().size() == 0
+                || new WorkzyDao(context).queryForAll().size() == 0
+                || new WorkTypeDao(context).queryForAll().size() == 0
+                || new AcWorkTypeDao(context).queryForAll().size() == 0
+                || new FailurecodeDao(context).queryForAll().size() == 0
+                || new FailureListDao(context).queryForAll().size() == 0
+                || new JobPlanDao(context).queryForAll().size() == 0
+                || new JobTaskDao(context).queryForAll().size() == 0
+                || new JobMaterialDao(context).queryForAll().size() == 0
+                || new ErsonDao(context).queryForAll().size() == 0
+                || new AlndomainDao(context).queryForAll().size() == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainHomeActivity.this);
+            builder.setMessage("有基本信息未下载，是否现在下载？").setTitle("提示")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.replace(R.id.container, downloadFragment);
+                    fragmentTransaction.commit();
+                    titlename.setText(getResources().getString(R.string.download));
+                    dialogInterface.dismiss();
+                }
+            }).create().show();
         }
     }
 
