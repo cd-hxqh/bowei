@@ -33,6 +33,8 @@ import java.util.List;
  * Created by think on 2015/8/25.
  */
 public class RealMaterialConsunmeFragment extends Fragment {
+
+
     private RecyclerView recyclerView;
     private RealMaterialConsumeAdapter materialConsumeAdapter;
     private ProgressDialog mProgressDialog;
