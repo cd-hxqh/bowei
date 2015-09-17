@@ -138,7 +138,11 @@ public class Results_Activity extends BaseActivity {
     private View.OnClickListener searchOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent=new Intent();
+            intent.setClass(Results_Activity.this,OrderSearchActivity.class);
+            intent.putExtra("assetNum",asset.getASSETNUM());
+            intent.putExtra("description",asset.getDESCRIPTION());
+            startActivityForResult(intent,0);
         }
     };
 

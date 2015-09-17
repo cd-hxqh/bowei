@@ -22,6 +22,9 @@
     <string name="maintenance">维保工单</string>
     <string name="serve">维修工单</string>
     <string name="service">服务工单</string>
+    <string name="order_search">工单查询</string>
+
+
     <string name="order">工单管理</string>
     <string name="property">资产查询</string>
     <string name="inventory">库存查询</string>
@@ -165,5 +168,6 @@
     <string name="network_text">网络设置</string>
     <string name="clear_text">清除缓存</string>
     <string name="data_text">数据下载</string>
+    <string name="title_activity_order_search">OrderSearchActivity</string>
 
 </resources>

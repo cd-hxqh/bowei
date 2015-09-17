@@ -56,9 +56,15 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_activity);
-
+        getInitData();
         findViewById();
         initView();
+    }
+
+
+    /**获取上个界面传递的数据**/
+    private void getInitData() {
+        name = (String) getIntent().getExtras().get("ordername");
     }
 
     @Override
@@ -81,7 +87,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     protected void initView() {
-        name = (String) getIntent().getExtras().get("ordername");
+
         titlename.setText(name);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -163,11 +169,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
     private void addData() {
         List<OrderMain> list;
-        if(name.equals(getResources().getString(R.string.maintenance))){
+        if(name.equals(getResources().getString(R.string.maintenance))){ //维保
             list = new OrderMainDao(this).queryForPMAndCM();
-        }else if(name.equals(getResources().getString(R.string.serve))){
+        }else if(name.equals(getResources().getString(R.string.serve))){ //维修
             list = new OrderMainDao(this).queryForEM();
-        }else if(name.equals(getResources().getString(R.string.service))){
+        }else if(name.equals(getResources().getString(R.string.service))){ //服务
             list = new OrderMainDao(this).queryForSVR();
         }else {
             list = new OrderMainDao(this).queryForAll();

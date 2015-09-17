@@ -115,9 +115,8 @@ public class MipcaActivityCapture extends Activity implements Callback {
     /**
      * 处理扫描结果
      * @param result
-     * @param barcode
      */
-    public void handleDecode(Result result, Bitmap barcode) {
+    public void handleDecode(Result result) {
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
         String resultString = result.getText();
@@ -127,8 +126,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString("result", resultString);
-            Log.i("MipcaActivityCapture","resultIntent="+resultIntent);
-            bundle.putParcelable("bitmap", barcode);
+            Log.i("MipcaActivityCapture","resultString="+resultString);
             resultIntent.putExtras(bundle);
             resultIntent.setClass(MipcaActivityCapture.this,Results_Activity.class);
 //            this.setResult(RESULT_OK, resultIntent);

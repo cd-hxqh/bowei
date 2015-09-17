@@ -22,6 +22,14 @@ public class Constants {
     public static void serOrderUrl(String num){
         ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',option:'read',condition:{workorderid:'"+num+"'}}";
     }
+
+    /**根据资产编号查询工单数据**/
+
+    public static String getNumByOrder(String assetnum,int curpage,int showcount ){
+        return "{'appid':'WO','objectname':'WORKORDER','option':'read','condition':{'assetnum':'"+assetnum+"'},'curpage':'"+curpage+"','showcount':'"+showcount+"'}";
+    }
+
+
     //获得工单任务信息
     public static String GET_ORDER_TASK = "{appid:'WOACTIVITY',objectname:'WOACTIVITY',option:'read',condition:{WORKTYPE:'PM'}}";
     public static String getOrderTaskUrl(String num){
