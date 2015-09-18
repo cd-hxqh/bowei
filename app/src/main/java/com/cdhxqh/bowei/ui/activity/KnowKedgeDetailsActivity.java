@@ -131,7 +131,7 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
                 if (!data.equals("")) {
                     Doclinks doclinks= JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this,data);
                     nameText.setText(doclinks.getDescription());
-                    pathText.setText(doclinks.getUrlname());
+                    pathText.setText(Html.fromHtml(doclinks.getUrlname()));
 ;                }
             }
 
