@@ -104,4 +104,29 @@
             android:layout_centerVertical="true"
             android:src="@drawable/in_ico"/>
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/oder_detail_employee_id_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:background="@drawable/content_bg02">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_detail_employeeID"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/oder_detail_employee_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/gray"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/in_ico"/>
+    </RelativeLayout>
  </LinearLayout>

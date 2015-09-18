@@ -185,7 +185,7 @@ public class ItemChooseListActivity extends BaseActivity{
                     for(int i = 0;i < ersonList.size();i++){
                         chooseItem = new ChooseItem();
                         chooseItem.setName(ersonList.get(i).getDISPLAYNAME());
-                        chooseItem.setValue(ersonList.get(i).getYWFL());
+                        chooseItem.setValue(ersonList.get(i).getPERSONID());
                         list.add(i,chooseItem);
                     }
 //                }
@@ -270,6 +270,9 @@ public class ItemChooseListActivity extends BaseActivity{
                     list.add(i, chooseItem);
                 }
                 break;
+//            case 16:
+//                List<Erson>ersonList
+//                break;
         }
         itemListAdapter.update(list, true);
         if(itemListAdapter.getItemCount()==0){

@@ -61,7 +61,8 @@ public class ServiceDetailActivity extends BaseActivity {
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
     private RelativeLayout reality_stoptimelayout;
-    private EditText employee_id;//录入人工号
+    private TextView employee_id;//录入人工号
+    private RelativeLayout employee_idlayout;
     private EditText questiontogether;//问题汇总
     private Button inputbtn;
 
@@ -137,7 +138,8 @@ public class ServiceDetailActivity extends BaseActivity {
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
 
-        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
+        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
+        employee_idlayout = (RelativeLayout) findViewById(R.id.oder_detail_employee_id_layout);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
 
@@ -173,7 +175,7 @@ public class ServiceDetailActivity extends BaseActivity {
         reality_worktypelayout.setOnClickListener(new MylayoutListener(8));
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
-//        reality_itemlayout.setOnClickListener(new MylayoutListener(7));
+        employee_idlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
@@ -328,6 +330,8 @@ public class ServiceDetailActivity extends BaseActivity {
             case 6:
                 major.setText(content);
                 break;
+            case 7:
+                employee_id.setText(content);
             case 8:
                 reality_worktype.setText(content);
                 break;

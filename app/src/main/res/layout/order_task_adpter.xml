@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:maxEms="16"
+            android:maxEms="15"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/gray"/>

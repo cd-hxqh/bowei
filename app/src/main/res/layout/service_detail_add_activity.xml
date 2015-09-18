@@ -90,22 +90,22 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
                 android:background="@drawable/content_bg01"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/order_detail_employeeID"
-                android:textColor="@color/black"/>
-            <EditText
-                android:id="@+id/oder_detail_employee_id"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:paddingLeft="3dp"
-                android:textSize="14dp"
-                android:textCursorDrawable="@null"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:text="@string/order_detail_employeeID"-->
+                <!--android:textColor="@color/black"/>-->
+            <!--<EditText-->
+                <!--android:id="@+id/oder_detail_employee_id"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:paddingLeft="3dp"-->
+                <!--android:textSize="14dp"-->
+                <!--android:textCursorDrawable="@null"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:textColor="@color/gray"-->
+                <!--android:background="@drawable/content_bg01"/>-->
             <Button
                 android:id="@+id/order_detail_input"
                 android:layout_width="match_parent"

@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
@@ -49,6 +51,7 @@ public class OrderTaskActivity extends BaseActivity {
     private OrderTaskAdapter orderTaskAdapter;
     LinearLayoutManager layoutManager;
     private ProgressDialog mProgressDialog;
+    private RelativeLayout Multiplelayout;
     private LinearLayout nodatalayout;
     String name;
     int id;
@@ -80,6 +83,7 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.task_list);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
+        Multiplelayout = (RelativeLayout) findViewById(R.id.chooseitem_relativelayout);
     }
 
     @Override
@@ -117,9 +121,17 @@ public class OrderTaskActivity extends BaseActivity {
 //                Intent intent = new Intent(OrderTaskActivity.this,)
             }
         });
-
+        choosebtn.setOnClickListener(chooselistener);
 //        refreshLayout.setOnRefreshListener(this);
     }
+
+    private View.OnClickListener chooselistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+//            Toast.makeText(OrderTaskActivity.this,orderTaskAdapter.checkedlist.size()+"",Toast.LENGTH_SHORT).show();
+
+        }
+    };
 
     private void getData() {
         mProgressDialog = ProgressDialog.show(this, null,
@@ -188,20 +200,22 @@ public class OrderTaskActivity extends BaseActivity {
 
     public void changeitem() {
         isMultiple = true;
-        choosebtn.setVisibility(View.VISIBLE);
-        for (int i = 0; i < orderTaskAdapter.getItemCount(); i++) {
-            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.GONE);
-            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.VISIBLE);
-        }
+        Multiplelayout.setVisibility(View.VISIBLE);
+        recyclerView.setAdapter(orderTaskAdapter);
+//        for (int i = 0; i < orderTaskAdapter.getItemCount()-1; i++) {
+//            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.GONE);
+//            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.VISIBLE);
+//        }
     }
 
     public void changeitenback() {
         isMultiple = false;
-        choosebtn.setVisibility(View.GONE);
-        for (int i = 0; i < orderTaskAdapter.getItemCount(); i++) {
-            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.VISIBLE);
-            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.GONE);
-        }
+        Multiplelayout.setVisibility(View.GONE);
+        recyclerView.setAdapter(orderTaskAdapter);
+//        for (int i = 0; i < orderTaskAdapter.getItemCount()-1; i++) {
+//            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.VISIBLE);
+//            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.GONE);
+//        }
     }
 
 

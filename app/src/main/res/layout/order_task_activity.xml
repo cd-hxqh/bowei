@@ -38,7 +38,8 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/light_gray">
+        android:background="@color/light_gray"
+        android:visibility="gone">
         <Button
             android:id="@+id/choose_btn"
             android:layout_width="match_parent"
@@ -49,6 +50,6 @@
             android:text="@string/choose_batch"
             android:textSize="18sp"
             android:background="@drawable/button_02_ico"
-            android:visibility="gone"/>
+            />
     </RelativeLayout>
 </RelativeLayout>

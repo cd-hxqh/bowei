@@ -62,7 +62,7 @@ public class Constants {
     }
     //获得实际物料消耗
     public static String getMeterialConsumeRealUrl(String num){
-        return "{appid:'DEPTMATUSETRANS',objectname:'DEPTMATUSETRANS',option:'read',condition:{wonum:'"+num+"',issuetype:'ISSUETYPE'}}";
+        return "{appid:'DEPTMATUSETRANS',objectname:'DEPTMATUSETRANS',option:'read',condition:{wonum:'"+num+"',issuetype:'发放'}}";
     }
     //获得工单流程任务分配
     public static String GET_OWNER_ID = "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +

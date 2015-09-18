@@ -65,7 +65,8 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
     private RelativeLayout reality_stoptimelayout;
-    private EditText employee_id;//录入人工号
+    private TextView employee_id;//录入人工号
+    private RelativeLayout employee_idlayout;
     private EditText questiontogether;//问题汇总
     private TextView faultclass;
     private RelativeLayout faultclasslayout;
@@ -105,15 +106,16 @@ public class AddOrderServeActivity extends BaseActivity {
             switch (msg.what) {
                 case S:
                     number.setText(result);
-                    Toast.makeText(AddOrderServeActivity.this,"获取工单编号成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderServeActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
                     orderMain.setIsyuzhi(true);
                     break;
                 case F:
-                    Toast.makeText(AddOrderServeActivity.this,"获取工单编号失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderServeActivity.this, "获取工单编号失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +165,8 @@ public class AddOrderServeActivity extends BaseActivity {
         reality_stoptime = (TextView) findViewById(R.id.oder_detail_reality_stoptime);
         reality_stoptimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_stoptime_layout);
 
-        employee_id = (EditText) findViewById(R.id.oder_detail_employee_id);
+        employee_id = (TextView) findViewById(R.id.oder_detail_employee_id);
+        employee_idlayout = (RelativeLayout) findViewById(R.id.oder_detail_employee_id_layout);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
 
@@ -211,6 +214,7 @@ public class AddOrderServeActivity extends BaseActivity {
         applyunitylayout.setOnClickListener(new MylayoutListener(5));
         majorlayout.setOnClickListener(new MylayoutListener(6));
         datelayout.setOnClickListener(new MydateListener());
+        employee_idlayout.setOnClickListener(new MylayoutListener(7));
         workplanlayout.setOnClickListener(new MylayoutListener(9));
         faultclasslayout.setOnClickListener(new MylayoutListener(11));
         error_codinglayout.setOnClickListener(new MylayoutListener(12));
@@ -224,6 +228,7 @@ public class AddOrderServeActivity extends BaseActivity {
         inputbtn.setOnClickListener(inputlistener);
 
     }
+
 
     /**
      * 设置时间选择器*
@@ -246,41 +251,46 @@ public class AddOrderServeActivity extends BaseActivity {
     private View.OnClickListener yuzhilistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
-                    getString(R.string.requesting), true, true);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            new AsyncTask<String, String, String>() {
-                @Override
-                protected String doInBackground(String... strings) {
-                    String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
-                    if(S==null){
-                        return "false";
-                    }else {
-                        return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
-                    }
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    if(!s.equals("false")) {
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            if (object.getString("errorMsg").equals("成功")) {
-                                mHandler.sendEmptyMessage(S);
-                                result = object.getString("woNum");
-                            } else {
-                                mHandler.sendEmptyMessage(F);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+            String isok = isOK();
+            if (isok.equals("OK")) {
+                mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
+                        getString(R.string.requesting), true, true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                new AsyncTask<String, String, String>() {
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                        if (S == null) {
+                            return "false";
+                        } else {
+                            return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
                         }
-                    }else {
-                        mHandler.sendEmptyMessage(F);
                     }
-                    mProgressDialog.dismiss();
-                }
-            }.execute();
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if (!s.equals("false")) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                if (object.getString("errorMsg").equals("成功")) {
+                                    mHandler.sendEmptyMessage(S);
+                                    result = object.getString("woNum");
+                                } else {
+                                    mHandler.sendEmptyMessage(F);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            mHandler.sendEmptyMessage(F);
+                        }
+                        mProgressDialog.dismiss();
+                    }
+                }.execute();
+            } else if (isok.equals("请完善信息")) {
+                Toast.makeText(AddOrderServeActivity.this, isok, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -295,11 +305,11 @@ public class AddOrderServeActivity extends BaseActivity {
 
         @Override
         public void onClick(View view) {
-            if(faultclass.getText().equals("")&&requestCode==12){
-                Toast.makeText(AddOrderServeActivity.this,"请选择故障类",Toast.LENGTH_SHORT).show();
+            if (faultclass.getText().equals("") && requestCode == 12) {
+                Toast.makeText(AddOrderServeActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
                 return;
-            }else if(error_coding.getText().equals("")&&(requestCode==13||requestCode==14)){
-                Toast.makeText(AddOrderServeActivity.this,"请选择问题代码",Toast.LENGTH_SHORT).show();
+            } else if (error_coding.getText().equals("") && (requestCode == 13 || requestCode == 14)) {
+                Toast.makeText(AddOrderServeActivity.this, "请选择问题代码", Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(AddOrderServeActivity.this, ItemChooseListActivity.class);
@@ -310,7 +320,7 @@ public class AddOrderServeActivity extends BaseActivity {
             } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
             }
-            intent.putExtra("OrderType",getResources().getString(R.string.serve));
+            intent.putExtra("OrderType", getResources().getString(R.string.serve));
             startActivityForResult(intent, requestCode);
         }
     }
@@ -345,6 +355,9 @@ public class AddOrderServeActivity extends BaseActivity {
                 break;
             case 6:
                 major.setText(content);
+                break;
+            case 7:
+                employee_id.setText(content);
                 break;
             case 9:
                 workplan.setText(content);
@@ -400,7 +413,7 @@ public class AddOrderServeActivity extends BaseActivity {
             String isok = isOK();
             if (isok.equals("OK")) {
                 Intent intent = new Intent();
-            orderMain.setNumber(number.getText().toString());
+                orderMain.setNumber(number.getText().toString());
                 orderMain.setDescribe(describe.getText().toString());
                 orderMain.setPlace(place.getText().toString());
                 orderMain.setProperty(property.getText().toString());
@@ -472,7 +485,8 @@ public class AddOrderServeActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("") || place.equals("")
-                || property.getText().equals("") || worktype.getText().equals("")
+//                || property.getText().equals("")
+                || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")) {
             return "请完善信息";

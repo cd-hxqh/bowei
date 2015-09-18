@@ -70,7 +70,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
     private void getData(){
         mProgressDialog = ProgressDialog.show(getActivity(), null,
                 getString(R.string.requesting), true, true);
-        HttpManager.getData(getActivity(), Constants.getMeterialConsumeRealUrl(num), new HttpRequestHandler<String>() {
+        HttpManager.getData(getActivity(), Constants.getMeterialConsumeRealUrl(orderMain.getNumber()), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 mProgressDialog.dismiss();

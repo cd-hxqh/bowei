@@ -525,10 +525,11 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             MaterialInfo materialInfo;
+            new MaterialInfoDao(ctx).deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
                 materialInfo = new MaterialInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-                if (!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"), id)) {//
+//                if (!new MaterialInfoDao(ctx).queryByLabtransId(jsonObject.getString("ITEMNUM"), id)) {//
                     materialInfo.setBelongorderid(id);
                     materialInfo.setName(jsonObject.getString("BJMC"));
                     materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
@@ -536,7 +537,7 @@ public class JsonUtils {
                     materialInfo.setWarehouse(jsonObject.getString("LOCATION"));
                     materialInfo.setIsPlan(false);
                     new MaterialInfoDao(ctx).update(materialInfo);
-                }
+//                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
