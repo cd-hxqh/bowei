@@ -58,12 +58,12 @@ public class AssetDao {
     }
 
     /**
-     * 查询所有资产
+     * 根据资产查询位置
      * @return
      */
-    public List<Asset> queryByLocations(String location){
+    public List<Asset> queryByAsset(String asset){
         try {
-            return AssetDaoOpe.queryBuilder().where().eq("LOCATION",location).query();
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",asset).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

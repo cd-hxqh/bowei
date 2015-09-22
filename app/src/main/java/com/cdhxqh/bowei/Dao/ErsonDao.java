@@ -58,6 +58,19 @@ public class ErsonDao {
     }
 
     /**
+     * 根据班组查询人员信息
+     * @return
+     */
+    public List<Erson> queryByItem(String item){
+        try {
+            return ErsonDaoOpe.queryBuilder().where().eq("YWBZ",item).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){

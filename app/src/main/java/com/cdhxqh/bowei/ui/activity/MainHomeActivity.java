@@ -100,7 +100,7 @@ public class MainHomeActivity extends BaseActivity {
 
         findViewById();
         initView();
-        getOwnerId();
+//        getOwnerId();
         DataisDownLoad();
     }
 
@@ -240,35 +240,35 @@ public class MainHomeActivity extends BaseActivity {
     }
 
 
-    private void getOwnerId() {
-        mProgressDialog = ProgressDialog.show(this, null,
-                getString(R.string.requesting), true, true);
-        HttpManager.getData(this, Constants.getOwnerId(getBaseApplication().getUsername()), new HttpRequestHandler<String>() {
-            @Override
-            public void onSuccess(String data) {
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(data);
-                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        JsonUtils.parsingWenerId(jsonObject.getString("result"));
-                        mProgressDialog.dismiss();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onSuccess(String data, int totalPages, int currentPage) {
-                mProgressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(String error) {
-                mProgressDialog.dismiss();
-            }
-        });
-    }
+//    private void getOwnerId() {
+//        mProgressDialog = ProgressDialog.show(this, null,
+//                getString(R.string.requesting), true, true);
+//        HttpManager.getData(this, Constants.getOwnerId(getBaseApplication().getUsername()), new HttpRequestHandler<String>() {
+//            @Override
+//            public void onSuccess(String data) {
+//                JSONObject jsonObject = null;
+//                try {
+//                    jsonObject = new JSONObject(data);
+//                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
+//                        JsonUtils.parsingWenerId(jsonObject.getString("result"));
+//                        mProgressDialog.dismiss();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(String data, int totalPages, int currentPage) {
+//                mProgressDialog.dismiss();
+//            }
+//
+//            @Override
+//            public void onFailure(String error) {
+//                mProgressDialog.dismiss();
+//            }
+//        });
+//    }
 
     private void DataisDownLoad() {
         Context context = MainHomeActivity.this;

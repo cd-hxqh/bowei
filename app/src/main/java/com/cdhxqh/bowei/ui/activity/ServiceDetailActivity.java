@@ -306,17 +306,23 @@ public class ServiceDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
+        String loucation = null;
         if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                loucation = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(loucation);
                 break;
             case 3:
                 worktype.setText(content);

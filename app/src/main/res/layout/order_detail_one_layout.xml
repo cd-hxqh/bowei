@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/order_layout_background">
     <RelativeLayout
-        android:id="@+id/oder_detail_place_layout"
+        android:id="@+id/oder_detail_property_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
@@ -13,10 +13,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order_detail_palce"
+            android:text="@string/order_detail_property"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/oder_detail_place"
+            android:id="@+id/oder_detail_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -30,7 +30,7 @@
             android:src="@drawable/in_ico"/>
     </RelativeLayout>
     <RelativeLayout
-        android:id="@+id/oder_detail_property_layout"
+        android:id="@+id/oder_detail_place_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="6dp"
@@ -38,10 +38,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order_detail_property"
+            android:text="@string/order_detail_palce"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/oder_detail_property"
+            android:id="@+id/oder_detail_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

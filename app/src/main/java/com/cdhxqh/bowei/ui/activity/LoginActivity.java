@@ -11,10 +11,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.AppManager;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.utils.AccountUtils;
+import com.cdhxqh.bowei.utils.JsonUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -122,9 +127,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             mProgressDialog.dismiss();
 
                         }else {
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             getBaseApplication().setUsername(mUsername.getText().toString());
-                            mProgressDialog.dismiss();
+//                            mProgressDialog.dismiss();
+                            getOwnerId();
                             if (isRemember) {
                                 AccountUtils.setChecked(LoginActivity.this, isRemember);
                                 //记住密码
@@ -132,7 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 getBaseApplication().setUsername(mUsername.getText().toString());
                             }
 
-                            startIntent();
+//                            startIntent();
                         }
 
 
@@ -145,7 +151,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show();
                         }else {
 
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
 
                             startIntent();
                         }
@@ -167,7 +173,39 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         startActivity(inetnt);
     }
 
+    private void getOwnerId() {
+//        mProgressDialog = ProgressDialog.show(this, null,
+//                getString(R.string.requesting), true, true);
+        HttpManager.getData(this, Constants.getOwnerId(mUsername.getText().toString()), new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(data);
+                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
+                        JsonUtils.parsingWenerId(jsonObject.getString("result"));
+                        mProgressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        startIntent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//                startIntent();
+                mProgressDialog.dismiss();
+            }
+        });
+    }
     private long exitTime = 0;
 
     @Override

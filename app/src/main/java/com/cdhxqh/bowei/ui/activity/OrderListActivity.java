@@ -3,7 +3,6 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +20,7 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
+import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by think on 2015/8/13.
  */
-public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,SwipeRefreshLayout.OnLoadListener {
 
     public static final String TAG = "OrderListActivity";
 
@@ -48,6 +48,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private ArrayList<OrderMain> orderMainArrayList;
     private ProgressDialog mProgressDialog;
     private LinearLayout nodatalayout;
+    int i = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
         refresh_layout.setOnRefreshListener(this);
+        refresh_layout.setOnLoadListener(this);
         getData();
     }
 
@@ -133,18 +135,31 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void getData() {
-        if (Constants.ORDER_GETDATA.equals(Constants.ORDER_GETDATA_TEST)) {//判断ownerID是否已获取并已改变Constants.ORDER_GETDATA
+        if (Constants.ORDER_GETDATA.equals("")) {
             refreshData();
         } else {
-            HttpManager.getData(this, Constants.ORDER_GETDATA, new HttpRequestHandler<String>() {
+            String url = null;
+            if (name.equals(getResources().getString(R.string.maintenance))) {
+                url = Constants.getOrderUrl(i,"PM,CM");
+            } else if (name.equals(getResources().getString(R.string.serve))) {
+                url = Constants.getOrderUrl(i,"EM");
+            } else if (name.equals(getResources().getString(R.string.service))) {
+                url = Constants.getOrderUrl(i,"SVR");
+            }
+            HttpManager.getData(this, url, new HttpRequestHandler<String>() {
                 @Override
                 public void onSuccess(String data) {
-                    refresh_layout.setRefreshing(false);
+                    if(refresh_layout.isRefreshing()) {
+                        refresh_layout.setRefreshing(false);
+                    }
+                    if(refresh_layout.isLoading()){
+                        refresh_layout.setLoading(false);
+                    }
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(data);
                         if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                            JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this);
+                            JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this,getBaseApplication().getUsername());
                             refreshData();
                         }
                     } catch (JSONException e) {
@@ -159,7 +174,12 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 @Override
                 public void onFailure(String error) {
                     Toast.makeText(OrderListActivity.this, getResources().getString(R.string.request_fail), Toast.LENGTH_SHORT).show();
-                    refresh_layout.setRefreshing(false);
+                    if(refresh_layout.isRefreshing()) {
+                        refresh_layout.setRefreshing(false);
+                    }
+                    if(refresh_layout.isLoading()){
+                        refresh_layout.setLoading(false);
+                    }
                     refreshData();
                 }
             });
@@ -175,11 +195,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private void addData() {
         List<OrderMain> list = null;
         if (name.equals(getResources().getString(R.string.maintenance))) { //维保
-            list = new OrderMainDao(this).queryForPMAndCM();
+            list = new OrderMainDao(this).queryForPMAndCM(getBaseApplication().getUsername());
         } else if (name.equals(getResources().getString(R.string.serve))) { //维修
-            list = new OrderMainDao(this).queryForEM();
+            list = new OrderMainDao(this).queryForEM(getBaseApplication().getUsername());
         } else if (name.equals(getResources().getString(R.string.service))) { //服务
-            list = new OrderMainDao(this).queryForSVR();
+            list = new OrderMainDao(this).queryForSVR(getBaseApplication().getUsername());
         } else {
             list = new OrderMainDao(this).queryForAll();
         }
@@ -212,5 +232,10 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         getData();
     }
 
-
+    @Override
+    public void onLoad(){
+//        Toast.makeText(OrderListActivity.this,i+"",Toast.LENGTH_SHORT).show();
+        i++;
+        getData();
+    }
 }

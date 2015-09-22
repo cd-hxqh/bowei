@@ -84,10 +84,10 @@ public class JsonUtils {
     /**
      * 解析通用查询接口返回的工单jsonArray信息*
      */
-    public static void parsingOrderArr(String data, Context ctx) {
+    public static void parsingOrderArr(String data, Context ctx,String username) {
         try {
-
-            JSONArray jsonArray = new JSONArray(data);
+            JSONObject jsonObj = new JSONObject(data);
+            JSONArray jsonArray = jsonObj.getJSONArray("resultlist");
             OrderMain orderMain;
             JSONObject jsonObject;
 //            new OrderMainDao(ctx).deleteall();
@@ -144,7 +144,8 @@ public class JsonUtils {
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
                 orderMain.setIsNew(false);
-                if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber())) {//如果本地不存在此工单则添加
+                orderMain.setBelong(username);
+                if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber(),username)) {//如果本地不存在此工单则添加
                     new OrderMainDao(ctx).update(orderMain);
                 }
 
@@ -183,7 +184,9 @@ public class JsonUtils {
     public static void parsingWenerId(String str) {
         try {
             JSONArray fromarr = new JSONArray(str);
-            if (fromarr.length() == 1) {
+            if(fromarr.length() == 0){
+                Constants.ORDER_GETDATA = "";
+            }else if (fromarr.length() == 1) {
                 Constants.serOrderUrl(fromarr.getJSONObject(0).get("OWNERID").toString());
             } else {
                 String s = "";

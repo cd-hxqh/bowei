@@ -27,8 +27,9 @@ import java.text.SimpleDateFormat;
 public class AddWorkerInfoActivity extends BaseActivity {
     private ImageView backimg;
     private TextView titlename;
-    private EditText workernum;
-    private EditText workername;
+    private TextView workernum;
+    private RelativeLayout workernumlayout;
+//    private EditText workername;
     private TextView startdate;
     private RelativeLayout startdate_layout;
     private TextView stopdate;
@@ -43,8 +44,8 @@ public class AddWorkerInfoActivity extends BaseActivity {
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private int layoutnum = 0;
-    private long start;
-    private long stop;
+    private double start;
+    private double stop;
 
     int id;
 
@@ -62,8 +63,8 @@ public class AddWorkerInfoActivity extends BaseActivity {
         backimg = (ImageView) findViewById(R.id.info_title_img_left);
         titlename = (TextView) findViewById(R.id.info_title_name);
 
-        workernum = (EditText) findViewById(R.id.worker_info_number);
-        workername = (EditText) findViewById(R.id.worker_info_name);
+        workernum = (TextView) findViewById(R.id.worker_info_number);
+        workernumlayout = (RelativeLayout) findViewById(R.id.worker_info_number_layout);
         startdate = (TextView) findViewById(R.id.worker_info_start_date);
         stopdate = (TextView) findViewById(R.id.worker_info_stop_date);
         starttime = (TextView) findViewById(R.id.worker_info_start_time);
@@ -90,26 +91,28 @@ public class AddWorkerInfoActivity extends BaseActivity {
                 finish();
             }
         });
+
+        workernumlayout.setOnClickListener(new MylayoutListener(7));
+
         inputbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (workernum.getText().equals("") || workername.getText().equals("")
+                if (workernum.getText().equals("")
                         || startdate.getText().equals("") || stopdate.getText().equals("")
                         || starttime.getText().equals("") || stoptime.getText().equals("")
                         || worktime.getText().equals("")) {
                     Toast.makeText(AddWorkerInfoActivity.this, "请输入完整信息", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.parseInt(worktime.getText().toString()) < 0) {
+                    if (Double.parseDouble(worktime.getText().toString()) < 0) {
                         Toast.makeText(AddWorkerInfoActivity.this, "请输入正确起止时间", Toast.LENGTH_SHORT).show();
                     } else {
                         intent = new Intent();
                         WorkerInfo workerInfo = new WorkerInfo();
                         workerInfo.setNumber(workernum.getText().toString());
-                        workerInfo.setName(workername.getText().toString());
-//                        workerInfo.setStartdate(startdate.getText().toString());
-//                        workerInfo.setStopdate(stopdate.getText().toString());
-                        workerInfo.setStarttime(startdate.getText().toString()+" "+starttime.getText().toString());
-                        workerInfo.setStoptime(stopdate.getText().toString()+" "+stoptime.getText().toString());
+                        workerInfo.setStartdate(startdate.getText().toString());
+                        workerInfo.setStopdate(stopdate.getText().toString());
+                        workerInfo.setStarttime(starttime.getText().toString());
+                        workerInfo.setStoptime(stoptime.getText().toString());
                         workerInfo.setWorktime(worktime.getText().toString());
                         workerInfo.setLabtransId("-1");
                         workerInfo.setBelongorderid(id);
@@ -126,6 +129,19 @@ public class AddWorkerInfoActivity extends BaseActivity {
         stopdate_layout.setOnClickListener(dateOnClicklistener);
         starttime_layout.setOnClickListener(timeOnClicklistener);
         stoptime_layout.setOnClickListener(timeOnClicklistener);
+    }
+
+    public class MylayoutListener implements View.OnClickListener {
+        int requestCode;
+        public MylayoutListener(int requestcode){
+            this.requestCode = requestcode;
+        }
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(AddWorkerInfoActivity.this,ItemChooseListActivity.class);
+            intent.putExtra("requestCode",requestCode);
+            startActivityForResult(intent, requestCode);
+        }
     }
 
     private View.OnClickListener dateOnClicklistener = new View.OnClickListener() {
@@ -170,6 +186,19 @@ public class AddWorkerInfoActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String content = null;
+        if (resultCode != 0) {
+            content = data.getCharSequenceExtra("result").toString();
+        }
+        switch (resultCode) {
+            case 7:
+                workernum.setText(content);
+                break;
+        }
+    }
+
     /**
      * 得到00:00格式的时间
      *
@@ -200,8 +229,8 @@ public class AddWorkerInfoActivity extends BaseActivity {
         if (starttime.getText() != "" && stoptime.getText() != ""
                 && startdate.getText() != null && stopdate.getText() != null) {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            long to = 0;
-            long from = 0;
+            double to = 0;
+            double from = 0;
             try {
                 to = df.parse(stopdate.getText().toString()).getTime();
                 from = df.parse(startdate.getText().toString()).getTime();
@@ -209,9 +238,9 @@ public class AddWorkerInfoActivity extends BaseActivity {
                 e.printStackTrace();
             }
             if (start > stop) {
-                worktime.setText(((to - from) / (1000 * 60 * 60) - (start - stop) / (1000 * 60 * 60)) + "");
+                worktime.setText(new java.text.DecimalFormat("#.00").format((to - from) / (1000 * 60 * 60) - (start - stop) / (1000 * 60 * 60)) + "");
             } else {
-                worktime.setText(((to - from) / (1000 * 60 * 60) + (stop - start) / (1000 * 60 * 60)) + "");
+                worktime.setText(new java.text.DecimalFormat("#.00").format((to - from) / (1000 * 60 * 60) + (stop - start) / (1000 * 60 * 60)) + "");
             }
 //                Toast.makeText(AddWorkerInfoActivity.this,(to - from) / (1000 * 60 * 60 * 24)+"",Toast.LENGTH_SHORT).show();
 //            worktime.setText((to - from) / (1000 * 60 * 60 * 24)+"");

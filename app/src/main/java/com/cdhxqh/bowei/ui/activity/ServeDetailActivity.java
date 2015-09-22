@@ -58,8 +58,8 @@ public class ServeDetailActivity extends BaseActivity {
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
-    private TextView workplan;//作业计划
-    private RelativeLayout workplanlayout;
+//    private TextView workplan;//作业计划
+//    private RelativeLayout workplanlayout;
     private TextView reality_starttime;//实际开始时间
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
@@ -77,8 +77,8 @@ public class ServeDetailActivity extends BaseActivity {
     private RelativeLayout remedylayout;
     private TextView fault_rank;
     private RelativeLayout fault_ranklayout;
-    private TextView reporttime;
-    private RelativeLayout reporttimelayout;
+//    private TextView reporttime;
+//    private RelativeLayout reporttimelayout;
 
     private String parent;
 
@@ -151,8 +151,8 @@ public class ServeDetailActivity extends BaseActivity {
         date = (TextView) findViewById(R.id.oder_detail_date);
         datelayout = (RelativeLayout) findViewById(R.id.oder_detail_date_layout);
 
-        workplan = (TextView) findViewById(R.id.oder_detail_workplan);
-        workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
+//        workplan = (TextView) findViewById(R.id.oder_detail_workplan);
+//        workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
 
         reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
         reality_starttimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_starttime_layout);
@@ -180,8 +180,8 @@ public class ServeDetailActivity extends BaseActivity {
         fault_rank = (TextView) findViewById(R.id.oder_detail_fault_rank);
         fault_ranklayout = (RelativeLayout) findViewById(R.id.oder_detail_fault_rank_layout);
 
-        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
-        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
+//        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
+//        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
 
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
@@ -200,7 +200,7 @@ public class ServeDetailActivity extends BaseActivity {
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this,getResources().getString(R.string.serve),
+                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this, getResources().getString(R.string.serve),
                         orderMain.getId());
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
@@ -216,7 +216,7 @@ public class ServeDetailActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
         employee_idlayout.setOnClickListener(new MylayoutListener(7));
         datelayout.setOnClickListener(new MydateListener());
-        workplanlayout.setOnClickListener(new MylayoutListener(9));
+//        workplanlayout.setOnClickListener(new MylayoutListener(9));
         faultclasslayout.setOnClickListener(new MylayoutListener(11));
         error_codinglayout.setOnClickListener(new MylayoutListener(12));
         causelayout.setOnClickListener(new MylayoutListener(13));
@@ -317,7 +317,7 @@ public class ServeDetailActivity extends BaseActivity {
         major.setText(orderMain.getMajor());
         state.setText(orderMain.getState());
         date.setText(orderMain.getDate());
-        workplan.setText(orderMain.getWorkplan());
+//        workplan.setText(orderMain.getWorkplan());
         reality_starttime.setText(orderMain.getReality_starttime());
         reality_stoptime.setText(orderMain.getReality_stoptime());
         employee_id.setText(orderMain.getEmployee_id());
@@ -383,9 +383,11 @@ public class ServeDetailActivity extends BaseActivity {
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(number);
                 break;
             case 3:
                 worktype.setText(content);
@@ -403,7 +405,7 @@ public class ServeDetailActivity extends BaseActivity {
                 employee_id.setText(content);
                 break;
             case 9:
-                workplan.setText(content);
+//                workplan.setText(content);
                 break;
             case 11:
                 faultclass.setText(content);
@@ -478,10 +480,11 @@ public class ServeDetailActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-                ||property.getText().equals("")||worktype.getText().equals("")
+        if (describe.getText().equals("")
+                ||worktype.getText().equals("")
                 ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
+                ||major.getText().equals("")||date.getText().equals("")
+                ||employee_id.getText().equals("")){
             return "请完善信息";
         }else{
             return "OK";
@@ -502,7 +505,7 @@ public class ServeDetailActivity extends BaseActivity {
 //            orderMain.setReality_item(reality_item.getText().toString());
         orderMain.setState(state.getText().toString());
         orderMain.setDate(date.getText().toString());
-        orderMain.setWorkplan(workplan.getText().toString());
+//        orderMain.setWorkplan(workplan.getText().toString());
         orderMain.setReality_starttime(reality_starttime.getText().toString());
         orderMain.setReality_stoptime(reality_stoptime.getText().toString());
         orderMain.setEmployee_id(employee_id.getText().toString());

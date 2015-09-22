@@ -74,9 +74,11 @@ public class OrderMain implements Serializable {
 
 
     @DatabaseField(columnName = "isNew")
-    private boolean isNew;
+    private boolean isNew;//是否是新建工单
     @DatabaseField(columnName = "isyuzhi")
-    private boolean isyuzhi;
+    private boolean isyuzhi;//是否已预置
+    @DatabaseField(columnName = "belong")
+    private String belong;//所属账号
 
     public boolean isNew() {
         return isNew;
@@ -334,5 +336,11 @@ public class OrderMain implements Serializable {
         this.isyuzhi = isyuzhi;
     }
 
+    public String getBelong() {
+        return belong;
+    }
 
+    public void setBelong(String belong) {
+        this.belong = belong;
+    }
 }

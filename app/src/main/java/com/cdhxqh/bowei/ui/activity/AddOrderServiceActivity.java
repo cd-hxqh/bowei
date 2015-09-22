@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
@@ -166,16 +167,19 @@ public class AddOrderServiceActivity extends BaseActivity {
         inputbtn.setOnClickListener(inputlistener);
 
     }
+
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
-        public MylayoutListener(int requestcode){
+
+        public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
+
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(AddOrderServiceActivity.this,ItemChooseListActivity.class);
-            intent.putExtra("requestCode",requestCode);
-            intent.putExtra("OrderType",getResources().getString(R.string.service));
+            Intent intent = new Intent(AddOrderServiceActivity.this, ItemChooseListActivity.class);
+            intent.putExtra("requestCode", requestCode);
+            intent.putExtra("OrderType", getResources().getString(R.string.service));
             startActivityForResult(intent, requestCode);
         }
     }
@@ -183,17 +187,23 @@ public class AddOrderServiceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
+        String loucation = null;
+        if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                loucation = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(loucation);
                 break;
             case 3:
                 worktype.setText(content);
@@ -220,7 +230,8 @@ public class AddOrderServiceActivity extends BaseActivity {
                 break;
         }
     }
-    public class MydateListener implements View.OnClickListener{
+
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -230,58 +241,67 @@ public class AddOrderServiceActivity extends BaseActivity {
             datePickerDialog.show();
         }
     }
+
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
-            OrderMain orderMain = new OrderMain();
-            orderMain.setNumber(number.getText().toString());
-            orderMain.setDescribe(describe.getText().toString());
-            orderMain.setPlace(place.getText().toString());
-            orderMain.setProperty(property.getText().toString());
-            orderMain.setWordtype(worktype.getText().toString());
-            orderMain.setReality_worktype(reality_worktype.getText().toString());
-            orderMain.setApplyunity(applyunity.getText().toString());
-            orderMain.setMajor(major.getText().toString());
-            orderMain.setState(state.getText().toString());
-            orderMain.setDate(date.getText().toString());
-            orderMain.setReality_starttime(reality_starttime.getText().toString());
-            orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-            orderMain.setEmployee_id(employee_id.getText().toString());
-            orderMain.setQuestiontogether(questiontogether.getText().toString());
-            orderMain.setIsNew(true);
-            intent.putExtra("orderMain", orderMain);
-            AddOrderServiceActivity.this.setResult(1, intent);
-            finish();
+            String isok = isOK();
+            if (isok.equals("OK")) {
+                Intent intent = new Intent();
+                OrderMain orderMain = new OrderMain();
+                orderMain.setNumber(number.getText().toString());
+                orderMain.setDescribe(describe.getText().toString());
+                orderMain.setPlace(place.getText().toString());
+                orderMain.setProperty(property.getText().toString());
+                orderMain.setWordtype(worktype.getText().toString());
+                orderMain.setReality_worktype(reality_worktype.getText().toString());
+                orderMain.setApplyunity(applyunity.getText().toString());
+                orderMain.setMajor(major.getText().toString());
+                orderMain.setState(state.getText().toString());
+                orderMain.setDate(date.getText().toString());
+                orderMain.setReality_starttime(reality_starttime.getText().toString());
+                orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+                orderMain.setEmployee_id(employee_id.getText().toString());
+                orderMain.setQuestiontogether(questiontogether.getText().toString());
+                orderMain.setIsNew(true);
+                orderMain.setBelong(getBaseApplication().getUsername());
+                intent.putExtra("orderMain", orderMain);
+                AddOrderServiceActivity.this.setResult(1, intent);
+                finish();
+            } else if (isok.equals("请完善信息")) {
+                Toast.makeText(AddOrderServiceActivity.this, isok, Toast.LENGTH_SHORT).show();
+            }
         }
     };
+
     private class datelistener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            sb=new StringBuffer();
-            if(dayOfMonth<10){
-                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
-            }else {
+            sb = new StringBuffer();
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+            } else {
                 sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
         }
     }
+
     private class timelistener implements TimePickerDialog.OnTimeSetListener {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             sb.append(" ");
-            if(i1<10){
-                sb.append(i+":"+"0"+i1+":00");
-            }else {
-                sb.append(i+":"+i1+":00");
+            if (i1 < 10) {
+                sb.append(i + ":" + "0" + i1 + ":00");
+            } else {
+                sb.append(i + ":" + i1 + ":00");
             }
-            if(layoutnum == datelayout.getId()){
+            if (layoutnum == datelayout.getId()) {
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
@@ -290,16 +310,17 @@ public class AddOrderServiceActivity extends BaseActivity {
 
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-//                ||property.getText().equals("")
-                ||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
+    private String isOK() {
+        if (describe.getText().equals("")
+                || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")
+                || employee_id.getText().equals("")) {
             return "请完善信息";
-        }else{
+        } else {
             return "OK";
         }
     }

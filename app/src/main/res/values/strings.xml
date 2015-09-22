@@ -39,6 +39,7 @@
     <string name="serve_add_new">新建维修工单</string>
     <string name="service_add_new">新建服务工单</string>
     <string name="choose_item">选择班组</string>
+    <string name="choose_all">全部员工</string>
     <string name="order_number">编号</string>
     <string name="order_describe">描述</string>
     <string name="order_task">工单任务</string>

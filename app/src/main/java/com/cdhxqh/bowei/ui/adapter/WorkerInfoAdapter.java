@@ -32,8 +32,7 @@ public class WorkerInfoAdapter extends RecyclerView.Adapter<WorkerInfoAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.number.setText(list.get(position).getNumber()+"");
-        holder.name.setText(list.get(position).getName());
+        holder.number.setText(list.get(position).getNumber());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,13 +54,10 @@ public class WorkerInfoAdapter extends RecyclerView.Adapter<WorkerInfoAdapter.Vi
         public RelativeLayout relativeLayout;
         /**员工编号**/
         public TextView number;
-        /**名称**/
-        public TextView name;
         public ViewHolder(final View itemView) {
             super(itemView);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.worker_info_list_content);
             number = (TextView) itemView.findViewById(R.id.worker_info_number);
-            name = (TextView) itemView.findViewById(R.id.worker_info_name);
         }
     }
 

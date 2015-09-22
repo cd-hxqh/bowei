@@ -38,7 +38,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(activity.requestCode==2){
+                    activity.responseData(list.get(position).getValue(),list.get(position).getParent());
+                }
                 if(activity.requestCode==12||activity.requestCode==13||activity.requestCode==14){
                     activity.responseData(list.get(position).getValue(),list.get(position).getName());
                 }else {

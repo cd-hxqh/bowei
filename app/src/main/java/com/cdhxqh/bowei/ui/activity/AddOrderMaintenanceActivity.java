@@ -27,7 +27,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.LocationsDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 import com.cdhxqh.bowei.utils.WebserviceDataUtils;
@@ -36,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by think on 2015/8/26.
@@ -82,6 +85,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private Button yuzhi;//预置
     private Button inputbtn;
     OrderMain orderMain = new OrderMain();
+    private String loucation;
 
     private DatePickerDialog datePickerDialog;
     private CumTimePickerDialog timePickerDialog;
@@ -298,12 +302,6 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             Intent intent = new Intent(AddOrderMaintenanceActivity.this,ItemChooseListActivity.class);
             intent.putExtra("requestCode",requestCode);
             intent.putExtra("OrderType",getResources().getString(R.string.maintenance));
-            if(place.getText()==null&&view.getId()==property.getId()){
-                Toast.makeText(AddOrderMaintenanceActivity.this,"请选择位置",Toast.LENGTH_SHORT).show();
-                return;
-            }
-            intent.putExtra("place",place.getText().toString());
-
             startActivityForResult(intent, requestCode);
         }
     }
@@ -322,17 +320,23 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
-             content = data.getCharSequenceExtra("result").toString();
+        String loucation = null;
+        if (resultCode != 0) {
+            content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                loucation = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(loucation);
                 break;
             case 3:
                 worktype.setText(content);
@@ -399,12 +403,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
-//                ||property.getText().equals("")
+        if (describe.getText().equals("")
                 ||worktype.getText().equals("")
                 ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
                 ||major.getText().equals("")||date.getText().equals("")
-                ||workplan.getText().equals("")){
+                ||employee_id.getText().equals("")){
             return "请完善信息";
         }else{
             return "OK";
@@ -441,6 +444,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         orderMain.setNotinspection_device(notinspection_device.getText().toString());
         orderMain.setInspect_result(inspect_result.getText().toString());
         orderMain.setIsNew(true);
+        orderMain.setBelong(getBaseApplication().getUsername());
         if(number.getText()!=null){
             orderMain.setIsyuzhi(true);
         }else {

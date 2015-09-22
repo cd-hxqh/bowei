@@ -317,17 +317,23 @@ public class MaintenanceDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        if(resultCode!=0){
+        String loucation = null;
+        if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
+            if (data.hasExtra("number")) {
+                loucation = data.getCharSequenceExtra("number").toString();
+            }
         }
         switch (resultCode) {
             case 0:
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(loucation);
                 break;
             case 3:
                 worktype.setText(content);
@@ -391,14 +397,15 @@ public class MaintenanceDetailActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-//        if (describe.getText().equals("")||place.equals("")
-//                ||property.getText().equals("")||worktype.getText().equals("")
-//                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-//                ||major.getText().equals("")||date.getText().equals("")){
-//            return "请完善信息";
-//        }else{
+        if (describe.getText().equals("")
+                ||worktype.getText().equals("")
+                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+                ||major.getText().equals("")||date.getText().equals("")
+                ||employee_id.getText().equals("")){
+            return "请完善信息";
+        }else{
             return "OK";
-//        }
+        }
     }
 
     private OrderMain SaveData(){

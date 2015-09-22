@@ -72,6 +72,19 @@ public class LocationsDao {
     }
 
     /**
+     * 根据Loucation查询位置信息
+     * @return
+     */
+    public List<Locations> queryByLoucation(String Loucation){
+        try {
+            return LocationsDaoOpe.queryBuilder().where().eq("LOCATION",Loucation).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有位置信息
      */
     public void deleteall(){

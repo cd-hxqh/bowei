@@ -114,7 +114,7 @@ public class FailureListDao {
      * 根据选择的故障现象查询对应的原因
      * @return
      */
-    public List<FailureList1> queryForCauseByPatent(String parent){
+    public List<FailureList1> queryForCauseByParent(String parent){
         try {
             return FailureListDaoOpe.queryBuilder()
                     .where().eq("TYPE", "CAUSE").and().eq("PARENT", parent).query();
@@ -141,7 +141,7 @@ public class FailureListDao {
      * 根据选择的故障现象查询对应的措施
      * @return
      */
-    public List<FailureList1> queryForRemedyByPatent(String parent){
+    public List<FailureList1> queryForRemedyByParent(String parent){
         try {
             return FailureListDaoOpe.queryBuilder()
                     .where().eq("TYPE", "REMEDY").and().eq("PARENT", parent).query();

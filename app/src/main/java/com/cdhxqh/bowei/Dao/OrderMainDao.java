@@ -63,11 +63,12 @@ public class OrderMainDao {
      * 查询维保工单
      * @return
      */
-    public List<OrderMain> queryForPMAndCM(){
+    public List<OrderMain> queryForPMAndCM(String username){
         try {
 
             return OrderMainDaoOpe.queryBuilder().orderBy("number",true)
-                    .where().eq("wordtype","PM").or().eq("wordtype","CM").query();
+                    .where().eq("wordtype","PM").or().eq("wordtype","CM")
+                    .and().eq("belong",username).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,11 +79,11 @@ public class OrderMainDao {
      * 查询维修工单
      * @return
      */
-    public List<OrderMain> queryForEM(){
+    public List<OrderMain> queryForEM(String username){
         try {
 
             return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
-                    .where().eq("wordtype","EM").query();
+                    .where().eq("wordtype", "EM").and().eq("belong",username).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,11 +93,11 @@ public class OrderMainDao {
      * 查询服务工单
      * @return
      */
-    public List<OrderMain> queryForSVR(){
+    public List<OrderMain> queryForSVR(String username){
         try {
 
             return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
-                    .where().eq("wordtype","SVR").query();
+                    .where().eq("wordtype","SVR").and().eq("belong",username).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,9 +145,9 @@ public class OrderMainDao {
      * @param num
      * @return
      */
-    public boolean isexitByNum(String num){
+    public boolean isexitByNum(String num,String username){
         try {
-            List<OrderMain>orderMainList = OrderMainDaoOpe.queryBuilder().where().eq("number",num).query();
+            List<OrderMain>orderMainList = OrderMainDaoOpe.queryBuilder().where().eq("number",num).and().eq("belong",username).query();
             if(orderMainList.size()>0){
                 return true;
             }else {

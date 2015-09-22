@@ -180,21 +180,23 @@ public class OrderTaskActivity extends BaseActivity {
         if(new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size()>0){
             addData(id);
         }else {
-            ArrayList<OrderTask> list = new ArrayList<OrderTask>();
-            OrderTask orderTask;
-            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
-            for (int i = 0; i < task.size(); i++) {
-                orderTask = new OrderTask();
-                orderTask.setBelongordermain(id);
-                orderTask.setNum(orderMain.getNumber());
-                orderTask.setDigest(task.get(i).getDESCRIPTION());
-                orderTask.setOrdermainid(String.valueOf(task.get(i).getJOBTASKID()));
-                orderTask.setTask(task.get(i).getJPTASK());
+            if(!orderMain.getWorkplan().equals("")) {
+                ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+                OrderTask orderTask;
+                List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
+                for (int i = 0; i < task.size(); i++) {
+                    orderTask = new OrderTask();
+                    orderTask.setBelongordermain(id);
+                    orderTask.setNum(orderMain.getNumber());
+                    orderTask.setDigest(task.get(i).getDESCRIPTION());
+                    orderTask.setOrdermainid(String.valueOf(task.get(i).getJOBTASKID()));
+                    orderTask.setTask(task.get(i).getJPTASK());
 //            orderTask.setWosequence();
-                new OrderTaskDao(OrderTaskActivity.this).update(orderTask);
-                list.add(i, orderTask);
+                    new OrderTaskDao(OrderTaskActivity.this).update(orderTask);
+                    list.add(i, orderTask);
+                }
+                orderTaskAdapter.update(list, true);
             }
-            orderTaskAdapter.update(list, true);
         }
     }
 

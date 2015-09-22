@@ -26,6 +26,7 @@ import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
+import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,8 +60,8 @@ public class AddOrderServeActivity extends BaseActivity {
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
-    private TextView workplan;//作业计划
-    private RelativeLayout workplanlayout;
+//    private TextView workplan;//作业计划
+//    private RelativeLayout workplanlayout;
     private TextView reality_starttime;//实际开始时间
     private RelativeLayout reality_starttimelayout;
     private TextView reality_stoptime;//实际完成时间
@@ -78,9 +79,9 @@ public class AddOrderServeActivity extends BaseActivity {
     private RelativeLayout remedylayout;
     private TextView fault_rank;
     private RelativeLayout fault_ranklayout;
-    private TextView reporttime;
-    private RelativeLayout reporttimelayout;
-    private EditText reporttimeedit;
+//    private TextView reporttime;
+//    private RelativeLayout reporttimelayout;
+//    private EditText reporttimeedit;
 
     private String parent;
 
@@ -156,8 +157,8 @@ public class AddOrderServeActivity extends BaseActivity {
         date = (TextView) findViewById(R.id.oder_detail_date);
         datelayout = (RelativeLayout) findViewById(R.id.oder_detail_date_layout);
 
-        workplan = (TextView) findViewById(R.id.oder_detail_workplan);
-        workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
+//        workplan = (TextView) findViewById(R.id.oder_detail_workplan);
+//        workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
 
         reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
         reality_starttimelayout = (RelativeLayout) findViewById(R.id.oder_detail_reality_starttime_layout);
@@ -185,9 +186,9 @@ public class AddOrderServeActivity extends BaseActivity {
         fault_rank = (TextView) findViewById(R.id.oder_detail_fault_rank);
         fault_ranklayout = (RelativeLayout) findViewById(R.id.oder_detail_fault_rank_layout);
 
-        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
-        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
-        reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
+//        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
+//        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
+//        reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
 
         yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
@@ -215,7 +216,7 @@ public class AddOrderServeActivity extends BaseActivity {
         majorlayout.setOnClickListener(new MylayoutListener(6));
         datelayout.setOnClickListener(new MydateListener());
         employee_idlayout.setOnClickListener(new MylayoutListener(7));
-        workplanlayout.setOnClickListener(new MylayoutListener(9));
+//        workplanlayout.setOnClickListener(new MylayoutListener(9));
         faultclasslayout.setOnClickListener(new MylayoutListener(11));
         error_codinglayout.setOnClickListener(new MylayoutListener(12));
         causelayout.setOnClickListener(new MylayoutListener(13));
@@ -252,6 +253,7 @@ public class AddOrderServeActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             String isok = isOK();
+            SaveData();
             if (isok.equals("OK")) {
                 mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
                         getString(R.string.requesting), true, true);
@@ -259,6 +261,7 @@ public class AddOrderServeActivity extends BaseActivity {
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
+                        String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), AddOrderServeActivity.this, orderMain);
                         String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
                         if (S == null) {
                             return "false";
@@ -340,9 +343,11 @@ public class AddOrderServeActivity extends BaseActivity {
                 break;
             case 1:
                 place.setText(content);
+                property.setText("");
                 break;
             case 2:
                 property.setText(content);
+                place.setText(number);
                 break;
             case 3:
                 worktype.setText(content);
@@ -360,7 +365,7 @@ public class AddOrderServeActivity extends BaseActivity {
                 employee_id.setText(content);
                 break;
             case 9:
-                workplan.setText(content);
+//                workplan.setText(content);
                 break;
             case 11:
                 faultclass.setText(content);
@@ -412,27 +417,8 @@ public class AddOrderServeActivity extends BaseActivity {
         public void onClick(View v) {
             String isok = isOK();
             if (isok.equals("OK")) {
+                SaveData();
                 Intent intent = new Intent();
-                orderMain.setNumber(number.getText().toString());
-                orderMain.setDescribe(describe.getText().toString());
-                orderMain.setPlace(place.getText().toString());
-                orderMain.setProperty(property.getText().toString());
-                orderMain.setWordtype(worktype.getText().toString());
-                orderMain.setReality_worktype(reality_worktype.getText().toString());
-                orderMain.setApplyunity(applyunity.getText().toString());
-                orderMain.setMajor(major.getText().toString());
-                orderMain.setState(state.getText().toString());
-                orderMain.setDate(date.getText().toString());
-                orderMain.setWorkplan(workplan.getText().toString());
-                orderMain.setReality_starttime(reality_starttime.getText().toString());
-                orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-                orderMain.setEmployee_id(employee_id.getText().toString());
-                orderMain.setQuestiontogether(questiontogether.getText().toString());
-                orderMain.setFaultclass(faultclass.getText().toString());
-                orderMain.setError_coding(error_coding.getText().toString());
-                orderMain.setCause(cause.getText().toString());
-                orderMain.setRemedy(remedy.getText().toString());
-                orderMain.setFault_rank(fault_rank.getText().toString());
 //            orderMain.setReporttime(reporttime.getText().toString());
                 intent.putExtra("orderMain", orderMain);
                 AddOrderServeActivity.this.setResult(1, intent);
@@ -484,14 +470,45 @@ public class AddOrderServeActivity extends BaseActivity {
      * @return
      */
     private String isOK() {
-        if (describe.getText().equals("") || place.equals("")
-//                || property.getText().equals("")
-                || worktype.getText().equals("")
-                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
-                || major.getText().equals("") || date.getText().equals("")) {
+        if (describe.getText().equals("")
+                ||worktype.getText().equals("")
+                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
+                ||major.getText().equals("")||date.getText().equals("")
+                ||employee_id.getText().equals("")) {
             return "请完善信息";
         } else {
             return "OK";
+        }
+    }
+
+    /**
+     * 保存填写的工单信息
+     */
+    private void SaveData(){
+        orderMain.setNumber(number.getText().toString());
+        orderMain.setDescribe(describe.getText().toString());
+        orderMain.setPlace(place.getText().toString());
+        orderMain.setProperty(property.getText().toString());
+        orderMain.setWordtype(worktype.getText().toString());
+        orderMain.setReality_worktype(reality_worktype.getText().toString());
+        orderMain.setApplyunity(applyunity.getText().toString());
+        orderMain.setMajor(major.getText().toString());
+        orderMain.setState(state.getText().toString());
+        orderMain.setDate(date.getText().toString());
+        orderMain.setReality_starttime(reality_starttime.getText().toString());
+        orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+        orderMain.setEmployee_id(employee_id.getText().toString());
+        orderMain.setQuestiontogether(questiontogether.getText().toString());
+        orderMain.setFaultclass(faultclass.getText().toString());
+        orderMain.setError_coding(error_coding.getText().toString());
+        orderMain.setCause(cause.getText().toString());
+        orderMain.setRemedy(remedy.getText().toString());
+        orderMain.setFault_rank(fault_rank.getText().toString());
+        orderMain.setBelong(getBaseApplication().getUsername());
+        if(number.getText()!=null){
+            orderMain.setIsyuzhi(true);
+        }else {
+            orderMain.setIsyuzhi(false);
         }
     }
 }

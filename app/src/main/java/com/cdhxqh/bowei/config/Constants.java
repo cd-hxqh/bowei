@@ -2,6 +2,9 @@ package com.cdhxqh.bowei.config;
 
 import android.content.Context;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Constants {
     public static String webserviceURL = "http://182.92.8.94:7001/maximo/services/WOService";//webservice接口地址
     public static String YUZHI_VALUE = "{\"woNum\":\"test2\",\"description\":\"description\"," +
@@ -34,10 +37,24 @@ public class Constants {
     /**工单测试接口**/
     public static String ORDER_GETDATA_TEST = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
     /**工单接口**/
-    public static String ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
-    /**工单接口**/
+    public static String ORDER_GETDATA = "";
+    /**根据工单类型得到工单接口**/
+    public static String getOrderUrl(int page,String type){
+        if(!ORDER_GETDATA.equals("")){
+            try {
+                JSONObject object = new JSONObject(ORDER_GETDATA);
+                object.put("curpage",page);
+                object.getJSONObject("condition").put("WORKTYPE",type);
+                return object.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+    /**设置工单接口**/
     public static void serOrderUrl(String num){
-        ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',option:'read',condition:{workorderid:'"+num+"'}}";
+        ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{workorderid:'"+num+"'}}";
     }
 
     /**根据资产编号查询工单数据**/
