@@ -9,6 +9,6 @@
     <include layout="@layout/maintenance_title" />
 
 
-    <include layout="@layout/fragment_know_kedge"></include>
+    <include layout="@layout/activity_order_list"></include>
 
 </LinearLayout>

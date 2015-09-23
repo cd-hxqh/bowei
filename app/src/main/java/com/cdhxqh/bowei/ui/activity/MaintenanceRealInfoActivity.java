@@ -71,6 +71,12 @@ public class MaintenanceRealInfoActivity extends BaseActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        initView();
+    }
+
+    @Override
     protected void findViewById() {
         titlename = (TextView) findViewById(R.id.title_name);
         backimg = (ImageView) findViewById(R.id.maintenance_title_back);

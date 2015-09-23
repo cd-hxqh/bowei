@@ -20,7 +20,9 @@ import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by think on 2015/9/2.
@@ -150,7 +152,7 @@ public class AddOrderServiceActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("SVR");
-
+        date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         setDataListener();
 
         placelayout.setOnClickListener(new MylayoutListener(1));

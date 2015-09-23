@@ -12,12 +12,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 员工信息页面
@@ -85,7 +88,18 @@ public class WorkerInfoActivity extends BaseActivity{
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if (Double.parseDouble(worktime.getText().toString()) < 0) {
+                    Toast.makeText(WorkerInfoActivity.this, "请输入正确起止时间", Toast.LENGTH_SHORT).show();
+                } else {
+                    workerInfo.setNumber(workernum.getText().toString());
+                    workerInfo.setStartdate(startdate.getText().toString());
+                    workerInfo.setStopdate(stopdate.getText().toString());
+                    workerInfo.setStarttime(starttime.getText().toString());
+                    workerInfo.setStoptime(stoptime.getText().toString());
+                    workerInfo.setWorktime(worktime.getText().toString());
+                    new WorkerInfoDao(WorkerInfoActivity.this).update(workerInfo);
+                    finish();
+                }
             }
         });
         titlename.setText(getResources().getString(R.string.worker_info));

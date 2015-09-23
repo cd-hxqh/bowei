@@ -49,7 +49,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -474,6 +477,11 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             WorkerInfo workerInfo;
+            SimpleDateFormat dd=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat d1=new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat d2=new SimpleDateFormat("HH:mm:ss");
+            Date startdate;
+            Date stopdate;
             for (int i = 0; i < jsonArray.length(); i++) {
                 workerInfo = new WorkerInfo();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -481,13 +489,23 @@ public class JsonUtils {
                     workerInfo.setBelongorderid(id);
                     workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
                     workerInfo.setName(jsonObject.getString("LABORCODE"));
-                    workerInfo.setStarttime(jsonObject.getString("STARTTIME"));
-                    workerInfo.setStoptime(jsonObject.getString("FINISHTIME"));
+                    if(!jsonObject.getString("STARTTIME").equals("")){
+                        startdate = dd.parse(jsonObject.getString("STARTTIME"));
+                        workerInfo.setStartdate(d1.format(startdate));
+                        workerInfo.setStarttime(d2.format(startdate));
+                    }
+                    if(!jsonObject.getString("FINISHTIME").equals("")){
+                        stopdate = dd.parse(jsonObject.getString("FINISHTIME"));
+                        workerInfo.setStopdate(d1.format(stopdate));
+                        workerInfo.setStoptime(d2.format(stopdate));
+                    }
                     workerInfo.setWorktime(jsonObject.getString("REGULARHRS"));
                     new WorkerInfoDao(ctx).update(workerInfo);
                 }
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

@@ -10,85 +10,142 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_margin="5dp"
         android:background="@drawable/content_bg02"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/task_num"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
         <EditText
             android:id="@+id/task_num"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
+            android:background="@drawable/content_bg01"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:background="@drawable/content_bg01"/>
+            android:textSize="14sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/task_digest"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
         <EditText
             android:id="@+id/task_digest"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/content_bg01"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="14sp"
             android:textColor="@color/gray"
-            android:background="@drawable/content_bg01"/>
+            android:textSize="14sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/task_zxr"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/task_zxr"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+        <!--<EditText-->
+        <!--android:id="@+id/task_zxr"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:textColor="@color/gray"-->
+        <!--android:textSize="14sp"-->
+        <!--android:background="@drawable/content_bg01"/>-->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:background="@drawable/content_bg01"/>
+            android:layout_height="50dp"
+            android:background="@drawable/content_bg01">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollbars="none">
+
+                <GridLayout
+                    android:id="@+id/order_zxr_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:rowCount="1">
+
+                </GridLayout>
+            </HorizontalScrollView>
+            <!--<RelativeLayout-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@color/white">-->
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                <!--android:id="@+id/order_task_add_zxr"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@color/gray"-->
+                <!--android:src="@drawable/add_ico"/>-->
+            <!--</RelativeLayout>-->
+        </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/task_jcr"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
-        <EditText
-            android:id="@+id/task_jcr"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:background="@drawable/content_bg01"/>
+            android:layout_height="50dp"
+            android:background="@drawable/content_bg01">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollbars="none">
+
+                <GridLayout
+                    android:id="@+id/order_jcr_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="3dp"
+                    android:rowCount="1">
+
+                </GridLayout>
+            </HorizontalScrollView>
+        </RelativeLayout>
+
         <Button
             android:id="@+id/task_ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:layout_marginTop="35dp"
+            android:background="@color/start_back_color"
             android:text="@string/OK"
-            android:textSize="18sp"
-            android:background="@color/start_back_color"/>
+            android:textSize="18sp" />
     </LinearLayout>
 
 

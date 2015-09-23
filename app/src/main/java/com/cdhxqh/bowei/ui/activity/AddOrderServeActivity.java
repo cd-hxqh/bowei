@@ -31,7 +31,9 @@ import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by think on 2015/9/2.
@@ -206,6 +208,7 @@ public class AddOrderServeActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("EM");
+        date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         orderMain.setIsNew(true);
         setDataListener();
         placelayout.setOnClickListener(new MylayoutListener(1));

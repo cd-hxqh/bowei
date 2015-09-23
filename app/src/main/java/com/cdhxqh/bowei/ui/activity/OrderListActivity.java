@@ -70,8 +70,10 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void onRestart() {
         super.onRestart();
-        orderMainAdapter.notifyDataSetChanged();
-        refreshData();
+//        orderMainAdapter.notifyDataSetChanged();
+//        refreshData();
+//        initView();
+        getData();
     }
 
     @Override

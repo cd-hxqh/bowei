@@ -19,16 +19,20 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.ErsonDao;
 import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.Dao.OrderTaskDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.ChooseItem;
+import com.cdhxqh.bowei.bean.Erson;
 import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
+import com.cdhxqh.bowei.ui.adapter.ItemListAdapter;
 import com.cdhxqh.bowei.ui.adapter.OrderTaskAdapter;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
@@ -36,7 +40,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by think on 2015/8/20.
@@ -57,6 +63,12 @@ public class OrderTaskActivity extends BaseActivity {
     int id;
     OrderMain orderMain;
     public boolean isMultiple = false;
+    AlertDialog.Builder builder1;
+    AlertDialog.Builder builder2;
+    private String[] mItems1 = {"执行人", "检查人"};
+    private String[] mItems2;
+    ArrayList<Integer> MultiChoiceID = new ArrayList<Integer>();
+    private int chooseitem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +112,11 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         orderTaskAdapter = new OrderTaskAdapter(this, this);
         recyclerView.setAdapter(orderTaskAdapter);
-        if(orderMain.isNew()){//本地新建工单
+        if (orderMain.isNew()) {//本地新建工单
             addLocationTask(orderMain.getId());
-        }else{//接收的工单
+        } else {//接收的工单
             getData();
         }
-
 
 
         backimg.setOnClickListener(new View.OnClickListener() {
@@ -128,10 +139,87 @@ public class OrderTaskActivity extends BaseActivity {
     private View.OnClickListener chooselistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-//            Toast.makeText(OrderTaskActivity.this,orderTaskAdapter.checkedlist.size()+"",Toast.LENGTH_SHORT).show();
-
+            builder1 = new AlertDialog.Builder(OrderTaskActivity.this);
+            builder1.setTitle("工作选择");
+            builder1.setItems(mItems1, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    chooseitem = which;
+                    showdialog();
+                }
+            });
+            builder1.create().show();
         }
     };
+
+    private void showdialog() {
+        List<Erson> ersonList = new ErsonDao(this).queryForAll();
+        List<String> itemlist = new ArrayList<String>();
+        boolean[] mItems3 = new boolean[ersonList.size()];
+        for (int i = 0; i < ersonList.size(); i++) {
+            itemlist.add(i, ersonList.get(i).getPERSONID());
+            mItems3[i] = false;
+        }
+        mItems2 = (String[]) itemlist.toArray(new String[itemlist.size()]);
+//        Boolean[] mItems4 = (Boolean[]) initlist.toArray(new Boolean[initlist.size()]);
+        builder2 = new AlertDialog.Builder(OrderTaskActivity.this);
+        MultiChoiceID.clear();
+        builder2.setTitle("员工选择");
+        builder2.setMultiChoiceItems(mItems2,
+                mItems3,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton,
+                                        boolean isChecked) {
+                        if (isChecked) {
+                            MultiChoiceID.add(whichButton);
+                        } else {
+                            MultiChoiceID.remove(whichButton);
+                        }
+
+                    }
+                });
+        builder2.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String str = "";
+                int size = MultiChoiceID.size();
+                for (int i = 0; i < size; i++) {
+                    if (i == 0) {
+                        str = mItems2[MultiChoiceID.get(i)];
+                    } else {
+                        str += "," + mItems2[MultiChoiceID.get(i)];
+                    }
+                }
+                changeTask(str);
+                changeitenback();
+                Toast.makeText(OrderTaskActivity.this, str, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        builder2.create().show();
+    }
+
+    /**
+     * 按照选择的员工改变任务执行人/检查人
+     *
+     * @param str
+     */
+    private void changeTask(String str) {
+        Iterator iter = orderTaskAdapter.checkedlist.entrySet().iterator();
+        OrderTask val;
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            val = (OrderTask) entry.getValue();
+            if (chooseitem == 0) {
+                val.setZxr(str);
+            } else if (chooseitem == 1) {
+                val.setJcr(str);
+            }
+            new OrderTaskDao(this).update(val);
+        }
+    }
 
     private void getData() {
         mProgressDialog = ProgressDialog.show(this, null,
@@ -144,7 +232,7 @@ public class OrderTaskActivity extends BaseActivity {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
 //                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"),orderMain.getId());
+                        JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"), orderMain.getId());
                         mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
@@ -165,22 +253,22 @@ public class OrderTaskActivity extends BaseActivity {
 
     private void addData(int id) {
         ArrayList<OrderTask> list = new ArrayList<OrderTask>();
-        List<OrderTask>orderTaskList = new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id);
-        for(int i = 0;i < orderTaskList.size();i++){
-            list.add(i,orderTaskList.get(i));
+        List<OrderTask> orderTaskList = new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id);
+        for (int i = 0; i < orderTaskList.size(); i++) {
+            list.add(i, orderTaskList.get(i));
         }
         orderTaskAdapter.update(list, true);
-        if(orderTaskList.size()==0){
+        if (orderTaskList.size() == 0) {
             nodatalayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }
     }
 
     private void addLocationTask(int id) {
-        if(new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size()>0){
+        if (new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size() > 0) {
             addData(id);
-        }else {
-            if(!orderMain.getWorkplan().equals("")) {
+        } else {
+            if (!orderMain.getWorkplan().equals("")) {
                 ArrayList<OrderTask> list = new ArrayList<OrderTask>();
                 OrderTask orderTask;
                 List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());

@@ -37,7 +37,9 @@ import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -193,6 +195,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         worktype.setText("CM");
         applyunity.setText("JY");
         inspect_result.setText(getResources().getString(R.string.order_qualified));
+        date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         setDataListener();
         placelayout.setOnClickListener(new MylayoutListener(1));
         propertylayout.setOnClickListener(new MylayoutListener(2));
