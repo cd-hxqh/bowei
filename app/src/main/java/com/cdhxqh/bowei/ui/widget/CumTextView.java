@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.cdhxqh.bowei.R;
+
 /**
  * Created by apple on 15/9/24.
  * 自定义TextView
@@ -21,6 +23,7 @@ public class CumTextView extends TextView {
     private float marginLeft;
     private float marginRight;
     private int textColor;
+    private int lineSpacingExtra;
 
 
     private Paint paint1 = new Paint();
@@ -30,12 +33,13 @@ public class CumTextView extends TextView {
         super(context, attrs);
         text = attrs.getAttributeValue(
                 "http://schemas.android.com/apk/res/android", "text");
-        textSize = attrs.getAttributeIntValue(namespace, "textSize", 50);
-        textColor = attrs.getAttributeIntValue(namespace, "textColor", Color.BLACK);
+        textSize = attrs.getAttributeIntValue(namespace, "textSize", 60);
+        textColor = attrs.getAttributeIntValue(namespace, "textColor", getResources().getColor(R.color.radiobg_normal));
         paddingLeft = attrs.getAttributeIntValue(namespace, "paddingLeft", 0);
         paddingRight = attrs.getAttributeIntValue(namespace, "paddingRight", 50);
         marginLeft = attrs.getAttributeIntValue(namespace, "marginLeft", 0);
-        marginRight = attrs.getAttributeIntValue(namespace, "marginRight",0);
+        marginRight = attrs.getAttributeIntValue(namespace, "marginRight", 0);
+        lineSpacingExtra = attrs.getAttributeIntValue(namespace, "lineSpacingExtra", 30);
         paint1.setTextSize(textSize);
         paint1.setColor(textColor);
         paint1.setAntiAlias(true);

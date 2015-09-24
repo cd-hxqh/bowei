@@ -75,12 +75,17 @@
                 android:textColor="@color/gray"
                 android:textSize="@dimen/dimens_18sp" />
 
-            <ImageView
+            <TextView
+                android:id="@+id/cache_size_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/in_ico" />
+                android:layout_marginRight="@dimen/dimens_10dp"
+                android:text="0.75M"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/dimens_18sp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -98,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-
+            android:visibility="gone"
             android:padding="5dp">
 
             <ImageView
@@ -116,7 +121,8 @@
                 android:layout_toRightOf="@+id/ic_network_id"
                 android:text="@string/network_text"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/dimens_18sp" />
+                android:textSize="@dimen/dimens_18sp"
+                 />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -129,6 +135,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@drawable/line"></View>
 
         <RelativeLayout

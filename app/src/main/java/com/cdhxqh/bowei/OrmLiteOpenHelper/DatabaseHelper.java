@@ -20,6 +20,7 @@ import com.cdhxqh.bowei.bean.WorkType;
 import com.cdhxqh.bowei.bean.Workdw;
 import com.cdhxqh.bowei.bean.WorkerInfo;
 import com.cdhxqh.bowei.bean.Workzy;
+import com.cdhxqh.bowei.utils.Utils;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -33,12 +34,12 @@ import java.util.Map;
  * Created by think on 2015/9/7.
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-    private static final String TABLE_NAME = "sqlite-bowei.db";
-
+    private static final int DATABASE_VERSION = 3;
     private Map<String, Dao> daos = new HashMap<String, Dao>();
 
     private DatabaseHelper(Context context) {
-        super(context, TABLE_NAME, null, 1);
+
+        super(context, Utils.getFilePath(context), null, DATABASE_VERSION);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,8 +46,8 @@ public class About_us_Activity extends BaseActivity {
     @Override
     protected void initView() {
         backImage.setOnClickListener(backOnClickListener);
-        titleText.setText("  "+getString(R.string.about_us));
-        textView.setText(getResources().getString(R.string.about_us_text));
+        titleText.setText(getString(R.string.about_us));
+        textView.setText("     "+getResources().getString(R.string.about_us_text));
     }
 
     private View.OnClickListener backOnClickListener = new View.OnClickListener() {

@@ -20,11 +20,12 @@ import org.json.JSONObject;
  */
 public class HttpManager {
 
-    private static final String TAG="HttpManager11";
+    private static final String TAG = "HttpManager11";
+
     /**
      * 登录方法*
      */
-    public static void login(final Context cxt, final String username, final String password,final HttpRequestHandler<String> handler) {
+    public static void login(final Context cxt, final String username, final String password, final HttpRequestHandler<String> handler) {
 
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -37,20 +38,17 @@ public class HttpManager {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i(TAG,"1statusCode="+statusCode+",responseString="+responseString);
                 SafeHandler.onFailure(handler, "登录失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.i(TAG,"2statusCode="+statusCode+",responseString="+responseString);
                 //解析登录信息
-                String reult= JsonUtils.parsingAuthStr(cxt, responseString);
-                Log.i(TAG,reult);
-                if(reult.equals(Constants.LOGINSUCCESS)||reult.equals(Constants.CHANGEIMEI)){
-                    SafeHandler.onSuccess(handler,reult);
-                }else if (reult.equals(Constants.USERNAMEERROR)){
-                    SafeHandler.onSuccess(handler,"用户名或密码错误");
+                String reult = JsonUtils.parsingAuthStr(cxt, responseString);
+                if (reult.equals(Constants.LOGINSUCCESS) || reult.equals(Constants.CHANGEIMEI)) {
+                    SafeHandler.onSuccess(handler, reult);
+                } else if (reult.equals(Constants.USERNAMEERROR)) {
+                    SafeHandler.onSuccess(handler, "用户名或密码错误");
                 }
 
             }
@@ -58,73 +56,69 @@ public class HttpManager {
     }
 
 
-    /**获取信息方法**/
-    public static void getData(final Context cxt,String data,final HttpRequestHandler<String> handler){
+    /**
+     * 获取信息方法*
+     */
+    public static void getData(final Context cxt, String data, final HttpRequestHandler<String> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("data",data);
-        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
+        params.put("data", data);
+        client.get(Constants.SEARCHURL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
                 SafeHandler.onFailure(handler, "查询失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
-                SafeHandler.onSuccess(handler,responseString);
+                SafeHandler.onSuccess(handler, responseString);
             }
         });
     }
 
 
-
-    /**解析返回的结果**/
-    public static void getDataInfo(final Context cxt,String data,final HttpRequestHandler<String> handler){
+    /**
+     * 解析返回的结果*
+     */
+    public static void getDataInfo(final Context cxt, String data, final HttpRequestHandler<String> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("data",data);
-        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
+        params.put("data", data);
+        client.get(Constants.SEARCHURL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
                 SafeHandler.onFailure(handler, "查询失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
 
-                String result=JsonUtils.parsing(cxt,responseString);
+                String result = JsonUtils.parsing(cxt, responseString);
 
-                Log.i(TAG,"result="+result);
-                SafeHandler.onSuccess(handler,result);
+                SafeHandler.onSuccess(handler, result);
             }
         });
     }
 
-    /**解析返回的结果--分页**/
-    public static void getDataPagingInfo(final Context cxt,String data,final HttpRequestHandler<Results> handler){
-        Log.i(TAG,"dddddddddddata="+data);
+    /**
+     * 解析返回的结果--分页*
+     */
+    public static void getDataPagingInfo(final Context cxt, String data, final HttpRequestHandler<Results> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("data",data);
-        client.get(Constants.SEARCHURL,params, new TextHttpResponseHandler() {
+        params.put("data", data);
+        client.get(Constants.SEARCHURL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i(TAG, "1statusCode=" + statusCode + ",responseString=" + responseString);
                 SafeHandler.onFailure(handler, "查询失败");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Log.i(TAG, "2statusCode=" + statusCode + ",responseString=" + responseString);
 
-                Results  result=JsonUtils.parsingResults(cxt, responseString);
+                Results result = JsonUtils.parsingResults(cxt, responseString);
 
-                Log.i(TAG,"result="+result);
-                SafeHandler.onSuccess(handler,result,result.getCurpage(),result.getShowcount());
+                SafeHandler.onSuccess(handler, result, result.getCurpage(), result.getShowcount());
             }
         });
     }

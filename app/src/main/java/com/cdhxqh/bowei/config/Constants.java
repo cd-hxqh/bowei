@@ -196,4 +196,21 @@ public class Constants {
     /**跳转标识**/
     public static final int ORDER_MARK=10000; //工单新建
     public static final int RESULTS_MARK=10001; //资产扫描结果
+
+
+
+    /**设置数据库参数-开始**/
+    /**
+     * 数据库路径
+     */
+    public static final String PATH_DB = android.os.Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + "/Android/data/";
+    /**
+     * 无SD卡的数据库路径
+     */
+    public static final String NOT_SDCARD_PATH_DB = "/data/data/";
+    /** 数据库名称 **/
+    public static final String TB_NAME = "sqlite-bowei.db";
+
 }

@@ -29,4 +29,5 @@ dependencies {
     compile files('src/main/libs/ormlite-android-4.48.jar')
     compile files('src/main/libs/ormlite-core-4.48.jar')
     compile files('libs/zxing.jar')
+    compile files('libs/umeng-update-v2.5.0.jar')
 }
