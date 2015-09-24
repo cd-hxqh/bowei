@@ -19,11 +19,10 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
-import com.cdhxqh.bowei.ui.adapter.OrderSearchAdapter;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import java.util.ArrayList;
-
+/**工单查询界面**/
 public class OrderSearchActivity extends BaseActivity {
     private static final String TAG="OrderSearchActivity";
     /**返回按钮**/

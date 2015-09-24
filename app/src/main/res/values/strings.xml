@@ -23,8 +23,6 @@
     <string name="serve">维修工单</string>
     <string name="service">服务工单</string>
     <string name="order_search">工单查询</string>
-
-
     <string name="order">工单管理</string>
     <string name="property">资产查询</string>
     <string name="inventory">库存查询</string>
@@ -171,5 +169,9 @@
     <string name="data_text">数据下载</string>
     <string name="title_activity_order_search">OrderSearchActivity</string>
     <string name="have_not_data_txt">暂无相关数据</string>
+    <string name="title_activity_about_us_">About_us_Activity</string>
+    <string name="about_us">关于我们</string>
 
+    <!--关于我们-->
+    <string name="about_us_text">北京博维航空设施管理有限公司于1999年11月18日成立，隶属于首都机场集团公司，是首都国际机场股份有限公司控股的中外合资企业。公司拥有丰富的运营管理经验，是国内第一家以运行维修维保机场设备、承接机场专业工程为主的专业化公司。涵盖行李、捷运、客桥、机电、信息五大核心运维业务、及特种车辆维修、行李系统安装大修、客桥大修等。拥有一支800余名经验丰富、技术力量雄厚、运行维护经验扎实员工组成的专业化管理队伍。</string>
 </resources>

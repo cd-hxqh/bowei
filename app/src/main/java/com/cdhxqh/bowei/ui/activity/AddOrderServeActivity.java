@@ -25,6 +25,7 @@ import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
+import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 import com.cdhxqh.bowei.utils.WebserviceDataUtils;
 
@@ -119,14 +120,41 @@ public class AddOrderServeActivity extends BaseActivity {
         }
     };
 
+
+    /**
+     * 资产编号*
+     */
+    private String assetNum = "";
+
+    /**
+     * 跳转标识*
+     */
+    private int JUMP_MARK = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.serve_detail_add_activity);
-
+        getInitData();
         findViewById();
         initView();
     }
+
+
+    /**
+     * 获取资产*
+     */
+    private void getInitData() {
+
+        JUMP_MARK = getIntent().getExtras().getInt("jump_mark");
+        if (JUMP_MARK == Constants.RESULTS_MARK) {
+            assetNum = getIntent().getExtras().getString("assetnum");
+        }
+    }
+
+
+
 
     @Override
     protected void findViewById() {
@@ -209,6 +237,11 @@ public class AddOrderServeActivity extends BaseActivity {
         number.setText("");
         worktype.setText("EM");
         date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+        if (!assetNum.equals("")) {
+            property.setText(assetNum);
+        }
+
         orderMain.setIsNew(true);
         setDataListener();
         placelayout.setOnClickListener(new MylayoutListener(1));

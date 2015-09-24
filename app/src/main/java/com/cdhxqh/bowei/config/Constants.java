@@ -191,4 +191,9 @@ public class Constants {
     public static final int KNOWKEDGE_SEARCH=1000; //知识库搜索
     public static final int CINVENTORY_SEARCH=1001; //公司库存搜索
     public static final int DINVENTORY_SEARCH=1002; //捷运库存搜索
+
+
+    /**跳转标识**/
+    public static final int ORDER_MARK=10000; //工单新建
+    public static final int RESULTS_MARK=10001; //资产扫描结果
 }

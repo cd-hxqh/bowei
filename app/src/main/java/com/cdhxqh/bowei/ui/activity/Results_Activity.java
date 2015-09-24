@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.Asset;
+import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.widget.NavigationHorizontalScrollView;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
@@ -87,7 +88,6 @@ public class Results_Activity extends BaseActivity {
         result = getIntent().getExtras().getString("result");
 
         asset = JsonUtils.parsingAssets(Results_Activity.this, result);
-        Log.i(TAG, "result=" + result);
     }
 
     @Override
@@ -188,14 +188,20 @@ public class Results_Activity extends BaseActivity {
             switch (position) {
                 case 0: //维保
                     intent.setClass(Results_Activity.this,AddOrderMaintenanceActivity.class);
-                    startActivityForResult(intent,0);
+                    intent.putExtra("assetnum", asset.getASSETNUM());
+                    intent.putExtra("jump_mark", Constants.RESULTS_MARK);
+                    startActivityForResult(intent, 0);
                     break;
                 case 1: //维修
                     intent.setClass(Results_Activity.this,AddOrderServeActivity.class);
+                    intent.putExtra("assetnum",asset.getASSETNUM());
+                    intent.putExtra("jump_mark", Constants.RESULTS_MARK);
                     startActivityForResult(intent,0);
                     break;
                 case 2: //服务
                     intent.setClass(Results_Activity.this,AddOrderServiceActivity.class);
+                    intent.putExtra("assetnum",asset.getASSETNUM());
+                    intent.putExtra("jump_mark", Constants.RESULTS_MARK);
                     startActivityForResult(intent,0);
                     break;
             }

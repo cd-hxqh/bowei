@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
+import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 
 import java.text.SimpleDateFormat;
@@ -64,14 +65,37 @@ public class AddOrderServiceActivity extends BaseActivity {
     StringBuffer sb;
     private int layoutnum;
 
+    /**
+     * 资产编号*
+     */
+    private String assetNum = "";
+
+    /**
+     * 跳转标识*
+     */
+    private int JUMP_MARK = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_detail_add_activity);
-
+        getInitData();
         findViewById();
         initView();
     }
+
+
+    /**
+     * 获取资产*
+     */
+    private void getInitData() {
+
+        JUMP_MARK = getIntent().getExtras().getInt("jump_mark");
+        if (JUMP_MARK == Constants.RESULTS_MARK) {
+            assetNum = getIntent().getExtras().getString("assetnum");
+        }
+    }
+
 
     @Override
     protected void findViewById() {
@@ -152,6 +176,11 @@ public class AddOrderServiceActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("SVR");
+
+        if (!assetNum.equals("")) {
+            property.setText(assetNum);
+        }
+
         date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         setDataListener();
 

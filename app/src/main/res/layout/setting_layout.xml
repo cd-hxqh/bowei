@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/upload_data_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -50,6 +51,7 @@
             android:background="@drawable/line"></View>
 
         <RelativeLayout
+            android:id="@+id/clear_cache_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -92,6 +94,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/network_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -129,6 +132,7 @@
             android:background="@drawable/line"></View>
 
         <RelativeLayout
+            android:id="@+id/update_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -166,6 +170,7 @@
             android:background="@drawable/line"></View>
 
         <RelativeLayout
+            android:id="@+id/about_us_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

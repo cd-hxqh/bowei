@@ -152,6 +152,10 @@
             android:name=".ui.activity.OrderSearchActivity"
             android:label="@string/title_activity_order_search" >
         </activity>
+        <activity
+            android:name=".ui.activity.About_us_Activity"
+            android:label="@string/title_activity_about_us_" >
+        </activity>
     </application>
 
 </manifest>

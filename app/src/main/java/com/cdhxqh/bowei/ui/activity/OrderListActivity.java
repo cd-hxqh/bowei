@@ -102,6 +102,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                intent.putExtra("jump_mark", Constants.ORDER_MARK);
                 if (name.equals(getResources().getString(R.string.maintenance))) {
                     intent.setClass(OrderListActivity.this, AddOrderMaintenanceActivity.class);
                 } else if (name.equals(getResources().getString(R.string.serve))) {
