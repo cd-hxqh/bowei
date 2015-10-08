@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +33,7 @@ import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.ItemListAdapter;
 import com.cdhxqh.bowei.ui.adapter.OrderTaskAdapter;
+import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import org.json.JSONException;
@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * Created by think on 2015/8/20.
  */
-public class OrderTaskActivity extends BaseActivity {
+public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,SwipeRefreshLayout.OnLoadListener{
     private ImageView backimg;
     private TextView titlename;
     private ImageView addimg;
@@ -67,7 +67,7 @@ public class OrderTaskActivity extends BaseActivity {
     AlertDialog.Builder builder2;
     private String[] mItems1 = {"执行人", "检查人"};
     private String[] mItems2;
-    ArrayList<Integer> MultiChoiceID = new ArrayList<Integer>();
+    ArrayList<String> MultiChoiceID = new ArrayList<String>();
     private int chooseitem;
 
     @Override
@@ -112,6 +112,9 @@ public class OrderTaskActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         orderTaskAdapter = new OrderTaskAdapter(this, this);
         recyclerView.setAdapter(orderTaskAdapter);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadListener(this);
+//        refreshLayout.setRefreshing(true);
         if (orderMain.isNew()) {//本地新建工单
             addLocationTask(orderMain.getId());
         } else {//接收的工单
@@ -133,31 +136,38 @@ public class OrderTaskActivity extends BaseActivity {
             }
         });
         choosebtn.setOnClickListener(chooselistener);
-//        refreshLayout.setOnRefreshListener(this);
     }
 
     private View.OnClickListener chooselistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            builder1 = new AlertDialog.Builder(OrderTaskActivity.this);
-            builder1.setTitle("工作选择");
-            builder1.setItems(mItems1, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    chooseitem = which;
-                    showdialog();
-                }
-            });
-            builder1.create().show();
+            if(orderTaskAdapter.checkedlist.size()==0){
+                Toast.makeText(OrderTaskActivity.this,
+                        getResources().getString(R.string.please_choose_task),Toast.LENGTH_SHORT).show();
+            }else {
+                builder1 = new AlertDialog.Builder(OrderTaskActivity.this);
+                builder1.setTitle("工作选择");
+                builder1.setItems(mItems1, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        chooseitem = which;
+                        showdialog();
+                    }
+                });
+                builder1.create().show();
+            }
         }
     };
 
     private void showdialog() {
         List<Erson> ersonList = new ErsonDao(this).queryForAll();
-        List<String> itemlist = new ArrayList<String>();
+        List<String> itemlist = new ArrayList<String>();//选项列表
+        final List<String> itemlist1 = new ArrayList<String>();//对应员工列表
         boolean[] mItems3 = new boolean[ersonList.size()];
         for (int i = 0; i < ersonList.size(); i++) {
-            itemlist.add(i, ersonList.get(i).getPERSONID());
+            itemlist.add(i, ersonList.get(i).getPERSONID()+"       "+
+                    getResources().getString(R.string.item)+":"+(ersonList.get(i).getYWBZ().equals("")?"无":ersonList.get(i).getYWBZ()));
             mItems3[i] = false;
+            itemlist1.add(i,ersonList.get(i).getPERSONID());
         }
         mItems2 = (String[]) itemlist.toArray(new String[itemlist.size()]);
 //        Boolean[] mItems4 = (Boolean[]) initlist.toArray(new Boolean[initlist.size()]);
@@ -170,9 +180,11 @@ public class OrderTaskActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int whichButton,
                                         boolean isChecked) {
                         if (isChecked) {
-                            MultiChoiceID.add(whichButton);
+                            MultiChoiceID.add(whichButton+"");
                         } else {
-                            MultiChoiceID.remove(whichButton);
+                            if(MultiChoiceID.contains(whichButton+"")){
+                                MultiChoiceID.remove(whichButton+"");
+                            }
                         }
 
                     }
@@ -181,16 +193,19 @@ public class OrderTaskActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String str = "";
                 int size = MultiChoiceID.size();
-                for (int i = 0; i < size; i++) {
-                    if (i == 0) {
-                        str = mItems2[MultiChoiceID.get(i)];
-                    } else {
-                        str += "," + mItems2[MultiChoiceID.get(i)];
+                if(size>0) {
+                    for (int i = 0; i < size; i++) {
+                        if (i == 0) {
+//                            str = mItems2[Integer.parseInt(MultiChoiceID.get(i))];
+                            str = itemlist1.get(Integer.parseInt(MultiChoiceID.get(i)));
+                        } else {
+//                            str += "," + mItems2[Integer.parseInt(MultiChoiceID.get(i))];
+                            str += "," + itemlist1.get(Integer.parseInt(MultiChoiceID.get(i)));
+                        }
                     }
                 }
                 changeTask(str);
                 changeitenback();
-                Toast.makeText(OrderTaskActivity.this, str, Toast.LENGTH_SHORT).show();
             }
         });
         builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -262,13 +277,14 @@ public class OrderTaskActivity extends BaseActivity {
             nodatalayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }
+        refreshLayout.setRefreshing(false);
     }
 
     private void addLocationTask(int id) {
         if (new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size() > 0) {
             addData(id);
         } else {
-            if (!orderMain.getWorkplan().equals("")) {
+            if (orderMain.getWorkplan()!=null) {
                 ArrayList<OrderTask> list = new ArrayList<OrderTask>();
                 OrderTask orderTask;
                 List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
@@ -286,6 +302,7 @@ public class OrderTaskActivity extends BaseActivity {
                 orderTaskAdapter.update(list, true);
             }
         }
+        refreshLayout.setRefreshing(false);
     }
 
     public void changeitem() {
@@ -310,29 +327,19 @@ public class OrderTaskActivity extends BaseActivity {
 
 
     //下拉刷新触发事件
-//    @Override
-//    public void onRefresh() {
-//        if (orderTaskAdapter.getItemCount() > 0) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(OrderTaskActivity.this);
-//            builder.setMessage("刷新将清除本地数据，确定吗？").setTitle("提示")
-//                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                            getData();
-//                        }
-//                    }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    refreshLayout.setRefreshing(false);
-//                    dialogInterface.dismiss();
-//                }
-//            }).create().show();
-//        } else {
-//            getData();
-//        }
-//    }
-
+    @Override
+    public void onRefresh() {
+        if (orderMain.isNew()) {//本地新建工单
+            addLocationTask(orderMain.getId());
+        } else {//接收的工单
+            getData();
+        }
+    }
+    //上拉加载更多触发事件
+    @Override
+    public void onLoad(){
+        refreshLayout.setLoading(false);
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

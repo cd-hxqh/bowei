@@ -50,7 +50,7 @@ public class ErsonDao {
      */
     public List<Erson> queryForAll(){
         try {
-            return ErsonDaoOpe.queryForAll();
+            return ErsonDaoOpe.queryBuilder().orderBy("YWBZ",true).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

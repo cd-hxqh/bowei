@@ -78,8 +78,9 @@ public class WebserviceDataUtils {
                 for(int i = 0;i < workerInfoList.size();i++){
                     workObj = new JSONObject();
                     workObj.put("laborcode",workerInfoList.get(i).getName());
-                    workObj.put("starttime",workerInfoList.get(i).getStarttime());
-                    workObj.put("finishtime",workerInfoList.get(i).getStoptime());
+                    workObj.put("starttime",workerInfoList.get(i).getStartdate()+" "+workerInfoList.get(i).getStarttime());
+                    workObj.put("finishtime",workerInfoList.get(i).getStopdate()+" "+workerInfoList.get(i).getStoptime());
+                    workObj.put("regularhrs",workerInfoList.get(i).getWorktime());
                     workAry.put(i,workObj);
                 }
                 jsonObject.put("labtrans",workAry);

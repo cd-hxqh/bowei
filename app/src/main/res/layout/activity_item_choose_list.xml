@@ -37,7 +37,7 @@
             android:textColor="@color/radiobg_normal"
             android:layout_gravity="center"
             android:textSize="@dimen/abc_action_bar_content_inset_material"
-            android:text="请确认是否已下载相关基本信息"/>
+            android:text="可能未下载相关基本信息，或无相关数据"/>
     </LinearLayout>
 
 </RelativeLayout>

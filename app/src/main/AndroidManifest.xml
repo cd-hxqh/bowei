@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cdhxqh.bowei"
-    android:versionCode="1"
-    android:versionName="1.0.0">
+    android:versionCode="2"
+    android:versionName="2.0.1">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -145,6 +145,11 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_search"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".ui.activity.SettingDownloadActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_search"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
         <!-- 二维码扫描 -->
         <activity
@@ -169,7 +174,7 @@
         <!-- 友盟配置 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5603bae3e0f55a9d58000462" />
+            android:value="5603c689e0f55a9e21001658" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Umeng" />

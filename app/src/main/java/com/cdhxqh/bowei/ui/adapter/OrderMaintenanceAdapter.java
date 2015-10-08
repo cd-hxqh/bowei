@@ -118,4 +118,13 @@ public class OrderMaintenanceAdapter extends RecyclerView.Adapter<OrderMaintenan
         list = data;
         notifyDataSetChanged();
     }
+
+    public void adddate(ArrayList<OrderMain> data){
+        if(data.size()>0){
+            for(int i = 0;i < data.size();i++){
+                list.add(data.get(i));
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

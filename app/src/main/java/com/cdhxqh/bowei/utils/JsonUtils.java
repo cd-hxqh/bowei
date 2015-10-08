@@ -572,7 +572,7 @@ public class JsonUtils {
     public static ArrayList<Knowledge> parsingKnowKedge(Context ctx, String data) {
         ArrayList<Knowledge> list = null;
         try {
-            JSONArray jsonArray = new JSONArray(data);
+            JSONArray jsonArray = new JSONObject(data).getJSONArray("resultlist");
             JSONObject jsonObject;
             list = new ArrayList<Knowledge>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -769,7 +769,8 @@ public class JsonUtils {
             asset = new Asset();
             asset.setASSETNUM(jsonObject.getString("ASSETNUM")); //编号
             asset.setDESCRIPTION(jsonObject.getString("DESCRIPTION")); //名称
-            asset.setLOCATION(jsonObject.getString("LOCATION")); //位置
+//            asset.setLOCATION(jsonObject.getString("LOCATION")); //位置
+            asset.setLOCATION(new AssetDao(ctx).queryForLoucationBynum(jsonObject.getString("ASSETNUM")));
             return asset;
 
         } catch (JSONException e)

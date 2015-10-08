@@ -97,4 +97,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         list = data;
         notifyDataSetChanged();
     }
+
+    public void adddate(ArrayList<Inventory> data){
+        if(data.size()>0){
+            for(int i = 0;i < data.size();i++){
+                list.add(data.get(i));
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

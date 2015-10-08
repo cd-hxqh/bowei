@@ -1,7 +1,6 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +18,12 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
+import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import java.util.ArrayList;
 /**工单查询界面**/
-public class OrderSearchActivity extends BaseActivity {
+public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.OnLoadListener{
     private static final String TAG="OrderSearchActivity";
     /**返回按钮**/
     private ImageView backImageView;
@@ -49,6 +49,8 @@ public class OrderSearchActivity extends BaseActivity {
     private String assetNum;
     /**资产名称**/
     private String description;
+
+    int page = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,13 +101,14 @@ public class OrderSearchActivity extends BaseActivity {
         recyclerView.setAdapter(orderMaintenanceAdapter);
 
 
-        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mSwipeLayout.setProgressViewOffset(false, 0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-
+//        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//        mSwipeLayout.setProgressViewOffset(false, 0,
+//                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        mSwipeLayout.setOnRefreshListener(this);
+        mSwipeLayout.setOnLoadListener(this);
         mSwipeLayout.setRefreshing(true);
     }
 
@@ -121,7 +124,7 @@ public class OrderSearchActivity extends BaseActivity {
 
     private void getCompanyInfo(String assetnum){
 
-        HttpManager.getDataPagingInfo(OrderSearchActivity.this, Constants.getNumByOrder(assetnum, 1, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(OrderSearchActivity.this, Constants.getNumByOrder(assetnum, page, 20), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results data) {
                 Log.i(TAG, "data=" + data);
@@ -131,27 +134,51 @@ public class OrderSearchActivity extends BaseActivity {
             @Override
             public void onSuccess(Results data, int totalPages, int currentPage) {
                 Log.i(TAG, "order data=" + data.getResultlist());
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 /**解析返回的数据**/
-                ArrayList<OrderMain> list =JsonUtils.parsingOrderMain(OrderSearchActivity.this,data.getResultlist());
+                ArrayList<OrderMain> list = JsonUtils.parsingOrderMain(OrderSearchActivity.this, data.getResultlist());
                 if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
                 } else {
-                    orderMaintenanceAdapter.update(list, true);
+                    orderMaintenanceAdapter.adddate(list);
                 }
             }
 
             @Override
             public void onFailure(String error) {
                 Log.i(TAG, "error=" + error);
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 notdatalayout.setVisibility(View.VISIBLE);
             }
         });
 
     }
 
+    //下拉刷新触发事件
+    @Override
+    public void onRefresh() {
+        page = 1;
+        orderMaintenanceAdapter = new OrderMaintenanceAdapter(this);
+        recyclerView.setAdapter(orderMaintenanceAdapter);
+       getCompanyInfo(assetNum);
+    }
 
+    //上拉加载更多触发事件
+    @Override
+    public void onLoad() {
+        page++;
+        getCompanyInfo(assetNum);
+    }
 
 
 }

@@ -16,11 +16,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.MaterialInfoDao;
+import com.cdhxqh.bowei.Dao.OrderMainDao;
+import com.cdhxqh.bowei.Dao.OrderTaskDao;
+import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.MaterialInfo;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.AppManager;
 import com.cdhxqh.bowei.ui.activity.About_us_Activity;
 import com.cdhxqh.bowei.ui.activity.MipcaActivityCapture;
+import com.cdhxqh.bowei.ui.activity.SettingDownloadActivity;
 import com.cdhxqh.bowei.utils.Utils;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -108,6 +114,8 @@ public class SettingFragment extends Fragment {
 
     private void initView() {
 
+        dataRelativeLayout.setOnClickListener(dataRelativeLayoutOnClickListener);
+
         clearRelativeLayout.setOnClickListener(clearRelativeLayoutOnClickListener);
 
         updateRelativeLayout.setOnClickListener(updateRelativeLayoutOnClickListener);
@@ -120,6 +128,14 @@ public class SettingFragment extends Fragment {
 
     }
 
+    private View.OnClickListener dataRelativeLayoutOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), SettingDownloadActivity.class);
+            startActivity(intent);
+        }
+    };
 
     private View.OnClickListener usRelativeLayoutOnClickListener = new View.OnClickListener() {
         @Override
@@ -159,12 +175,12 @@ public class SettingFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("提示");
-        builder.setMessage("确定要清除缓存吗？");
+        builder.setMessage("清除缓存将删除本地所有工单信息，确定要清除缓存吗？");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-
+                ClearCache();
 //                if (clearCache()) {
 //                    cacheSize.setText(getDataFileSize());
                     Toast.makeText(getActivity(), "清除成功", Toast.LENGTH_SHORT).show();
@@ -232,7 +248,15 @@ public class SettingFragment extends Fragment {
         return Utils.deleteFile(file);
     }
 
-
+    /**
+     * 清除缓存*
+     */
+    private void ClearCache() {
+        new OrderMainDao(getActivity()).deleteall();
+        new MaterialInfoDao(getActivity()).deleteall();
+        new OrderTaskDao(getActivity()).deleteall();
+        new WorkerInfoDao(getActivity()).deleteall();
+    }
 
     /**
      * 手动强制更新

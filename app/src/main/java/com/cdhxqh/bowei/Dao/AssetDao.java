@@ -71,6 +71,19 @@ public class AssetDao {
     }
 
     /**
+     * 根据资产查询位置
+     * @return
+     */
+    public String queryForLoucationBynum(String num){
+        try {
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",num).queryForFirst().getLOCATION();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除所有信息
      */
     public void deleteall(){

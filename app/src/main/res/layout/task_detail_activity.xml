@@ -74,19 +74,19 @@
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:scrollbars="none">
 
-                <GridLayout
+                <LinearLayout
                     android:id="@+id/order_zxr_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="5dp"
-                    android:rowCount="1">
+                    android:orientation="horizontal">
 
-                </GridLayout>
+                </LinearLayout>
             </HorizontalScrollView>
             <!--<RelativeLayout-->
                 <!--android:layout_width="50dp"-->
@@ -125,14 +125,14 @@
                 android:focusableInTouchMode="true"
                 android:scrollbars="none">
 
-                <GridLayout
+                <LinearLayout
                     android:id="@+id/order_jcr_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="3dp"
-                    android:rowCount="1">
+                    android:orientation="horizontal">
 
-                </GridLayout>
+                </LinearLayout>
             </HorizontalScrollView>
         </RelativeLayout>
 

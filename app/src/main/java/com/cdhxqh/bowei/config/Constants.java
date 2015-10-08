@@ -90,7 +90,10 @@ public class Constants {
     }
 
     //知识库列表信息
-    public static String KNOW_LEDGE_LIST = "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read'}";
+    public static String KNOW_LEDGE_LIST = "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:1,showcount:20,option:'read'}";
+    public static String getKnow_ledge_list(int page){
+        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+page+",showcount:20,option:'read'}";
+    }
 
     //知识库文件
 
@@ -99,8 +102,9 @@ public class Constants {
     }
 
     //知识库搜索
-    public static String search_Knowledge(String knowdesc){
-        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read',condition:{knowdesc:'"+knowdesc+"'}}";
+    public static String search_Knowledge(int curpage,int showcount,String knowdesc){
+        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+curpage+",showcount:"+showcount+",option:'read',condition:{knowdesc:'"+knowdesc+"'}}";
+//        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"',condition:{knowdesc:'"+knowdesc+"'}}";
     }
 
 

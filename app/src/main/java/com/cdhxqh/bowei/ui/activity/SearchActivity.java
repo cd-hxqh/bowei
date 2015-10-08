@@ -2,7 +2,6 @@ package com.cdhxqh.bowei.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.Deptinventory;
@@ -28,6 +28,7 @@ import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.DeptinventoryAdapter;
 import com.cdhxqh.bowei.ui.adapter.InventoryAdapter;
 import com.cdhxqh.bowei.ui.adapter.KnowKedgeAdapter;
+import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 /**
  * 搜索界面*
  */
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.OnLoadListener {
 
     private static final String TAG = "SearchActivity";
 
@@ -59,7 +60,9 @@ public class SearchActivity extends BaseActivity {
      */
     InventoryAdapter inventoryAdapter;
 
-    /**捷运库存**/
+    /**
+     * 捷运库存*
+     */
     DeptinventoryAdapter dInventoryAdapter;
 
     /**
@@ -80,6 +83,9 @@ public class SearchActivity extends BaseActivity {
      * 搜索标识*
      */
     private int searchMark;
+
+    private int page = 1;
+    String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +115,8 @@ public class SearchActivity extends BaseActivity {
             knowKedgeAdapter = new KnowKedgeAdapter(SearchActivity.this);
         } else if (searchMark == Constants.CINVENTORY_SEARCH) {
             inventoryAdapter = new InventoryAdapter(SearchActivity.this);
-        }else if(searchMark == Constants.DINVENTORY_SEARCH){
-            dInventoryAdapter=new DeptinventoryAdapter(SearchActivity.this);
+        } else if (searchMark == Constants.DINVENTORY_SEARCH) {
+            dInventoryAdapter = new DeptinventoryAdapter(SearchActivity.this);
         }
     }
 
@@ -132,17 +138,19 @@ public class SearchActivity extends BaseActivity {
             recyclerView.setAdapter(knowKedgeAdapter);
         } else if (searchMark == Constants.CINVENTORY_SEARCH) {
             recyclerView.setAdapter(inventoryAdapter);
-        }else if(searchMark == Constants.DINVENTORY_SEARCH){
+        } else if (searchMark == Constants.DINVENTORY_SEARCH) {
             recyclerView.setAdapter(dInventoryAdapter);
         }
 
 
-        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mSwipeLayout.setProgressViewOffset(false, 0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+//        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//        mSwipeLayout.setProgressViewOffset(false, 0,
+//                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        mSwipeLayout.setOnRefreshListener(this);
+        mSwipeLayout.setOnLoadListener(this);
         mSwipeLayout.setRefreshing(false);
 
 
@@ -178,18 +186,18 @@ public class SearchActivity extends BaseActivity {
                 } else if (inventoryAdapter != null && searchMark == Constants.CINVENTORY_SEARCH) {
                     inventoryAdapter = new InventoryAdapter(SearchActivity.this);
                     recyclerView.setAdapter(inventoryAdapter);
-                }else if (dInventoryAdapter != null && searchMark == Constants.DINVENTORY_SEARCH) {
+                } else if (dInventoryAdapter != null && searchMark == Constants.DINVENTORY_SEARCH) {
                     dInventoryAdapter = new DeptinventoryAdapter(SearchActivity.this);
                     recyclerView.setAdapter(dInventoryAdapter);
                 }
                 mSwipeLayout.setRefreshing(true);
-                String str = searchEdit.getText().toString();
+                str = searchEdit.getText().toString();
                 if (searchMark == Constants.KNOWKEDGE_SEARCH) { //知识库查询
-                    getKnowKegeInfo(str);
+                    getKnowKegeInfo(page,str);
                 } else if (searchMark == Constants.CINVENTORY_SEARCH) { //公司库存查询
-                    getCInventoryInfo(str);
-                }else if (searchMark == Constants.DINVENTORY_SEARCH) { //捷运库存查询
-                    getDInventoryInfo(str);
+                    getCInventoryInfo(page,str);
+                } else if (searchMark == Constants.DINVENTORY_SEARCH) { //捷运库存查询
+                    getDInventoryInfo(page,str);
                 }
             }
             return true;
@@ -203,28 +211,40 @@ public class SearchActivity extends BaseActivity {
      * 获取知识库信息*
      */
 
-    private void getKnowKegeInfo(String knowdesc) {
-
-        HttpManager.getDataInfo(SearchActivity.this, Constants.search_Knowledge(knowdesc), new HttpRequestHandler<String>() {
+    private void getKnowKegeInfo(int page,String knowdesc) {
+        HttpManager.getDataInfo(SearchActivity.this, Constants.search_Knowledge(1, 20, knowdesc), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
-
+                Log.i(TAG, "data=" + data);
                 ArrayList<Knowledge> list = JsonUtils.parsingKnowKedge(SearchActivity.this, data);
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
                 } else {
-                    knowKedgeAdapter.update(list, true);
-                    notdatalayout.setVisibility(View.GONE);
+                    knowKedgeAdapter.adddate(list);
                 }
             }
 
             @Override
             public void onSuccess(String data, int totalPages, int currentPage) {
+                Log.i(TAG, "data=" + data + "totalPages=" + totalPages + "currentPage=" + currentPage);
             }
 
             @Override
             public void onFailure(String error) {
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
+                notdatalayout.setVisibility(View.VISIBLE);
+                Log.i(TAG, "error=" + error);
             }
         });
 
@@ -234,9 +254,9 @@ public class SearchActivity extends BaseActivity {
     /**
      * 获取公司库存信息*
      */
-    private void getCInventoryInfo(String description) {
+    private void getCInventoryInfo(int page,String description) {
 
-        HttpManager.getDataPagingInfo(SearchActivity.this, Constants.search_commany_inv(description, 1, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(SearchActivity.this, Constants.search_commany_inv(description, page, 20), new HttpRequestHandler<Results>() {
 
             @Override
             public void onSuccess(Results data) {
@@ -245,12 +265,17 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onSuccess(Results data, int totalPages, int currentPage) {
                 /**解析返回的数据**/
-                ArrayList<Inventory> list=JsonUtils.parsingInventory(SearchActivity.this,data.getResultlist());
-                mSwipeLayout.setRefreshing(false);
-                if(list==null||list.isEmpty()){
+                ArrayList<Inventory> list = JsonUtils.parsingInventory(SearchActivity.this, data.getResultlist());
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
+                if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
-                }else{
-                    inventoryAdapter.update(list,true);
+                } else {
+                    inventoryAdapter.adddate(list);
                     notdatalayout.setVisibility(View.GONE);
                 }
 
@@ -258,18 +283,24 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 notdatalayout.setVisibility(View.VISIBLE);
             }
 
         });
     }
+
     /**
      * 获取捷运库存信息*
      */
-    private void getDInventoryInfo(String description) {
+    private void getDInventoryInfo(int page,String description) {
 
-        HttpManager.getDataPagingInfo(SearchActivity.this, Constants.search_deptinventory(description, 1, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(SearchActivity.this, Constants.search_deptinventory(description, page, 20), new HttpRequestHandler<Results>() {
 
             @Override
             public void onSuccess(Results data) {
@@ -278,12 +309,17 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onSuccess(Results data, int totalPages, int currentPage) {
                 /**解析返回的数据**/
-                ArrayList<Deptinventory> list=JsonUtils.parsingDeptinventory(SearchActivity.this,data.getResultlist());
-                mSwipeLayout.setRefreshing(false);
-                if(list==null||list.isEmpty()){
+                ArrayList<Deptinventory> list = JsonUtils.parsingDeptinventory(SearchActivity.this, data.getResultlist());
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
+                if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
-                }else{
-                    dInventoryAdapter.update(list,true);
+                } else {
+                    dInventoryAdapter.adddate(list);
                     notdatalayout.setVisibility(View.GONE);
                 }
 
@@ -291,10 +327,49 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 notdatalayout.setVisibility(View.VISIBLE);
             }
 
         });
+    }
+
+    //下拉刷新触发事件
+    @Override
+    public void onRefresh() {
+        page = 1;
+        str = searchEdit.getText().toString();
+        if (searchMark == Constants.KNOWKEDGE_SEARCH) {
+            knowKedgeAdapter = new KnowKedgeAdapter(this);
+            recyclerView.setAdapter(knowKedgeAdapter);
+            getKnowKegeInfo(page,str);
+        } else if (searchMark == Constants.CINVENTORY_SEARCH) {
+            inventoryAdapter = new InventoryAdapter(this);
+            recyclerView.setAdapter(inventoryAdapter);
+            getCInventoryInfo(page,str);
+        } else if (searchMark == Constants.DINVENTORY_SEARCH) {
+            dInventoryAdapter = new DeptinventoryAdapter(this);
+            recyclerView.setAdapter(dInventoryAdapter);
+            getDInventoryInfo(page,str);
+        }
+    }
+
+    //上拉加载更多触发事件
+    @Override
+    public void onLoad() {
+        page++;
+        String str = searchEdit.getText().toString();
+        if (searchMark == Constants.KNOWKEDGE_SEARCH) {
+            getKnowKegeInfo(page,str);
+        } else if (searchMark == Constants.CINVENTORY_SEARCH) {
+            getCInventoryInfo(page,str);
+        } else if (searchMark == Constants.DINVENTORY_SEARCH) {
+            getDInventoryInfo(page,str);
+        }
     }
 }

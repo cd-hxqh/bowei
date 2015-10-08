@@ -95,4 +95,13 @@ public class DeptinventoryAdapter extends RecyclerView.Adapter<DeptinventoryAdap
         list = data;
         notifyDataSetChanged();
     }
+
+    public void adddate(ArrayList<Deptinventory> data){
+        if(data.size()>0){
+            for(int i = 0;i < data.size();i++){
+                list.add(data.get(i));
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

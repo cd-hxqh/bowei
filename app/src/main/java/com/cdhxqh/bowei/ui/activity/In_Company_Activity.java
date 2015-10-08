@@ -2,7 +2,6 @@ package com.cdhxqh.bowei.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,12 +20,13 @@ import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
 import com.cdhxqh.bowei.ui.adapter.InventoryAdapter;
+import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
 
 import java.util.ArrayList;
 
 /**公司库存**/
-public class In_Company_Activity extends BaseActivity {
+public class In_Company_Activity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,SwipeRefreshLayout.OnLoadListener{
     private static final String TAG="In_Company_Activity";
     /**返回按钮**/
     private ImageView backImageView;
@@ -47,6 +47,8 @@ public class In_Company_Activity extends BaseActivity {
 
     /**公司库存适配器**/
     InventoryAdapter inventoryAdapter;
+
+    int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +91,16 @@ public class In_Company_Activity extends BaseActivity {
         recyclerView.setAdapter(inventoryAdapter);
 
 
-        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mSwipeLayout.setProgressViewOffset(false, 0,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
-
+//        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//        mSwipeLayout.setProgressViewOffset(false, 0,
+//                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        mSwipeLayout.setOnRefreshListener(this);
+        mSwipeLayout.setOnLoadListener(this);
         mSwipeLayout.setRefreshing(true);
-        getCompanyInfo();
+        getCompanyInfo(page);
     }
 
     private View.OnClickListener backImageViewOnClickListener=new View.OnClickListener() {
@@ -122,9 +125,9 @@ public class In_Company_Activity extends BaseActivity {
 
     /**获取公司库存信息**/
 
-    private void getCompanyInfo(){
+    private void getCompanyInfo(int page){
 
-        HttpManager.getDataPagingInfo(In_Company_Activity.this, Constants.get_commany_inv(1, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(In_Company_Activity.this, Constants.get_commany_inv(page, 20), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results data) {
                 Log.i(TAG, "data=" + data);
@@ -133,26 +136,49 @@ public class In_Company_Activity extends BaseActivity {
 
             @Override
             public void onSuccess(Results data, int totalPages, int currentPage) {
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 /**解析返回的数据**/
                 ArrayList<Inventory> list=JsonUtils.parsingInventory(In_Company_Activity.this,data.getResultlist());
                 if(list==null||list.isEmpty()){
                     notdatalayout.setVisibility(View.VISIBLE);
                 }else{
-                    inventoryAdapter.update(list,true);
+                    inventoryAdapter.adddate(list);
                 }
             }
 
             @Override
             public void onFailure(String error) {
                 Log.i(TAG, "error=" + error);
-                mSwipeLayout.setRefreshing(false);
+                if(mSwipeLayout.isRefreshing()){
+                    mSwipeLayout.setRefreshing(false);
+                }
+                if(mSwipeLayout.isLoading()){
+                    mSwipeLayout.setLoading(false);
+                }
                 notdatalayout.setVisibility(View.VISIBLE);
             }
         });
 
     }
 
+    //下拉刷新触发事件
+    @Override
+    public void onRefresh() {
+        page = 1;
+        inventoryAdapter = new InventoryAdapter(this);
+        recyclerView.setAdapter(inventoryAdapter);
+        getCompanyInfo(page);
+    }
 
+    @Override
+    public void onLoad(){
+        page++;
+        getCompanyInfo(page);
+    }
 
 }

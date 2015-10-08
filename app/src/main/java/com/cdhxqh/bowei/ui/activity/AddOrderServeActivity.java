@@ -63,7 +63,7 @@ public class AddOrderServeActivity extends BaseActivity {
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
-//    private TextView workplan;//作业计划
+    //    private TextView workplan;//作业计划
 //    private RelativeLayout workplanlayout;
     private TextView reality_starttime;//实际开始时间
     private RelativeLayout reality_starttimelayout;
@@ -114,7 +114,7 @@ public class AddOrderServeActivity extends BaseActivity {
                     orderMain.setIsyuzhi(true);
                     break;
                 case F:
-                    Toast.makeText(AddOrderServeActivity.this, "获取工单编号失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderServeActivity.this, "获取工单编号失败," + result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -152,8 +152,6 @@ public class AddOrderServeActivity extends BaseActivity {
             assetNum = getIntent().getExtras().getString("assetnum");
         }
     }
-
-
 
 
     @Override
@@ -298,11 +296,11 @@ public class AddOrderServeActivity extends BaseActivity {
                     @Override
                     protected String doInBackground(String... strings) {
                         String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), AddOrderServeActivity.this, orderMain);
-                        String S = getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                        String S = getBaseApplication().getWsService().InsertWOyz(data);
                         if (S == null) {
                             return "false";
                         } else {
-                            return getBaseApplication().getWsService().InsertWOyz(describe.getText().toString());
+                            return S;
                         }
                     }
 
@@ -317,6 +315,7 @@ public class AddOrderServeActivity extends BaseActivity {
                                     result = object.getString("woNum");
                                 } else {
                                     mHandler.sendEmptyMessage(F);
+                                    result = object.getString("errorMsg");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -347,8 +346,11 @@ public class AddOrderServeActivity extends BaseActivity {
             if (faultclass.getText().equals("") && requestCode == 12) {
                 Toast.makeText(AddOrderServeActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (error_coding.getText().equals("") && (requestCode == 13 || requestCode == 14)) {
+            } else if (error_coding.getText().equals("") && requestCode == 13) {
                 Toast.makeText(AddOrderServeActivity.this, "请选择问题代码", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (error_coding.getText().equals("") && requestCode == 14) {
+                Toast.makeText(AddOrderServeActivity.this, "请选择原因", Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(AddOrderServeActivity.this, ItemChooseListActivity.class);
@@ -356,8 +358,10 @@ public class AddOrderServeActivity extends BaseActivity {
             this.parent = AddOrderServeActivity.this.parent;
             if (faultclass.getText() != null && requestCode == 12) {
                 intent.putExtra("parent", new FailureListDao(AddOrderServeActivity.this).queryForClassByCode(faultclass.getText().toString()));
-            } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
+            } else if (faultclass.getText() != null && requestCode == 13) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
+            } else if (faultclass.getText() != null && cause.getText() != null && requestCode == 14) {
+                intent.putExtra("parent", orderMain.getCause_list());
             }
             intent.putExtra("OrderType", getResources().getString(R.string.serve));
             startActivityForResult(intent, requestCode);
@@ -424,6 +428,8 @@ public class AddOrderServeActivity extends BaseActivity {
             case 13:
                 cause.setText(content);
                 orderMain.setCause_list(number);
+                remedy.setText("");
+                orderMain.setRemedy("");
                 break;
             case 14:
                 remedy.setText(content);
@@ -469,12 +475,12 @@ public class AddOrderServeActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            sb=new StringBuffer();
-             monthOfYear=monthOfYear+1;
+            sb = new StringBuffer();
+            monthOfYear = monthOfYear + 1;
             if (dayOfMonth < 10) {
-                sb.append(year + "-" + monthOfYear  + "-" + "0" + dayOfMonth);
+                sb.append(year + "-" + monthOfYear + "-" + "0" + dayOfMonth);
             } else {
-                sb.append(year + "-" + monthOfYear  + "-" + dayOfMonth);
+                sb.append(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
             timePickerDialog.show();
         }
@@ -507,10 +513,10 @@ public class AddOrderServeActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
-                ||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")
-                ||employee_id.getText().equals("")) {
+                || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")
+                || employee_id.getText().equals("")) {
             return "请完善信息";
         } else {
             return "OK";
@@ -520,7 +526,7 @@ public class AddOrderServeActivity extends BaseActivity {
     /**
      * 保存填写的工单信息
      */
-    private void SaveData(){
+    private void SaveData() {
         orderMain.setNumber(number.getText().toString());
         orderMain.setDescribe(describe.getText().toString());
         orderMain.setPlace(place.getText().toString());
@@ -541,9 +547,9 @@ public class AddOrderServeActivity extends BaseActivity {
         orderMain.setRemedy(remedy.getText().toString());
         orderMain.setFault_rank(fault_rank.getText().toString());
         orderMain.setBelong(getBaseApplication().getUsername());
-        if(number.getText()!=null){
+        if (number.getText() != null) {
             orderMain.setIsyuzhi(true);
-        }else {
+        } else {
             orderMain.setIsyuzhi(false);
         }
     }

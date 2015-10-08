@@ -75,6 +75,97 @@
             android:layout_height="1px"
             android:background="@drawable/line"></View>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/know_dl"
+                android:textColor="@color/radiobg_normal"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/knowledge_document_dl_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/radiobg_normal"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@drawable/line"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/know_xl"
+                android:textColor="@color/radiobg_normal"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/knowledge_document_xl_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/radiobg_normal"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@drawable/line"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/know_bz"
+                android:textColor="@color/radiobg_normal"
+                android:textSize="@dimen/dimens_16sp" />
+
+            <TextView
+                android:id="@+id/knowledge_document_bz_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/have_not_data_text"
+                android:textColor="@color/radiobg_normal"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/dimens_16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@drawable/line"></View>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

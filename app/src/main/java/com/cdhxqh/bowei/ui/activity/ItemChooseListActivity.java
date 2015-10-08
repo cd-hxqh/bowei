@@ -289,6 +289,7 @@ public class ItemChooseListActivity extends BaseActivity {
                         chooseItem = new ChooseItem();
                         chooseItem.setName(failureList1List1.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List1.get(i).getFAILURECODE());
+                        chooseItem.setParent(failureList1List1.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
                     }
                 }
@@ -300,6 +301,7 @@ public class ItemChooseListActivity extends BaseActivity {
                         chooseItem = new ChooseItem();
                         chooseItem.setName(failureList1List2.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List2.get(i).getFAILURECODE());
+                        chooseItem.setParent(failureList1List2.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
                     }
                 }

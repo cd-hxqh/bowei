@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.Inventory;
 import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.ui.activity.KnowKedgeDetailsActivity;
@@ -97,6 +98,15 @@ public class KnowKedgeAdapter extends RecyclerView.Adapter<KnowKedgeAdapter.View
             }
         }
         list = data;
+        notifyDataSetChanged();
+    }
+
+    public void adddate(ArrayList<Knowledge> data){
+        if(data.size()>0){
+            for(int i = 0;i < data.size();i++){
+                list.add(data.get(i));
+            }
+        }
         notifyDataSetChanged();
     }
 }

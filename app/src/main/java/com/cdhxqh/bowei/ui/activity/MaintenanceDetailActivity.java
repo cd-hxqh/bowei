@@ -84,7 +84,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    Toast.makeText(MaintenanceDetailActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MaintenanceDetailActivity.this,"工单"+orderMain.getNumber()+"提交成功",Toast.LENGTH_SHORT).show();
                     new OrderMainDao(MaintenanceDetailActivity.this).deleteById(orderMain.getId());
                     MaintenanceDetailActivity.this.finish();
                     break;

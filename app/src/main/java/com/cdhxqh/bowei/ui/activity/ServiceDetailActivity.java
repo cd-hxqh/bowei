@@ -79,7 +79,7 @@ public class ServiceDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    Toast.makeText(ServiceDetailActivity.this,"提交成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceDetailActivity.this,"工单"+orderMain.getNumber()+"提交成功",Toast.LENGTH_SHORT).show();
                     new OrderMainDao(ServiceDetailActivity.this).deleteById(orderMain.getId());
                     ServiceDetailActivity.this.finish();
                     break;

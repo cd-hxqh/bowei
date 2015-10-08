@@ -109,7 +109,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                     inputbtn.performClick();
                     break;
                 case F:
-                    Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号失败,"+result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -294,6 +294,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                                     result = object.getString("woNum");
                                 } else {
                                     mHandler.sendEmptyMessage(F);
+                                    result = object.getString("errorMsg");
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
