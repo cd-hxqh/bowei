@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import java.util.List;
  * 员工信息页面
  * Created by think on 2015/8/25.
  */
+@SuppressLint("ValidFragment")
 public class WorkerFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorkerInfoAdapter workerInfoAdapter;
@@ -40,6 +42,8 @@ public class WorkerFragment extends Fragment {
     private String num;
     private int id;
     private OrderMain orderMain;
+    public WorkerFragment(){
+    }
     public WorkerFragment(OrderMain orderMain){
         this.orderMain = orderMain;
     }

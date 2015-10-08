@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import java.util.List;
  * 实际物料信息页面
  * Created by think on 2015/8/25.
  */
+@SuppressLint("ValidFragment")
 public class RealMaterialConsunmeFragment extends Fragment {
 
 
@@ -42,6 +44,8 @@ public class RealMaterialConsunmeFragment extends Fragment {
     String num;
     private int id;
     private OrderMain orderMain;
+    public RealMaterialConsunmeFragment(){
+    }
     public RealMaterialConsunmeFragment(OrderMain orderMain){
         this.orderMain = orderMain;
     }

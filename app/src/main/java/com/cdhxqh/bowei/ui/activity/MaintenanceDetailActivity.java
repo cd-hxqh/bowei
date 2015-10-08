@@ -52,7 +52,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private RelativeLayout applyunitylayout;
     private TextView major;//专业
     private RelativeLayout majorlayout;
-//    private TextView reality_item;//实际班组
+    //    private TextView reality_item;//实际班组
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
@@ -84,12 +84,12 @@ public class MaintenanceDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    Toast.makeText(MaintenanceDetailActivity.this,"工单"+orderMain.getNumber()+"提交成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MaintenanceDetailActivity.this, "工单" + orderMain.getNumber() + "提交成功", Toast.LENGTH_SHORT).show();
                     new OrderMainDao(MaintenanceDetailActivity.this).deleteById(orderMain.getId());
                     MaintenanceDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(MaintenanceDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MaintenanceDetailActivity.this, "提交失败" + result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -170,7 +170,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this,getResources().getString(R.string.maintenance),
+                OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this, getResources().getString(R.string.maintenance),
                         orderMain.getId());
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
@@ -212,12 +212,11 @@ public class MaintenanceDetailActivity extends BaseActivity {
     }
 
 
-
-    private void getData(){
+    private void getData() {
         orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
-    private void setview(){
+    private void setview() {
         number.setText(orderMain.getNumber() + "");
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
@@ -243,20 +242,20 @@ public class MaintenanceDetailActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             String isok = isOK();
-            if(isok.equals("OK")){
+            if (isok.equals("OK")) {
                 final OrderMain orderMain = SaveData();
-                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(),MaintenanceDetailActivity.this,orderMain);
+                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), MaintenanceDetailActivity.this, orderMain);
                 mProgressDialog = ProgressDialog.show(MaintenanceDetailActivity.this, null,
                         getString(R.string.inputing), true, true);
                 mProgressDialog.setCanceledOnTouchOutside(false);
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
-                        if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
+                        if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
                             result = getBaseApplication().getWsService().InsertWO(data);
-                        }else if (orderMain.isNew()&&orderMain.isyuzhi()){
+                        } else if (orderMain.isNew() && orderMain.isyuzhi()) {
                             result = getBaseApplication().getWsService().UpdataWOyz(data);
-                        }else if(!orderMain.isNew()){
+                        } else if (!orderMain.isNew()) {
                             result = getBaseApplication().getWsService().UpdataWO(data);
                         } else {
                             result = "false";
@@ -267,30 +266,33 @@ public class MaintenanceDetailActivity extends BaseActivity {
                     @Override
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
-                        if(s.equals("false")){
+                        if (s.equals("false")) {
                             mHandler.sendEmptyMessage(F);
                             return;
                         }
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            if(object.getString("errorMsg").equals("成功")){
-                                mHandler.sendEmptyMessage(S);
-                            }else {
-                                mHandler.sendEmptyMessage(F);
+                        if (s != null) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                if (object.getString("errorMsg").equals("成功")) {
+                                    mHandler.sendEmptyMessage(S);
+                                } else {
+                                    mHandler.sendEmptyMessage(F);
+                                }
+                                result = object.getString("errorMsg");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            result = object.getString("errorMsg");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                     }
                 }.execute();
                 mProgressDialog.dismiss();
-            }else if(isok.equals("请完善信息")){
+            } else if (isok.equals("请完善信息")) {
                 Toast.makeText(MaintenanceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
         }
     };
-    public class MydateListener implements View.OnClickListener{
+
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -300,15 +302,18 @@ public class MaintenanceDetailActivity extends BaseActivity {
             datePickerDialog.show();
         }
     }
+
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
-        public MylayoutListener(int requestcode){
+
+        public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
+
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(MaintenanceDetailActivity.this,ItemChooseListActivity.class);
-            intent.putExtra("requestCode",requestCode);
+            Intent intent = new Intent(MaintenanceDetailActivity.this, ItemChooseListActivity.class);
+            intent.putExtra("requestCode", requestCode);
             intent.putExtra("OrderType", getResources().getString(R.string.maintenance));
             startActivityForResult(intent, requestCode);
         }
@@ -362,10 +367,10 @@ public class MaintenanceDetailActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            sb=new StringBuffer();
-            if(dayOfMonth<10){
-                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
-            }else {
+            sb = new StringBuffer();
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+            } else {
                 sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
@@ -376,16 +381,16 @@ public class MaintenanceDetailActivity extends BaseActivity {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             sb.append(" ");
-            if(i1<10){
-                sb.append(i+":"+"0"+i1+":00");
-            }else {
-                sb.append(i+":"+i1+":00");
+            if (i1 < 10) {
+                sb.append(i + ":" + "0" + i1 + ":00");
+            } else {
+                sb.append(i + ":" + i1 + ":00");
             }
-            if(layoutnum == datelayout.getId()){
+            if (layoutnum == datelayout.getId()) {
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
@@ -394,24 +399,25 @@ public class MaintenanceDetailActivity extends BaseActivity {
 
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
+    private String isOK() {
         if (describe.getText().equals("")
-                ||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")
-                ||employee_id.getText().equals("")){
+                || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")
+                || employee_id.getText().equals("")) {
             return "请完善信息";
-        }else{
+        } else {
             return "OK";
         }
     }
 
-    private OrderMain SaveData(){
+    private OrderMain SaveData() {
         OrderMain orderMain = new OrderMain();
         orderMain.setId(this.orderMain.getId());
-        if (number.getText().toString()!=null){
+        if (number.getText().toString() != null) {
             orderMain.setNumber(number.getText().toString());
         }
         orderMain.setDescribe(describe.getText().toString());
@@ -424,7 +430,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
 //            orderMain.setReality_item(reality_item.getText().toString());
         orderMain.setState(state.getText().toString());
         orderMain.setDate(date.getText().toString());
-        if(workplan.getText()!=null) {
+        if (workplan.getText() != null) {
             orderMain.setWorkplan(workplan.getText().toString());
         }
         orderMain.setReality_starttime(reality_starttime.getText().toString());

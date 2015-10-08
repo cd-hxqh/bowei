@@ -127,9 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             mProgressDialog.dismiss();
 
                         }else {
-//                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                            getBaseApplication().setUsername(mUsername.getText().toString());
-//                            mProgressDialog.dismiss();
+                            getBaseApplication().setUsername(data);
                             getOwnerId();
                             if (isRemember) {
                                 AccountUtils.setChecked(LoginActivity.this, isRemember);

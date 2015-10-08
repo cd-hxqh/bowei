@@ -13,6 +13,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -46,7 +47,11 @@ public class HttpManager {
                 //解析登录信息
                 String reult = JsonUtils.parsingAuthStr(cxt, responseString);
                 if (reult.equals(Constants.LOGINSUCCESS) || reult.equals(Constants.CHANGEIMEI)) {
-                    SafeHandler.onSuccess(handler, reult);
+                    try {
+                        SafeHandler.onSuccess(handler, new JSONObject(responseString).getJSONObject("result").getString("personId"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else if (reult.equals(Constants.USERNAMEERROR)) {
                     SafeHandler.onSuccess(handler, "用户名或密码错误");
                 }

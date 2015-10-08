@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import java.util.List;
  * 计划物料消耗页面
  * Created by think on 2015/8/25.
  */
+@SuppressLint("ValidFragment")
 public class ConsumeMaterialFragment extends Fragment {
     private RecyclerView recyclerView;
     private ConsumeMaterialAdapter consumeMaterialAdapter;
@@ -46,6 +48,8 @@ public class ConsumeMaterialFragment extends Fragment {
     String num;
     private int id;
     private OrderMain orderMain;
+    public ConsumeMaterialFragment(){
+    }
     public ConsumeMaterialFragment(OrderMain orderMain){
         this.orderMain = orderMain;
     }

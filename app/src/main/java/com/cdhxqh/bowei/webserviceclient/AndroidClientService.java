@@ -80,7 +80,7 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0", string);
-        soapReq.addProperty("in1",0);
+        soapReq.addProperty("in1",1);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
@@ -110,7 +110,7 @@ public class AndroidClientService {
         soapEnvelope.dotNet = true;
         SoapObject soapReq = new SoapObject(NAMESPACE, "InsertWO");
         soapReq.addProperty("in0", string);
-        soapReq.addProperty("in1", 1);
+        soapReq.addProperty("in1", 0);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url);
         try {
