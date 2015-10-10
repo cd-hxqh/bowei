@@ -48,6 +48,7 @@
             android:layout_marginRight="20dp"
             android:textColor="@color/gray"/>
         <ImageView
+            android:id="@+id/oder_detail_workplan_img"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_alignParentRight="true"

@@ -70,10 +70,12 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void onRestart() {
         super.onRestart();
-//        orderMainAdapter.notifyDataSetChanged();
-//        refreshData();
         initView();
-//        getData();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        initView();
     }
 
     @Override
@@ -237,7 +239,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public void onLoad(){
-//        Toast.makeText(OrderListActivity.this,i+"",Toast.LENGTH_SHORT).show();
         i++;
         getData();
     }

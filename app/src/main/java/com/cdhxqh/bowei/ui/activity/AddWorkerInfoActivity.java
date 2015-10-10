@@ -118,7 +118,7 @@ public class AddWorkerInfoActivity extends BaseActivity {
                         workerInfo.setBelongorderid(id);
                         intent.putExtra("workinfo", workerInfo);
                         new WorkerInfoDao(AddWorkerInfoActivity.this).update(workerInfo);
-                        AddWorkerInfoActivity.this.setResult(1, intent);
+//                        AddWorkerInfoActivity.this.setResult(1, intent);
                         finish();
                     }
                 }

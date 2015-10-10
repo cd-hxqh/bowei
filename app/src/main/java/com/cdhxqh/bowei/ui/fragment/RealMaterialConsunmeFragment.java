@@ -67,7 +67,9 @@ public class RealMaterialConsunmeFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         materialConsumeAdapter = new RealMaterialConsumeAdapter(getActivity());
         recyclerView.setAdapter(materialConsumeAdapter);
-        getData();
+        if(!orderMain.getNumber().equals("")||orderMain.getNumber()!=null){
+            getData();
+        }
         return view;
     }
 

@@ -40,7 +40,7 @@ public class ServeRealInfoActivity extends BaseActivity {
 
     private TextView worker_info, real_material;
     private ImageView mTabLineIv;
-    private int currentIndex;
+    private int currentIndex = 0;
     private int screenWidth;
     private ImageView mImageView;
     private ViewPager mViewPager;    //下方的可横向拖动的控件
@@ -65,8 +65,13 @@ public class ServeRealInfoActivity extends BaseActivity {
         initView();
         initTabLineWidth();
         iniListener();
+    }
 
-        mViewPager.setCurrentItem(0);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initView();
+        mViewPager.setCurrentItem(currentIndex);
     }
 
     @Override
@@ -82,10 +87,10 @@ public class ServeRealInfoActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        mViewPager.setCurrentItem(currentIndex);
         titlename.setText(getResources().getString(R.string.real_info));
         id = getIntent().getExtras().getInt("orderid");
         orderMain = new OrderMainDao(this).SearchByNum(id);
-        currentIndex = 0;
         backimg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +103,8 @@ public class ServeRealInfoActivity extends BaseActivity {
                 requestCode = 1;
                 intent = new Intent(ServeRealInfoActivity.this,AddWorkerInfoActivity.class);
                 intent.putExtra("orderid",id);
-                startActivityForResult(intent, requestCode);
+//                startActivityForResult(intent, requestCode);
+                startActivity(intent);
             }
         });
         worker_info.setOnClickListener(new OnClickListener() {
@@ -123,24 +129,24 @@ public class ServeRealInfoActivity extends BaseActivity {
         mViewPager.setAdapter(new MyFrageStatePagerAdapter(getSupportFragmentManager()));//设置ViewPager的适配器
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MaterialInfo materialInfo;
-        switch (resultCode) {
-            case 0:
-                break;
-            case 1:
-                WorkerInfo workerInfo = (WorkerInfo) data.getSerializableExtra("workinfo");
-                workerFragment.adddata(workerInfo);
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        MaterialInfo materialInfo;
+//        switch (resultCode) {
+//            case 0:
+//                break;
+//            case 1:
+//                WorkerInfo workerInfo = (WorkerInfo) data.getSerializableExtra("workinfo");
+//                workerFragment.adddata(workerInfo);
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     private void iniListener() {
         mViewPager.setOnPageChangeListener(new MyPagerOnPageChangeListener());

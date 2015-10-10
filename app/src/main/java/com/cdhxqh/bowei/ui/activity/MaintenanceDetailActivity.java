@@ -57,6 +57,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
     private TextView workplan;//作业计划
+    private ImageView workimg;
     private RelativeLayout workplanlayout;
     private TextView reality_starttime;//实际开始时间
     private RelativeLayout reality_starttimelayout;
@@ -138,6 +139,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         datelayout = (RelativeLayout) findViewById(R.id.oder_detail_date_layout);
 
         workplan = (TextView) findViewById(R.id.oder_detail_workplan);
+        workimg = (ImageView) findViewById(R.id.oder_detail_workplan_img);
         workplanlayout = (RelativeLayout) findViewById(R.id.oder_detail_workplan_layout);
 
         reality_starttime = (TextView) findViewById(R.id.oder_detail_reality_starttime);
@@ -160,6 +162,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     protected void initView() {
         getData();
         setview();
+        workimg.setVisibility(View.INVISIBLE);
         titlename.setText(getResources().getString(R.string.maintenance));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override

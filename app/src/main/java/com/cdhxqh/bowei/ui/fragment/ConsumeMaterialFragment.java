@@ -48,11 +48,14 @@ public class ConsumeMaterialFragment extends Fragment {
     String num;
     private int id;
     private OrderMain orderMain;
-    public ConsumeMaterialFragment(){
+
+    public ConsumeMaterialFragment() {
     }
-    public ConsumeMaterialFragment(OrderMain orderMain){
+
+    public ConsumeMaterialFragment(OrderMain orderMain) {
         this.orderMain = orderMain;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,15 +76,15 @@ public class ConsumeMaterialFragment extends Fragment {
         recyclerView.setAdapter(consumeMaterialAdapter);
         id = orderMain.getId();
         num = orderMain.getNumber();
-        if(orderMain.isNew()){
+        if (orderMain.isNew()) {
             getlocationData();
-        }else {
+        } else {
             getData();
         }
         return view;
     }
 
-    private void getData(){
+    private void getData() {
         mProgressDialog = ProgressDialog.show(getActivity(), null,
                 getString(R.string.requesting), true, true);
         HttpManager.getData(getActivity(), Constants.getMeterialConsumePlanUrl(num), new HttpRequestHandler<String>() {
@@ -112,33 +115,37 @@ public class ConsumeMaterialFragment extends Fragment {
         });
         addData(id);
     }
-    private void getlocationData(){
-        Jobplan jobplan = new JobPlanDao(getActivity()).queryByJobNum(orderMain.getWorkplan());
-        List<Jobmaterial>jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
-        MaterialInfo materialInfo;
-        for(int i = 0;i < jobmaterialList.size();i++){
-            materialInfo = new MaterialInfo();
-            materialInfo.setBelongorderid(orderMain.getId());
-            materialInfo.setName(jobmaterialList.get(i).getITEMDESC());
-            materialInfo.setNumber(jobmaterialList.get(i).getITEMNUM());
-            if(jobmaterialList.get(i).getITEMQTY()!=null) {
-                materialInfo.setSize(Integer.parseInt(jobmaterialList.get(i).getITEMQTY()));
+
+    private void getlocationData() {
+        if (new MaterialInfoDao(getActivity()).queryByLabtransId(id, true).size() == 0) {
+            Jobplan jobplan = new JobPlanDao(getActivity()).queryByJobNum(orderMain.getWorkplan());
+            List<Jobmaterial> jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
+            MaterialInfo materialInfo;
+            for (int i = 0; i < jobmaterialList.size(); i++) {
+                materialInfo = new MaterialInfo();
+                materialInfo.setBelongorderid(orderMain.getId());
+                materialInfo.setName(jobmaterialList.get(i).getITEMDESC());
+                materialInfo.setNumber(jobmaterialList.get(i).getITEMNUM());
+                if (jobmaterialList.get(i).getITEMQTY() != null) {
+                    materialInfo.setSize(Integer.parseInt(jobmaterialList.get(i).getITEMQTY()));
+                }
+                materialInfo.setWarehouse(jobmaterialList.get(i).getWarehouse());
+                materialInfo.setIsPlan(true);
+                new MaterialInfoDao(getActivity()).update(materialInfo);
             }
-            materialInfo.setWarehouse(jobmaterialList.get(i).getWarehouse());
-            materialInfo.setIsPlan(true);
-            new MaterialInfoDao(getActivity()).update(materialInfo);
         }
         addData(id);
     }
+
     private void addData(int id) {
         ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-        List<MaterialInfo>materialInfoList = new MaterialInfoDao(getActivity()).queryByLabtransId(id,true);
+        List<MaterialInfo> materialInfoList = new MaterialInfoDao(getActivity()).queryByLabtransId(id, true);
         for (int i = 0; i < materialInfoList.size(); i++) {
-            list.add(i,materialInfoList.get(i));
+            list.add(i, materialInfoList.get(i));
         }
-        if(materialInfoList.size()==0){
+        if (materialInfoList.size() == 0) {
             nodatalayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             nodatalayout.setVisibility(View.GONE);
         }
         consumeMaterialAdapter.update(list, true);
