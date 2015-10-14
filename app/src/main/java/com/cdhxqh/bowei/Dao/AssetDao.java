@@ -58,12 +58,38 @@ public class AssetDao {
     }
 
     /**
+     * 根据描述查询位置
+     * @return
+     */
+    public List<Asset> queryByDescription(String str){
+        try {
+            return AssetDaoOpe.queryBuilder().where().like("DESCRIPTION","%"+str+"%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 根据资产查询位置
      * @return
      */
     public List<Asset> queryByAsset(String asset){
         try {
-            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",asset).query();
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM", asset).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据资产查询故障类
+     * @return
+     */
+    public String queryClassByAsset(String asset){
+        try {
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",asset).queryForFirst().getFAILURECODE();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -88,6 +88,7 @@ public class ServeDetailActivity extends BaseActivity {
     private int layoutnum;
     private ProgressDialog mProgressDialog;
 
+    private Button save;
     private Button inputbtn;
 
     protected static final int S = 0;
@@ -182,7 +183,7 @@ public class ServeDetailActivity extends BaseActivity {
 
 //        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
 //        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
-
+        save = (Button) findViewById(R.id.order_detail_save);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -224,7 +225,13 @@ public class ServeDetailActivity extends BaseActivity {
         fault_ranklayout.setOnClickListener(new MylayoutListener(15));
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
-
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new OrderMainDao(ServeDetailActivity.this).update(SaveData());
+                finish();
+            }
+        });
         inputbtn.setOnClickListener(inputlistener);
     }
 

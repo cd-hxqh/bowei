@@ -18,6 +18,8 @@ public class Asset {
     private String LOCATION;
     @DatabaseField(columnName = "LOCATIONDESC")
     private String LOCATIONDESC;
+    @DatabaseField(columnName = "FAILURECODE")
+    private String FAILURECODE;
 
     public int getId() {
         return id;
@@ -57,5 +59,13 @@ public class Asset {
 
     public void setLOCATIONDESC(String LOCATIONDESC) {
         this.LOCATIONDESC = LOCATIONDESC;
+    }
+
+    public String getFAILURECODE() {
+        return FAILURECODE;
+    }
+
+    public void setFAILURECODE(String FAILURECODE) {
+        this.FAILURECODE = FAILURECODE;
     }
 }

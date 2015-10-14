@@ -57,6 +57,15 @@ public class JobPlanDao {
         return null;
     }
 
+    public List<Jobplan> queryByDescription(String str){
+        try {
+            return JobPlanDaoOpe.queryBuilder().where().like("DESCRIPTION", "%" +str+"%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Jobplan queryByJobNum(String num){
         try {
             return JobPlanDaoOpe.queryBuilder().where().eq("JPNUM",num).queryForFirst();

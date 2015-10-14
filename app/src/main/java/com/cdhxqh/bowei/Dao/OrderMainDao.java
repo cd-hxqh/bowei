@@ -33,7 +33,7 @@ public class OrderMainDao {
     }
 
     /**
-     * 更新实际工作类型信息
+     * 更新工单
      * @param orderMain
      */
     public void update(OrderMain orderMain) {
@@ -47,7 +47,7 @@ public class OrderMainDao {
     }
 
     /**
-     * 查询所有实际工作类型
+     * 查询所有工单
      * @return
      */
     public List<OrderMain> queryForAll(){

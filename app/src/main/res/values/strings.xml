@@ -110,6 +110,7 @@
     <string name="order_detail_input">提交</string>
     <string name="OK">确定</string>
     <string name="yuzhi">预置</string>
+    <string name="save">保存</string>
     <string name="company_inventory_text">公司库存</string>
     <string name="mrt_text">捷运库存</string>
     <string name="title_activity_in__company_">In_Company_Activity</string>
