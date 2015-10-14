@@ -58,7 +58,7 @@ public class ServeDetailActivity extends BaseActivity {
     private EditText state;//状态
     private TextView date;//汇报时间
     private RelativeLayout datelayout;
-//    private TextView workplan;//作业计划
+    //    private TextView workplan;//作业计划
 //    private RelativeLayout workplanlayout;
     private TextView reality_starttime;//实际开始时间
     private RelativeLayout reality_starttimelayout;
@@ -99,12 +99,12 @@ public class ServeDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    Toast.makeText(ServeDetailActivity.this,"工单"+orderMain.getNumber()+"提交成功",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServeDetailActivity.this, "工单" + orderMain.getNumber() + "提交成功", Toast.LENGTH_SHORT).show();
                     new OrderMainDao(ServeDetailActivity.this).deleteById(orderMain.getId());
                     ServeDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(ServeDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServeDetailActivity.this, "提交失败" + result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -236,7 +236,6 @@ public class ServeDetailActivity extends BaseActivity {
     }
 
 
-
     /**
      * 设置时间选择器*
      */
@@ -256,12 +255,11 @@ public class ServeDetailActivity extends BaseActivity {
     }
 
 
-
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             String isok = isOK();
-            if(isok.equals("OK")){
+            if (isok.equals("OK")) {
                 final OrderMain orderMain = SaveData();
                 final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServeDetailActivity.this, orderMain);
                 mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
@@ -270,11 +268,11 @@ public class ServeDetailActivity extends BaseActivity {
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
-                        if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
+                        if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
                             result = getBaseApplication().getWsService().InsertWO(data);
-                        }else if (orderMain.isNew()&&orderMain.isyuzhi()){
+                        } else if (orderMain.isNew() && orderMain.isyuzhi()) {
                             result = getBaseApplication().getWsService().UpdataWOyz(data);
-                        }else if(!orderMain.isNew()){
+                        } else if (!orderMain.isNew()) {
                             result = getBaseApplication().getWsService().UpdataWO(data);
                         } else {
                             result = "false";
@@ -285,15 +283,15 @@ public class ServeDetailActivity extends BaseActivity {
                     @Override
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
-                        if(s.equals("false")){
+                        if (s.equals("false")) {
                             mHandler.sendEmptyMessage(F);
                             return;
                         }
                         try {
                             JSONObject object = new JSONObject(s);
-                            if(object.getString("errorMsg").equals("成功")){
+                            if (object.getString("errorMsg").equals("成功")) {
                                 mHandler.sendEmptyMessage(S);
-                            }else {
+                            } else {
                                 mHandler.sendEmptyMessage(F);
                             }
                             result = object.getString("errorMsg");
@@ -303,17 +301,17 @@ public class ServeDetailActivity extends BaseActivity {
                     }
                 }.execute();
                 mProgressDialog.dismiss();
-            }else if(isok.equals("请完善信息")){
+            } else if (isok.equals("请完善信息")) {
                 Toast.makeText(ServeDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
         }
     };
 
-    private void getData(){
+    private void getData() {
         orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
-    private void setview(){
+    private void setview() {
         number.setText(orderMain.getNumber());
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
@@ -336,7 +334,7 @@ public class ServeDetailActivity extends BaseActivity {
         fault_rank.setText(orderMain.getFault_rank());
     }
 
-    public class MydateListener implements View.OnClickListener{
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -346,6 +344,7 @@ public class ServeDetailActivity extends BaseActivity {
             datePickerDialog.show();
         }
     }
+
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
         String parent;
@@ -353,13 +352,14 @@ public class ServeDetailActivity extends BaseActivity {
         public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
+
         @Override
         public void onClick(View view) {
-            if(faultclass.getText().equals("")&&requestCode==12){
+            if (faultclass.getText().equals("") && requestCode == 12) {
                 Toast.makeText(ServeDetailActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
                 return;
-            }else if(error_coding.getText().equals("")&&(requestCode==13||requestCode==14)){
-                Toast.makeText(ServeDetailActivity.this,"请选择问题代码",Toast.LENGTH_SHORT).show();
+            } else if (error_coding.getText().equals("") && (requestCode == 13 || requestCode == 14)) {
+                Toast.makeText(ServeDetailActivity.this, "请选择问题代码", Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(ServeDetailActivity.this, ItemChooseListActivity.class);
@@ -452,10 +452,10 @@ public class ServeDetailActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            sb=new StringBuffer();
-            if(dayOfMonth<10){
-                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
-            }else {
+            sb = new StringBuffer();
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+            } else {
                 sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
@@ -466,16 +466,16 @@ public class ServeDetailActivity extends BaseActivity {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             sb.append(" ");
-            if(i1<10){
-                sb.append(i+":"+"0"+i1+":00");
-            }else {
-                sb.append(i+":"+i1+":00");
+            if (i1 < 10) {
+                sb.append(i + ":" + "0" + i1 + ":00");
+            } else {
+                sb.append(i + ":" + i1 + ":00");
             }
-            if(layoutnum == datelayout.getId()){
+            if (layoutnum == datelayout.getId()) {
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
@@ -484,21 +484,22 @@ public class ServeDetailActivity extends BaseActivity {
 
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
+    private String isOK() {
         if (describe.getText().equals("")
-                ||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")
-                ||employee_id.getText().equals("")){
+                || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")
+                || employee_id.getText().equals("")) {
             return "请完善信息";
-        }else{
+        } else {
             return "OK";
         }
     }
 
-    private OrderMain SaveData(){
+    private OrderMain SaveData() {
         OrderMain orderMain = new OrderMain();
         orderMain = this.orderMain;
         orderMain.setNumber(number.getText().toString());
