@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -145,7 +146,8 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
                     Doclinks doclinks= JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this,data);
                     nameText.setText(doclinks.getDescription());
                     pathText.setText(Html.fromHtml(doclinks.getUrlname()));
-;                }
+                    pathText.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
 
             @Override
