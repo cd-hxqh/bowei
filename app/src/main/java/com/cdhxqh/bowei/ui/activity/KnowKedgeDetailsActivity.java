@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,16 +47,24 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
      */
     private TextView descText;
 
-    /**文档名称**/
+    /**
+     * 文档名称*
+     */
     private TextView nameText;
 
-    /**知识大类**/
+    /**
+     * 知识大类*
+     */
     private TextView dlText;
 
-    /**知识小类**/
+    /**
+     * 知识小类*
+     */
     private TextView xlText;
 
-    /**备注**/
+    /**
+     * 备注*
+     */
     private TextView bzText;
 
     /**
@@ -77,8 +89,6 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
     }
 
 
-
-
     /**
      * 获取数据*
      */
@@ -94,7 +104,7 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
         numberText = (TextView) findViewById(R.id.knowledge_number_id);
         descText = (TextView) findViewById(R.id.knowledge_desc_id);
 
-        nameText=(TextView)findViewById(R.id.knowledge_document_name_id);
+        nameText = (TextView) findViewById(R.id.knowledge_document_name_id);
         dlText = (TextView) findViewById(R.id.knowledge_document_dl_id);
         xlText = (TextView) findViewById(R.id.knowledge_document_xl_id);
         bzText = (TextView) findViewById(R.id.knowledge_document_bz_id);
@@ -105,7 +115,7 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
     protected void initView() {
         backImageView.setOnClickListener(backOnClickListener);
         titleText.setText(getString(R.string.knowkedge_details_text));
-        numberText.setText(knowledge.getKnowledgeid()+"");
+        numberText.setText(knowledge.getKnowledgeid() + "");
         descText.setText(knowledge.getKnowdesc());
         dlText.setText(knowledge.getKnowdl());
         xlText.setText(knowledge.getKnowxl());
@@ -119,23 +129,27 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
         }
     };
 
-    /**创建进度条**/
-    private void createProgressDialog(){
-        mProgressDialog = ProgressDialog.show(KnowKedgeDetailsActivity.this, null,getString(R.string.loading_text), true, true);
+    /**
+     * 创建进度条*
+     */
+    private void createProgressDialog() {
+        mProgressDialog = ProgressDialog.show(KnowKedgeDetailsActivity.this, null, getString(R.string.loading_text), true, true);
     }
 
     /**
      * 关闭进度条
      */
-    private void colseProgressDialog(){
-        if(mProgressDialog!=null){
+    private void colseProgressDialog() {
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
-            mProgressDialog=null;
+            mProgressDialog = null;
         }
     }
 
 
-    /**获取文件路径数据**/
+    /**
+     * 获取文件路径数据*
+     */
     private void getHttpData() {
 
         HttpManager.getDataInfo(KnowKedgeDetailsActivity.this, Constants.GETKNOW_PATH(knowledge.getKnowledgeid() + ""), new HttpRequestHandler<String>() {
@@ -143,9 +157,12 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
             public void onSuccess(String data) {
                 colseProgressDialog();
                 if (!data.equals("")) {
-                    Doclinks doclinks= JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this,data);
+                    Doclinks doclinks = JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this, data);
                     nameText.setText(doclinks.getDescription());
+
+
                     pathText.setText(Html.fromHtml(doclinks.getUrlname()));
+                    pathText.setAutoLinkMask(Linkify.ALL);
                     pathText.setMovementMethod(LinkMovementMethod.getInstance());
                 }
             }
