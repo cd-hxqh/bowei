@@ -33,4 +33,14 @@
         android:text="@string/choose_item"
         android:textSize="14sp"
         android:background="@color/start_back_color"/>
+
+    <ImageView
+        android:id="@+id/search_img"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_search"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

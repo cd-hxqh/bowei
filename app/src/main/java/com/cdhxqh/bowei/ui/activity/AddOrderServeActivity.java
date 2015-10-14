@@ -112,6 +112,7 @@ public class AddOrderServeActivity extends BaseActivity {
                     number.setText(result);
                     Toast.makeText(AddOrderServeActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
                     orderMain.setIsyuzhi(true);
+                    inputbtn.performClick();
                     break;
                 case F:
                     Toast.makeText(AddOrderServeActivity.this, "获取工单编号失败," + result, Toast.LENGTH_SHORT).show();

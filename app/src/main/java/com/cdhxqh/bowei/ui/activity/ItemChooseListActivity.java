@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class ItemChooseListActivity extends BaseActivity {
     private String loucation;
     private LinearLayout nodatalayout;
     private Button item;
+    private ImageView searchimg;
     String[] mItems;
     AlertDialog.Builder builder;
 
@@ -87,6 +89,7 @@ public class ItemChooseListActivity extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.item_choose_list);
         nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
         item = (Button) findViewById(R.id.item_choose);
+        searchimg = (ImageView) findViewById(R.id.search_img);
     }
 
     @Override
@@ -99,6 +102,29 @@ public class ItemChooseListActivity extends BaseActivity {
             }
         });
         requestCode = (int) getIntent().getExtras().get("requestCode");
+        if(requestCode!=7&&(requestCode==1||requestCode==2||requestCode==9||requestCode==11)){
+            searchimg.setVisibility(View.VISIBLE);
+            searchimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText et = new EditText(ItemChooseListActivity.this);
+                    final AlertDialog dlg = new AlertDialog.Builder(ItemChooseListActivity.this).setTitle("请输入名称关键字").setIcon(
+                                android.R.drawable.ic_dialog_info).setView(
+                            et).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
+                }
+            });
+        }
         OrderType = getIntent().getExtras().getString("OrderType");
         parent = getIntent().getExtras().getString("parent");
         loucation = getIntent().getExtras().getString("loucation");

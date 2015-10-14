@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                         }else {
                             getBaseApplication().setUsername(data);
-                            getOwnerId();
+                            getOwnerId(data);
                             if (isRemember) {
                                 AccountUtils.setChecked(LoginActivity.this, isRemember);
                                 //记住密码
@@ -171,10 +171,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         startActivity(inetnt);
     }
 
-    private void getOwnerId() {
+    private void getOwnerId(String personid) {
 //        mProgressDialog = ProgressDialog.show(this, null,
 //                getString(R.string.requesting), true, true);
-        HttpManager.getData(this, Constants.getOwnerId(mUsername.getText().toString()), new HttpRequestHandler<String>() {
+        HttpManager.getData(this, Constants.getOwnerId(personid), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 JSONObject jsonObject = null;
