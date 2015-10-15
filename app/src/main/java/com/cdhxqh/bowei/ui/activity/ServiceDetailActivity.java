@@ -64,6 +64,7 @@ public class ServiceDetailActivity extends BaseActivity {
     private TextView employee_id;//录入人工号
     private RelativeLayout employee_idlayout;
     private EditText questiontogether;//问题汇总
+    private Button save;
     private Button inputbtn;
 
     private DatePickerDialog datePickerDialog;
@@ -142,7 +143,7 @@ public class ServiceDetailActivity extends BaseActivity {
         employee_idlayout = (RelativeLayout) findViewById(R.id.oder_detail_employee_id_layout);
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
-
+        save = (Button) findViewById(R.id.order_detail_save);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -179,7 +180,13 @@ public class ServiceDetailActivity extends BaseActivity {
         datelayout.setOnClickListener(new MydateListener());
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
-
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new OrderMainDao(ServiceDetailActivity.this).update(SaveData());
+                finish();
+            }
+        });
         inputbtn.setOnClickListener(inputlistener);
     }
 

@@ -72,6 +72,19 @@ public class LocationsDao {
     }
 
     /**
+     * 根据描述查询位置信息
+     * @return
+     */
+    public List<Locations> queryByDescription(String str){
+        try {
+            return LocationsDaoOpe.queryBuilder().where().like("DESCRIPTION", "%" +str+"%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 根据Loucation查询位置信息
      * @return
      */

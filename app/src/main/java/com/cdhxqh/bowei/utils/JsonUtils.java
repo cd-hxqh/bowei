@@ -246,6 +246,7 @@ public class JsonUtils {
                 asset.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 asset.setLOCATION(jsonObject.getString("LOCATION"));
                 asset.setLOCATIONDESC(jsonObject.getString("LOCATIONDESC"));
+                asset.setFAILURECODE(jsonObject.getString("FAILURECODE"));
                 new AssetDao(ctx).update(asset);
             }
         } catch (JSONException e) {

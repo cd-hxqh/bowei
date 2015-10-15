@@ -6,15 +6,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Constants {
-    //10.40.8.47:7013 测试 WOSUB-CM
+    //10.40.8.47:7013 测试 WOSUB-PM
     //182.92.8.94:7001 开发  APPWFWO
-    public static String webserviceURL = "http://182.92.8.94:7001/maximo/services/WOService";//webservice接口地址
+    public static String webserviceURL = "http://10.40.8.47:7013/maximo/services/WOService";//webservice接口地址
 
-    public static String loginURL = "http://182.92.8.94:7001/maximo/mobile/system/login";//登录接口地址
+    public static String loginURL = "http://10.40.8.47:7013/maximo/mobile/system/login";//登录接口地址
 
-    public static String SEARCHURL = "http://182.92.8.94:7001/maximo/mobile/common/api";//通用查询接口地址
+    public static String SEARCHURL = "http://10.40.8.47:7013/maximo/mobile/common/api";//通用查询接口地址
 
-    public static String SERVER_URL = "http://182.92.8.94:7001";//服务器地址
+    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
 
     /**工单测试接口**/
     public static String ORDER_GETDATA_TEST = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
@@ -65,10 +65,10 @@ public class Constants {
     }
     //获得工单流程任务分配
     public static String GET_OWNER_ID = "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
-            "condition:{origperson:'maxadmin',PROCESSNAME:'APPWFWO',ASSIGNSTATUS:'ACTIVE'}}";
+            "condition:{origperson:'maxadmin',PROCESSNAME:'WOSUB-PM',ASSIGNSTATUS:'ACTIVE'}}";
     public static String getOwnerId(String name){
         return "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
-                "condition:{origperson:'"+name+"',PROCESSNAME:'APPWFWO',ASSIGNSTATUS:'ACTIVE'}}";
+                "condition:{origperson:'"+name+"',PROCESSNAME:'WOSUB-PM',ASSIGNSTATUS:'ACTIVE'}}";
     }
 
     //知识库列表信息
@@ -120,7 +120,7 @@ public class Constants {
     //位置信息
     public static String LOCATIONS = "{appid:'LOCATIONS',objectname:'LOCATIONS',option:'read',condition:{TYPE:'OPERATING'}}";
     //资产
-    public static String ASSET = "{appid:'ASSET',objectname:'ASSET',option:'read'}";
+    public static String ASSET = "{appid:'ASSET',objectname:'ASSET',option:'read',condition:{ASSETNUM:'JY%'}}";
     //单位
     public static String WORKDW = "{appid:'ALNDOMAIN',objectname:'ALNDOMAIN',option:'read',condition:{DOMAINID:'WORKDW'}}";
     //专业

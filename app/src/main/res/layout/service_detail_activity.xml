@@ -107,10 +107,19 @@
                 <!--android:textColor="@color/gray"-->
                 <!--android:background="@drawable/content_bg01"/>-->
             <Button
-                android:id="@+id/order_detail_input"
+                android:id="@+id/order_detail_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/save"
+                android:background="@color/start_back_color"/>
+            <Button
+                android:id="@+id/order_detail_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/order_detail_input"

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.AssetDao;
 import com.cdhxqh.bowei.Dao.FailureListDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
@@ -389,6 +390,13 @@ public class AddOrderServeActivity extends BaseActivity {
             case 2:
                 property.setText(content);
                 place.setText(number);
+                faultclass.setText(new AssetDao(AddOrderServeActivity.this).queryClassByAsset(content));
+                error_coding.setText("");
+                orderMain.setError_coding_list("");
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
                 break;
             case 3:
                 worktype.setText(content);

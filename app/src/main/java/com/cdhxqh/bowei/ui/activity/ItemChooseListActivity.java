@@ -102,18 +102,18 @@ public class ItemChooseListActivity extends BaseActivity {
             }
         });
         requestCode = (int) getIntent().getExtras().get("requestCode");
-        if(requestCode!=7&&(requestCode==1||requestCode==2||requestCode==9||requestCode==11)){
+        if(requestCode!=7&&(requestCode==1||requestCode==2||requestCode==9)){
             searchimg.setVisibility(View.VISIBLE);
             searchimg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditText et = new EditText(ItemChooseListActivity.this);
+                    final EditText et = new EditText(ItemChooseListActivity.this);
                     final AlertDialog dlg = new AlertDialog.Builder(ItemChooseListActivity.this).setTitle("请输入名称关键字").setIcon(
                                 android.R.drawable.ic_dialog_info).setView(
                             et).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
+                            addData(et.getText().toString());
                         }
                     })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -180,6 +180,52 @@ public class ItemChooseListActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 关键字搜索
+     * @param str
+     */
+    private void addData(String str) {
+        list = new ArrayList<ChooseItem>();
+        switch (requestCode) {
+            case 1:
+                List<Locations> locationsList;
+                if(loucation!=null){
+                    locationsList = new LocationsDao(this).queryForAll();
+                }
+                locationsList  = new LocationsDao(this).queryByDescription(str);
+                for (int i = 0; i < locationsList.size(); i++) {
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(locationsList.get(i).getDESCRIPTION());
+                    chooseItem.setValue(locationsList.get(i).getLOCATION());
+                    list.add(i, chooseItem);
+                }
+                break;
+            case 2:
+                List<Asset> assetList;
+                assetList = new AssetDao(this).queryByDescription(str);
+                for (int i = 0; i < assetList.size(); i++) {
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(assetList.get(i).getDESCRIPTION());
+                    chooseItem.setValue(assetList.get(i).getASSETNUM());
+                    chooseItem.setParent(assetList.get(i).getLOCATION());//资产的LOCATION值
+                    list.add(i, chooseItem);
+                }
+                break;
+            case 9:
+                List<Jobplan> jobplanList = new JobPlanDao(this).queryByDescription(str);
+                for (int i = 0; i < jobplanList.size(); i++) {
+                    chooseItem = new ChooseItem();
+                    chooseItem.setName(jobplanList.get(i).getDESCRIPTION());
+                    chooseItem.setValue(jobplanList.get(i).getJPNUM());
+                    list.add(i, chooseItem);
+                }
+                break;
+        }
+        itemListAdapter = new ItemListAdapter(this, this);
+        recyclerView.setAdapter(itemListAdapter);
+        itemListAdapter.update(list, true);
     }
 
     private void addData() {

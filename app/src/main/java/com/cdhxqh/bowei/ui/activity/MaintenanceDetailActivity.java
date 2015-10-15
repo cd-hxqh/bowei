@@ -70,6 +70,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private EditText pm;//PM
     private EditText notinspection_device;//未巡检设备
     private TextView inspect_result;//检查结果
+    private Button save;
     private Button inputbtn;
 
     private DatePickerDialog datePickerDialog;
@@ -155,6 +156,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         pm = (EditText) findViewById(R.id.pm);
         notinspection_device = (EditText) findViewById(R.id.notinspection_device);
         inspect_result = (TextView) findViewById(R.id.inspect_result);
+        save = (Button) findViewById(R.id.order_detail_save);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -192,6 +194,13 @@ public class MaintenanceDetailActivity extends BaseActivity {
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new OrderMainDao(MaintenanceDetailActivity.this).update(SaveData());
+                finish();
+            }
+        });
         inputbtn.setOnClickListener(inputlistener);
     }
 
@@ -418,7 +427,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     }
 
     private OrderMain SaveData() {
-        OrderMain orderMain = new OrderMain();
+        OrderMain orderMain = this.orderMain;
         orderMain.setId(this.orderMain.getId());
         if (number.getText().toString() != null) {
             orderMain.setNumber(number.getText().toString());
