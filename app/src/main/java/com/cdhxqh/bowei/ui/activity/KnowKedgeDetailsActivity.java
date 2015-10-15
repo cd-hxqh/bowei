@@ -161,8 +161,10 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
                     nameText.setText(doclinks.getDescription());
 
 
-                    pathText.setText(Html.fromHtml(doclinks.getUrlname()));
-                    pathText.setAutoLinkMask(Linkify.ALL);
+                    String html = "<a href='" + doclinks.getUrlname() + "'>" + doclinks.getUrlname() + "</a>";//注意这里必须加上协议号，即http://。
+
+                    CharSequence path = Html.fromHtml(html);
+                    pathText.setText(path);
                     pathText.setMovementMethod(LinkMovementMethod.getInstance());
                 }
             }

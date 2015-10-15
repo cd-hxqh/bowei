@@ -216,7 +216,6 @@
                 android:layout_marginLeft="10dp"
                 android:hint="@string/have_not_data_text"
                 android:textColor="@color/radiobg_normal"
-                android:autoLink="all"
                 android:textColorHint="@color/gray"
                 android:textSize="@dimen/dimens_16sp" />
 
