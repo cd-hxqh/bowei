@@ -393,6 +393,7 @@ public class ServiceDetailActivity extends BaseActivity {
      */
     private String isOK(){
         if (describe.getText().equals("")||place.equals("")
+                ||place.getText().equals("")
                 ||property.getText().equals("")||worktype.getText().equals("")
                 ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
                 ||major.getText().equals("")||date.getText().equals("")){

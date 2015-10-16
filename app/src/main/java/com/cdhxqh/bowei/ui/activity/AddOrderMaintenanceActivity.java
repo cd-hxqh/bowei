@@ -88,7 +88,6 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private Button yuzhi;//预置
     private Button inputbtn;
     OrderMain orderMain = new OrderMain();
-    private String loucation;
 
     private DatePickerDialog datePickerDialog;
     private CumTimePickerDialog timePickerDialog;
@@ -120,7 +119,10 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
      * 资产编号*
      */
     private String assetNum = "";
-
+    /**
+     * 资产对应位置
+     */
+    private String loucations = "";
     /**
      * 跳转标识*
      */
@@ -143,6 +145,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         JUMP_MARK = getIntent().getExtras().getInt("jump_mark");
         if (JUMP_MARK == Constants.RESULTS_MARK) {
             assetNum = getIntent().getExtras().getString("assetnum");
+            loucations = getIntent().getExtras().getString("location");
         }
     }
 
@@ -217,11 +220,15 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 //        scrollView.scrollTo();
         number.setText("");
         worktype.setText("CM");
-        applyunity.setText("JY");
+        applyunity.setText("T3");
+        major.setText("JY");
         inspect_result.setText(getResources().getString(R.string.order_qualified));
 
         if (!assetNum.equals("")) {
             property.setText(assetNum);
+        }
+        if(!loucations.equals("")){
+            place.setText(loucations);
         }
 
         date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
@@ -441,6 +448,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
+                ||place.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")

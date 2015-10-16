@@ -3,6 +3,7 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -119,6 +120,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         HttpManager.login(LoginActivity.this,
                 mUsername.getText().toString(),
                 mPassword.getText().toString(),
+                ((TelephonyManager) getSystemService(TELEPHONY_SERVICE))
+                        .getDeviceId(),
                 new HttpRequestHandler<String>() {
                     @Override
                     public void onSuccess(String data) {
@@ -174,7 +177,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void getOwnerId(String personid) {
 //        mProgressDialog = ProgressDialog.show(this, null,
 //                getString(R.string.requesting), true, true);
-        HttpManager.getData(this, Constants.getOwnerId(personid), new HttpRequestHandler<String>() {
+        HttpManager.getData(this, Constants.getOwnerId(mUsername.getText().toString()), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 JSONObject jsonObject = null;

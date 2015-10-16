@@ -64,7 +64,7 @@ public class AcWorkTypeDao {
     public List<AcWorkType> queryForCMorPM(){
         try {
             return AcWorkTypeDaoOpe.queryBuilder().where()
-                    .eq("VALUE", "XJ").or().eq("VALUE","WB").query();
+                    .eq("VALUE", "ZXJ").or().eq("VALUE","ZWB").query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

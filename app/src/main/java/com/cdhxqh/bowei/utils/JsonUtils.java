@@ -190,17 +190,17 @@ public class JsonUtils {
             if(fromarr.length() == 0){
                 Constants.ORDER_GETDATA = "";
             }else if (fromarr.length() == 1) {
-                Constants.serOrderUrl(fromarr.getJSONObject(0).get("OWNERID").toString());
+                Constants.setOrderUrl(StringNumToIntUtils.parsingnum(fromarr.getJSONObject(0).getString("OWNERID")));
             } else {
                 String s = "";
                 for (int i = 0; i < fromarr.length(); i++) {
                     if (i == 0) {
-                        s = fromarr.getJSONObject(0).get("OWNERID").toString();
+                        s = StringNumToIntUtils.parsingnum(fromarr.getJSONObject(0).getString("OWNERID"));
                     } else {
-                        s = s + "," + fromarr.getJSONObject(i).get("OWNERID").toString();
+                        s = s + "," + StringNumToIntUtils.parsingnum(fromarr.getJSONObject(i).getString("OWNERID"));
                     }
                 }
-                Constants.serOrderUrl(s);
+                Constants.setOrderUrl(s);
             }
             Log.i(TAG, Constants.ORDER_GETDATA);
         } catch (JSONException e) {
@@ -367,17 +367,19 @@ public class JsonUtils {
 
     public static void parsingJobPlan(Context ctx, String str) {
         try {
-            JSONArray jsonArray = new JSONArray(str);
+            JSONArray jsonArray = new JSONObject(str).getJSONArray("resultlist");
+//            JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Jobplan jobPlan;
-            new JobPlanDao(ctx).deleteall();
+            JobPlanDao jobPlanDao = new JobPlanDao(ctx);
+            jobPlanDao.deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new Jobplan();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
-                new JobPlanDao(ctx).update(jobPlan);
+                jobPlanDao.update(jobPlan);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -386,10 +388,13 @@ public class JsonUtils {
 
     public static void parsingJobTask(Context ctx, String str) {
         try {
+//            JSONArray jsonArray = new JSONObject(str).getJSONArray("resultlist");
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             JobTask jobTask;
-            new JobTaskDao(ctx).deleteall();
+            JobTaskDao jobTaskDao = new JobTaskDao(ctx);
+            jobTaskDao.deleteall();
+            List<JobTask>list = new ArrayList<JobTask>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 jobTask = new JobTask();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -398,8 +403,11 @@ public class JsonUtils {
                 jobTask.setJOBTASKID(jsonObject.getInt("JOBTASKID"));
                 jobTask.setJPNUM(jsonObject.getString("JPNUM"));
                 jobTask.setJPTASK(jsonObject.getString("JPTASK"));
-                new JobTaskDao(ctx).update(jobTask);
+                list.add(jobTask);
+//                jobTaskDao.update(jobTask);
+//                List<JobTask>list = jobTaskDao.queryForAll();
             }
+            jobTaskDao.update(list);
         } catch (JSONException e) {
             e.printStackTrace();
         }

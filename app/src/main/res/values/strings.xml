@@ -103,6 +103,7 @@
     <string name="order_detail_faultclass">故障类</string>
     <string name="order_detail_error_coding">问题代码</string>
     <string name="order_detail_fault_rank">故障等级</string>
+    <string name="order_detail_phenomena">现象</string>
     <string name="order_detail_cause">原因</string>
     <string name="order_detail_remedy">措施</string>
     <string name="order_detail_reporttime">汇报时间</string>

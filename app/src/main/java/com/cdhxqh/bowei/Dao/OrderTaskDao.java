@@ -74,9 +74,7 @@ public class OrderTaskDao {
     public boolean isexit(OrderTask orderTask){
         try {
             List<OrderTask> orderTaskList = OrderTaskDaoOpe.queryBuilder()
-                    .where().eq("WONUM",orderTask.getNum()).and().
-                            eq("TASKID",orderTask.getTask()).and().
-                            eq("WORKORDERID",orderTask.getWorkorderid()).query();
+                    .where().eq("workorderid", orderTask.getWorkorderid()).query();
             if (orderTaskList.size()>0){
                 return true;
             }else {

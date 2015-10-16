@@ -40,13 +40,15 @@ public class WebserviceDataUtils {
             jsonObject.put("actstart", orderMain.getReality_starttime()!=null ? orderMain.getReality_starttime() : "");
             jsonObject.put("actfinish", orderMain.getReality_stoptime()!=null ? orderMain.getReality_stoptime() : "");
             jsonObject.put("problem", orderMain.getError_coding()!=null ? orderMain.getError_coding() : "");
-            jsonObject.put("remedy", orderMain.getRemedy()!=null ? orderMain.getRemedy() : "");
+            jsonObject.put("failurecode4", orderMain.getRemedy()!=null ? orderMain.getRemedy() : "");
+            jsonObject.put("remedy", orderMain.getPhenomena()!=null ? orderMain.getPhenomena() : "");
             jsonObject.put("cause", orderMain.getCause()!=null ? orderMain.getCause() : "");
             jsonObject.put("reportedby", usename);
             jsonObject.put("failurecode", orderMain.getFaultclass()!=null ? orderMain.getFaultclass() : "");
             jsonObject.put("failurelist1", orderMain.getError_coding_list()!=null ? orderMain.getError_coding_list() : "");
-            jsonObject.put("failurelist2", orderMain.getCause_list()!=null ? orderMain.getCause_list() : "");
-            jsonObject.put("failurelist3", orderMain.getRemedy_list()!=null ? orderMain.getRemedy_list() : "");
+            jsonObject.put("failurelist2", orderMain.getPhenomena_list()!=null ? orderMain.getPhenomena_list() : "");
+            jsonObject.put("failurelist3", orderMain.getCause_list()!=null ? orderMain.getCause_list() : "");
+            jsonObject.put("failurelist4", orderMain.getRemedy_list()!=null ? orderMain.getRemedy_list() : "");
             jsonObject.put("reportdate", orderMain.getDate()!=null ? orderMain.getDate() : "");
             jsonObject.put("onbehalfof", orderMain.getEmployee_id()!=null ? orderMain.getEmployee_id() : "");
             jsonObject.put("bz", orderMain.getQuestiontogether()!=null ? orderMain.getQuestiontogether() : "");

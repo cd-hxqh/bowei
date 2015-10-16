@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.WorkerInfoDao;
 import com.cdhxqh.bowei.R;
@@ -67,8 +68,27 @@ public class WorkerFragment extends Fragment {
         recyclerView.setAdapter(workerInfoAdapter);
         id = orderMain.getId();
         num = orderMain.getNumber();
-        getData();
+
         return view;
+    }
+    private boolean mHasLoadedOnce = false;
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isVisibleToUser && !mHasLoadedOnce && workerInfoAdapter.getItemCount()==0) {
+                Toast.makeText(getActivity(), "员工onStart", Toast.LENGTH_SHORT).show();
+                getData();
+                // async http request here
+                mHasLoadedOnce = true;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        setUserVisibleHint(true);
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void getData(){

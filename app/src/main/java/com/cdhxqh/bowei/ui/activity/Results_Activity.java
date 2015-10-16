@@ -189,18 +189,21 @@ public class Results_Activity extends BaseActivity {
                 case 0: //维保
                     intent.setClass(Results_Activity.this,AddOrderMaintenanceActivity.class);
                     intent.putExtra("assetnum", asset.getASSETNUM());
+                    intent.putExtra("location",asset.getLOCATION());
                     intent.putExtra("jump_mark", Constants.RESULTS_MARK);
                     startActivityForResult(intent, 0);
                     break;
                 case 1: //维修
                     intent.setClass(Results_Activity.this,AddOrderServeActivity.class);
-                    intent.putExtra("assetnum",asset.getASSETNUM());
+                    intent.putExtra("assetnum", asset.getASSETNUM());
+                    intent.putExtra("location",asset.getLOCATION());
                     intent.putExtra("jump_mark", Constants.RESULTS_MARK);
                     startActivityForResult(intent,0);
                     break;
                 case 2: //服务
                     intent.setClass(Results_Activity.this,AddOrderServiceActivity.class);
                     intent.putExtra("assetnum",asset.getASSETNUM());
+                    intent.putExtra("location",asset.getLOCATION());
                     intent.putExtra("jump_mark", Constants.RESULTS_MARK);
                     startActivityForResult(intent,0);
                     break;

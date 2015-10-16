@@ -20,6 +20,7 @@ import com.cdhxqh.bowei.utils.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -168,7 +169,6 @@ public class DownloadFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        button.setText(getResources().getString(R.string.downloaded));
                         String result = jsonObject.getString("result");
                         if (url == Constants.LOCATIONS) {
                             JsonUtils.parsingLocations(getActivity(), result);
@@ -197,6 +197,7 @@ public class DownloadFragment extends Fragment {
                         } else if(url == Constants.ALNDOMAIN){
                             JsonUtils.parsingAlndomain(getActivity(),result);
                         }
+                        button.setText(getResources().getString(R.string.downloaded));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -251,5 +252,7 @@ public class DownloadFragment extends Fragment {
         jobmaterial.performClick();
         erson.performClick();
         alndomain.performClick();
+//        List<String> url =new ArrayList<>();
+//        List<Button> buttons = new ArrayList<>();
     }
 }

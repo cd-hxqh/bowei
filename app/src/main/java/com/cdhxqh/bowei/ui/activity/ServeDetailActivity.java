@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.AssetDao;
 import com.cdhxqh.bowei.Dao.FailureListDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
@@ -71,6 +72,8 @@ public class ServeDetailActivity extends BaseActivity {
     private RelativeLayout faultclasslayout;
     private TextView error_coding;
     private RelativeLayout error_codinglayout;
+    private TextView phenomena;//现象
+    private RelativeLayout phenomenalayout;
     private TextView cause;
     private RelativeLayout causelayout;
     private TextView remedy;
@@ -172,6 +175,9 @@ public class ServeDetailActivity extends BaseActivity {
         error_coding = (TextView) findViewById(R.id.oder_detail_error_coding);
         error_codinglayout = (RelativeLayout) findViewById(R.id.oder_detail_error_coding_layout);
 
+        phenomena = (TextView) findViewById(R.id.oder_detail_phenomena);
+        phenomenalayout = (RelativeLayout) findViewById(R.id.oder_detail_phenomena_layout);
+
         cause = (TextView) findViewById(R.id.oder_detail_cause);
         causelayout = (RelativeLayout) findViewById(R.id.oder_detail_cause_layout);
 
@@ -220,6 +226,7 @@ public class ServeDetailActivity extends BaseActivity {
 //        workplanlayout.setOnClickListener(new MylayoutListener(9));
         faultclasslayout.setOnClickListener(new MylayoutListener(11));
         error_codinglayout.setOnClickListener(new MylayoutListener(12));
+        phenomenalayout.setOnClickListener(new MylayoutListener(16));
         causelayout.setOnClickListener(new MylayoutListener(13));
         remedylayout.setOnClickListener(new MylayoutListener(14));
         fault_ranklayout.setOnClickListener(new MylayoutListener(15));
@@ -358,8 +365,14 @@ public class ServeDetailActivity extends BaseActivity {
             if (faultclass.getText().equals("") && requestCode == 12) {
                 Toast.makeText(ServeDetailActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (error_coding.getText().equals("") && (requestCode == 13 || requestCode == 14)) {
+            } else if (error_coding.getText().equals("") && requestCode == 16) {
                 Toast.makeText(ServeDetailActivity.this, "请选择问题代码", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (phenomena.getText().equals("") && requestCode == 13) {
+                Toast.makeText(ServeDetailActivity.this, "请选择现象", Toast.LENGTH_SHORT).show();
+                return;
+            }else if (cause.getText().equals("") && requestCode == 14) {
+                Toast.makeText(ServeDetailActivity.this, "请选择原因", Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(ServeDetailActivity.this, ItemChooseListActivity.class);
@@ -367,8 +380,12 @@ public class ServeDetailActivity extends BaseActivity {
             this.parent = ServeDetailActivity.this.parent;
             if (faultclass.getText() != null && requestCode == 12) {
                 intent.putExtra("parent", new FailureListDao(ServeDetailActivity.this).queryForClassByCode(faultclass.getText().toString()));
-            } else if (faultclass.getText() != null && (requestCode == 13 || requestCode == 14)) {
+            } else if (error_coding.getText() != null && requestCode == 16) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
+            }else if (phenomena.getText() != null && requestCode == 13) {
+                intent.putExtra("parent", orderMain.getPhenomena_list());
+            } else if (faultclass.getText() != null && cause.getText() != null && requestCode == 14) {
+                intent.putExtra("parent", orderMain.getCause_list());
             }
             intent.putExtra("OrderType", getResources().getString(R.string.serve));
             startActivityForResult(intent, requestCode);
@@ -395,6 +412,15 @@ public class ServeDetailActivity extends BaseActivity {
             case 2:
                 property.setText(content);
                 place.setText(number);
+                faultclass.setText(new AssetDao(ServeDetailActivity.this).queryClassByAsset(content));
+                error_coding.setText("");
+                orderMain.setError_coding_list("");
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
                 break;
             case 3:
                 worktype.setText(content);
@@ -418,6 +444,8 @@ public class ServeDetailActivity extends BaseActivity {
                 faultclass.setText(content);
                 error_coding.setText("");
                 orderMain.setError_coding_list("");
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
                 cause.setText("");
                 orderMain.setCause_list("");
                 remedy.setText("");
@@ -427,6 +455,8 @@ public class ServeDetailActivity extends BaseActivity {
                 error_coding.setText(content);
 //                parent = number;
                 orderMain.setError_coding_list(number);
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
                 cause.setText("");
                 orderMain.setCause_list("");
                 remedy.setText("");

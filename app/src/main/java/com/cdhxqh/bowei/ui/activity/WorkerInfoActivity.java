@@ -88,7 +88,7 @@ public class WorkerInfoActivity extends BaseActivity{
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Double.parseDouble(worktime.getText().toString()) < 0) {
+                if (Double.parseDouble(worktime.getText().toString()) <= 0) {
                     Toast.makeText(WorkerInfoActivity.this, "请输入正确起止时间", Toast.LENGTH_SHORT).show();
                 } else {
                     workerInfo.setNumber(workernum.getText().toString());

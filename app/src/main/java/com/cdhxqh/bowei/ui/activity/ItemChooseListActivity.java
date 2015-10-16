@@ -268,7 +268,7 @@ public class ItemChooseListActivity extends BaseActivity {
             case 4:
                 List<AcWorkType> acWorkTypeList;
                 if (OrderType.equals(getResources().getString(R.string.maintenance))) {
-                    acWorkTypeList = new AcWorkTypeDao(this).queryForAll();
+                    acWorkTypeList = new AcWorkTypeDao(this).queryForCMorPM();
                 } else if (OrderType.equals(getResources().getString(R.string.serve))) {
                     acWorkTypeList = new AcWorkTypeDao(this).queryForEM();
                 } else if (OrderType.equals(getResources().getString(R.string.service))) {
@@ -354,14 +354,26 @@ public class ItemChooseListActivity extends BaseActivity {
                     list.add(i, chooseItem);
                 }
                 break;
-            case 12://现象
+            case 12://问题代码
                 if (parent != null) {
-                    List<FailureList1> failureList1List1 = new FailureListDao(this).queryForProblem(parent);
+                    List<FailureList1> failureList1List1 = new FailureListDao(this).queryForCode(parent);
                     for (int i = 0; i < failureList1List1.size(); i++) {
                         chooseItem = new ChooseItem();
                         chooseItem.setName(failureList1List1.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List1.get(i).getFAILURECODE());
                         chooseItem.setParent(failureList1List1.get(i).getFAILURELIST());
+                        list.add(i, chooseItem);
+                    }
+                }
+                break;
+            case 16://现象
+                if (parent != null) {
+                    List<FailureList1> failureList1List4 = new FailureListDao(this).queryForProblem(parent);
+                    for (int i = 0; i < failureList1List4.size(); i++) {
+                        chooseItem = new ChooseItem();
+                        chooseItem.setName(failureList1List4.get(i).getFAILURELIST());
+                        chooseItem.setValue(failureList1List4.get(i).getFAILURECODE());
+                        chooseItem.setParent(failureList1List4.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
                     }
                 }

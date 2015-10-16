@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class JobTaskDao {
 
     /**
      * 更新计划任务
-     * @param jobTask
+     * @param list
      */
-    public void update(JobTask jobTask) {
+    public void update(final List<JobTask> list) {
         try
         {
-            JobTaskDaoOpe.create(jobTask);
-        } catch (SQLException e)
+//            JobTaskDaoOpe.createOrUpdate(jobTask);
+            JobTaskDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (JobTask jobtask : list) {
+                        JobTaskDaoOpe.create(jobtask);
+                    }
+                    return null; 			}
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -63,6 +72,7 @@ public class JobTaskDao {
     public void deleteall(){
         try {
             JobTaskDaoOpe.delete(JobTaskDaoOpe.queryForAll());
+            JobTaskDaoOpe.deleteBuilder().where().queryForFirst();
         } catch (SQLException e) {
             e.printStackTrace();
         }

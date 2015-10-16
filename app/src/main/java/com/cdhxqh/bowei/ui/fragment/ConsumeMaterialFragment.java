@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.JobMaterialDao;
 import com.cdhxqh.bowei.Dao.JobPlanDao;
@@ -76,13 +77,32 @@ public class ConsumeMaterialFragment extends Fragment {
         recyclerView.setAdapter(consumeMaterialAdapter);
         id = orderMain.getId();
         num = orderMain.getNumber();
-        if (orderMain.isNew()) {
-            getlocationData();
-        } else {
-            getData();
-        }
+//        if (orderMain.isNew()) {
+//            getlocationData();
+//        } else {
+//            getData();
+//        }
         return view;
     }
+    private boolean mHasLoadedOnce = false;
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isVisibleToUser && !mHasLoadedOnce && consumeMaterialAdapter.getItemCount()==0) {
+                Toast.makeText(getActivity(),"计划",Toast.LENGTH_SHORT).show();
+                // async http request here
+                if (orderMain.isNew()) {
+                    getlocationData();
+                } else {
+                    getData();
+                }
+                mHasLoadedOnce = true;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
 
     private void getData() {
         mProgressDialog = ProgressDialog.show(getActivity(), null,

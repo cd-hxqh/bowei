@@ -26,14 +26,14 @@ public class HttpManager {
     /**
      * 登录方法*
      */
-    public static void login(final Context cxt, final String username, final String password, final HttpRequestHandler<String> handler) {
+    public static void login(final Context cxt, final String username, final String password,String imei, final HttpRequestHandler<String> handler) {
 
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("loginid", username);
         params.put("password", password);
-        params.put("imei", "1");
+        params.put("imei", imei);
         client.post(Constants.loginURL, params, new TextHttpResponseHandler() {
 
 
@@ -68,6 +68,7 @@ public class HttpManager {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("data", data);
+        client.setTimeout(20000);
         client.get(Constants.SEARCHURL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

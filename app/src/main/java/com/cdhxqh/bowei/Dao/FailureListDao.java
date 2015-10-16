@@ -63,13 +63,24 @@ public class FailureListDao {
      */
     public List<FailureList1> queryForClass(){
         try {
-            return FailureListDaoOpe.queryBuilder().where().eq("TYPE","").query();
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE", "").and().eq("PARENT","0").query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
+    /**
+     * 查询问题代码
+     * @return
+     */
+    public List<FailureList1> queryForCode(String parent){
+        try {
+            return FailureListDaoOpe.queryBuilder().where().eq("TYPE", "").and().eq("parent", parent).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 根据选择的故障类别查询对应的list值
      * @return

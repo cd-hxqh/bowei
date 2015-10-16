@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.MaterialInfoDao;
 import com.cdhxqh.bowei.R;
@@ -69,10 +70,25 @@ public class RealMaterialConsunmeFragment extends Fragment {
         recyclerView.setAdapter(materialConsumeAdapter);
         id = orderMain.getId();
         num = orderMain.getNumber();
-        if(!orderMain.getNumber().equals("")||orderMain.getNumber()!=null){
-            getData();
-        }
+//        if(!orderMain.getNumber().equals("")||orderMain.getNumber()!=null){
+//            getData();
+//        }
         return view;
+    }
+    private boolean mHasLoadedOnce = false;
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (this.isVisible()) {
+            // we check that the fragment is becoming visible
+            if (isVisibleToUser && !mHasLoadedOnce && materialConsumeAdapter.getItemCount()==0) {
+                if(!orderMain.getNumber().equals("")){
+                    getData();
+                }
+                // async http request here
+                mHasLoadedOnce = true;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     private void getData(){

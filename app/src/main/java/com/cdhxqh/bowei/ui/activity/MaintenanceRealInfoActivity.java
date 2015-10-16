@@ -131,10 +131,9 @@ public class MaintenanceRealInfoActivity extends BaseActivity {
         workerFragment = new WorkerFragment(orderMain);
         consumeMaterialFragment = new ConsumeMaterialFragment(orderMain);
         realMaterialConsunmeFragment = new RealMaterialConsunmeFragment(orderMain);
+        fragmentlist = new ArrayList<Fragment>();
         fragmentlist.add(workerFragment);
-//        fragmentlist.add(giveMaterialFragment);
         fragmentlist.add(consumeMaterialFragment);
-//        fragmentlist.add(jieyunFragment);
         fragmentlist.add(realMaterialConsunmeFragment);
         mViewPager.setAdapter(new MyFrageStatePagerAdapter(getSupportFragmentManager()));//设置ViewPager的适配器
     }

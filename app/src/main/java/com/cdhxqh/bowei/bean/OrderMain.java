@@ -59,6 +59,10 @@ public class OrderMain implements Serializable {
     private String error_coding;//问题代码
     @DatabaseField(columnName = "error_coding_list")
     private String error_coding_list;//问题代码关系
+    @DatabaseField(columnName = "phenomena")
+    private String phenomena;//现象
+    @DatabaseField(columnName = "phenomena_list")
+    private String phenomena_list;//现象关系
     @DatabaseField(columnName = "cause")
     private String cause;//原因
     @DatabaseField(columnName = "cause_list")
@@ -342,5 +346,21 @@ public class OrderMain implements Serializable {
 
     public void setBelong(String belong) {
         this.belong = belong;
+    }
+
+    public String getPhenomena() {
+        return phenomena;
+    }
+
+    public void setPhenomena(String phenomena) {
+        this.phenomena = phenomena;
+    }
+
+    public String getPhenomena_list() {
+        return phenomena_list;
+    }
+
+    public void setPhenomena_list(String phenomena_list) {
+        this.phenomena_list = phenomena_list;
     }
 }

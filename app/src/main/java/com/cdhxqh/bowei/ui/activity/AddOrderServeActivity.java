@@ -73,13 +73,15 @@ public class AddOrderServeActivity extends BaseActivity {
     private TextView employee_id;//录入人工号
     private RelativeLayout employee_idlayout;
     private EditText questiontogether;//问题汇总
-    private TextView faultclass;
+    private TextView faultclass;//故障类
     private RelativeLayout faultclasslayout;
-    private TextView error_coding;
+    private TextView error_coding;//问题代码
     private RelativeLayout error_codinglayout;
-    private TextView cause;
+    private TextView phenomena;//现象
+    private RelativeLayout phenomenalayout;
+    private TextView cause;//原因
     private RelativeLayout causelayout;
-    private TextView remedy;
+    private TextView remedy;//措施
     private RelativeLayout remedylayout;
     private TextView fault_rank;
     private RelativeLayout fault_ranklayout;
@@ -127,7 +129,10 @@ public class AddOrderServeActivity extends BaseActivity {
      * 资产编号*
      */
     private String assetNum = "";
-
+    /**
+     * 资产对应位置
+     */
+    private String loucations = "";
     /**
      * 跳转标识*
      */
@@ -152,6 +157,7 @@ public class AddOrderServeActivity extends BaseActivity {
         JUMP_MARK = getIntent().getExtras().getInt("jump_mark");
         if (JUMP_MARK == Constants.RESULTS_MARK) {
             assetNum = getIntent().getExtras().getString("assetnum");
+            loucations = getIntent().getExtras().getString("location");
         }
     }
 
@@ -207,6 +213,9 @@ public class AddOrderServeActivity extends BaseActivity {
         error_coding = (TextView) findViewById(R.id.oder_detail_error_coding);
         error_codinglayout = (RelativeLayout) findViewById(R.id.oder_detail_error_coding_layout);
 
+        phenomena = (TextView) findViewById(R.id.oder_detail_phenomena);
+        phenomenalayout = (RelativeLayout) findViewById(R.id.oder_detail_phenomena_layout);
+
         cause = (TextView) findViewById(R.id.oder_detail_cause);
         causelayout = (RelativeLayout) findViewById(R.id.oder_detail_cause_layout);
 
@@ -236,12 +245,16 @@ public class AddOrderServeActivity extends BaseActivity {
         });
         number.setText("");
         worktype.setText("EM");
+        applyunity.setText("T3");
+        major.setText("JY");
         date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         if (!assetNum.equals("")) {
             property.setText(assetNum);
         }
-
+        if(!loucations.equals("")){
+            place.setText(loucations);
+        }
         orderMain.setIsNew(true);
         setDataListener();
         placelayout.setOnClickListener(new MylayoutListener(1));
@@ -255,6 +268,7 @@ public class AddOrderServeActivity extends BaseActivity {
 //        workplanlayout.setOnClickListener(new MylayoutListener(9));
         faultclasslayout.setOnClickListener(new MylayoutListener(11));
         error_codinglayout.setOnClickListener(new MylayoutListener(12));
+        phenomenalayout.setOnClickListener(new MylayoutListener(16));
         causelayout.setOnClickListener(new MylayoutListener(13));
         remedylayout.setOnClickListener(new MylayoutListener(14));
         fault_ranklayout.setOnClickListener(new MylayoutListener(15));
@@ -348,10 +362,13 @@ public class AddOrderServeActivity extends BaseActivity {
             if (faultclass.getText().equals("") && requestCode == 12) {
                 Toast.makeText(AddOrderServeActivity.this, "请选择故障类", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (error_coding.getText().equals("") && requestCode == 13) {
+            } else if (error_coding.getText().equals("") && requestCode == 16) {
                 Toast.makeText(AddOrderServeActivity.this, "请选择问题代码", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (error_coding.getText().equals("") && requestCode == 14) {
+            } else if (phenomena.getText().equals("") && requestCode == 13) {
+                Toast.makeText(AddOrderServeActivity.this, "请选择现象", Toast.LENGTH_SHORT).show();
+                return;
+            }else if (cause.getText().equals("") && requestCode == 14) {
                 Toast.makeText(AddOrderServeActivity.this, "请选择原因", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -360,8 +377,10 @@ public class AddOrderServeActivity extends BaseActivity {
             this.parent = AddOrderServeActivity.this.parent;
             if (faultclass.getText() != null && requestCode == 12) {
                 intent.putExtra("parent", new FailureListDao(AddOrderServeActivity.this).queryForClassByCode(faultclass.getText().toString()));
-            } else if (faultclass.getText() != null && requestCode == 13) {
+            } else if (error_coding.getText() != null && requestCode == 16) {
                 intent.putExtra("parent", orderMain.getError_coding_list());
+            }else if (phenomena.getText() != null && requestCode == 13) {
+                intent.putExtra("parent", orderMain.getPhenomena_list());
             } else if (faultclass.getText() != null && cause.getText() != null && requestCode == 14) {
                 intent.putExtra("parent", orderMain.getCause_list());
             }
@@ -393,6 +412,8 @@ public class AddOrderServeActivity extends BaseActivity {
                 faultclass.setText(new AssetDao(AddOrderServeActivity.this).queryClassByAsset(content));
                 error_coding.setText("");
                 orderMain.setError_coding_list("");
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
                 cause.setText("");
                 orderMain.setCause_list("");
                 remedy.setText("");
@@ -420,6 +441,8 @@ public class AddOrderServeActivity extends BaseActivity {
                 faultclass.setText(content);
                 error_coding.setText("");
                 orderMain.setError_coding_list("");
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
                 cause.setText("");
                 orderMain.setCause_list("");
                 remedy.setText("");
@@ -429,6 +452,8 @@ public class AddOrderServeActivity extends BaseActivity {
                 error_coding.setText(content);
 //                parent = number;
                 orderMain.setError_coding_list(number);
+                phenomena.setText("");
+                orderMain.setPhenomena_list("");
                 cause.setText("");
                 orderMain.setCause_list("");
                 remedy.setText("");
@@ -446,6 +471,14 @@ public class AddOrderServeActivity extends BaseActivity {
                 break;
             case 15:
                 fault_rank.setText(content);
+                break;
+            case  16:
+                phenomena.setText(content);
+                orderMain.setPhenomena_list(number);
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
                 break;
             default:
                 break;
