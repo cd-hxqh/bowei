@@ -336,6 +336,7 @@ public class ServeDetailActivity extends BaseActivity {
         questiontogether.setText(orderMain.getQuestiontogether());
         faultclass.setText(orderMain.getFaultclass());
         error_coding.setText(orderMain.getError_coding());
+        phenomena.setText(orderMain.getPhenomena());
         cause.setText(orderMain.getCause());
         remedy.setText(orderMain.getRemedy());
         fault_rank.setText(orderMain.getFault_rank());
@@ -462,6 +463,14 @@ public class ServeDetailActivity extends BaseActivity {
                 remedy.setText("");
                 orderMain.setRemedy_list("");
                 break;
+            case  16:
+                phenomena.setText(content);
+                orderMain.setPhenomena_list(number);
+                cause.setText("");
+                orderMain.setCause_list("");
+                remedy.setText("");
+                orderMain.setRemedy_list("");
+                break;
             case 13:
                 cause.setText(content);
                 orderMain.setCause_list(number);
@@ -549,6 +558,7 @@ public class ServeDetailActivity extends BaseActivity {
         orderMain.setEmployee_id(employee_id.getText().toString());
         orderMain.setQuestiontogether(questiontogether.getText().toString());
         orderMain.setFaultclass(faultclass.getText().toString());
+        orderMain.setPhenomena(phenomena.getText().toString());
         orderMain.setError_coding(error_coding.getText().toString());
         orderMain.setCause(cause.getText().toString());
         orderMain.setRemedy(remedy.getText().toString());

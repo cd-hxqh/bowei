@@ -272,7 +272,7 @@ public class MainHomeActivity extends BaseActivity {
 
     private void DataisDownLoad() {
         Context context = MainHomeActivity.this;
-        int i = new JobTaskDao(context).queryForAll().size();
+//        int i = new JobTaskDao(context).queryForAll().size();
         if (new LocationsDao(context).queryForAll().size() == 0
                 || new AssetDao(context).queryForAll().size() == 0
                 || new WorkdwDao(context).queryForAll().size() == 0

@@ -65,9 +65,9 @@ public class OrderMainDao {
      */
     public List<OrderMain> queryForPMAndCM(String username){
         try {
-
-            return OrderMainDaoOpe.queryBuilder().orderBy("number",true)
-                    .where().eq("wordtype","PM").or().eq("wordtype","CM")
+            return OrderMainDaoOpe.queryBuilder().orderBy("date",false)
+                    .where().eq("wordtype","PM").and().eq("belong",username)
+                    .and().eq("state","APPR").or().eq("wordtype","CM")
                     .and().eq("belong",username).query();
         } catch (SQLException e) {
             e.printStackTrace();

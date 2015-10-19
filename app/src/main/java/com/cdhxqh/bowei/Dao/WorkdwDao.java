@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class WorkdwDao {
 
     /**
      * 更新单位信息
-     * @param workdw
+     * @param list
      */
-    public void update(Workdw workdw) {
+    public void update(final List<Workdw> list) {
         try
         {
-            WorkdwDaoOpe.create(workdw);
-        } catch (SQLException e)
+            WorkdwDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Workdw workdw : list) {
+                        WorkdwDaoOpe.createOrUpdate(workdw);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -62,8 +71,16 @@ public class WorkdwDao {
      */
     public void deleteall(){
         try {
-            WorkdwDaoOpe.delete(WorkdwDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            WorkdwDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Workdw workdw : WorkdwDaoOpe.queryForAll()) {
+                        WorkdwDaoOpe.delete(workdw);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

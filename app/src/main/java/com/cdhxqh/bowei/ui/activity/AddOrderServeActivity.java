@@ -585,6 +585,7 @@ public class AddOrderServeActivity extends BaseActivity {
         orderMain.setQuestiontogether(questiontogether.getText().toString());
         orderMain.setFaultclass(faultclass.getText().toString());
         orderMain.setError_coding(error_coding.getText().toString());
+        orderMain.setPhenomena(phenomena.getText().toString());
         orderMain.setCause(cause.getText().toString());
         orderMain.setRemedy(remedy.getText().toString());
         orderMain.setFault_rank(fault_rank.getText().toString());

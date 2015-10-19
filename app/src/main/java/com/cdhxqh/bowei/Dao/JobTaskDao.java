@@ -43,7 +43,7 @@ public class JobTaskDao {
                 @Override
                 public Void call() throws Exception {
                     for (JobTask jobtask : list) {
-                        JobTaskDaoOpe.create(jobtask);
+                        JobTaskDaoOpe.createOrUpdate(jobtask);
                     }
                     return null; 			}
             });
@@ -71,9 +71,16 @@ public class JobTaskDao {
      */
     public void deleteall(){
         try {
-            JobTaskDaoOpe.delete(JobTaskDaoOpe.queryForAll());
-            JobTaskDaoOpe.deleteBuilder().where().queryForFirst();
-        } catch (SQLException e) {
+            JobTaskDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (JobTask jobtask : JobTaskDaoOpe.queryForAll()) {
+                        JobTaskDaoOpe.delete(jobtask);
+                    }
+                    return null; 			}
+            });
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

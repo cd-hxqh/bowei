@@ -72,11 +72,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         super.onRestart();
         initView();
     }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        initView();
-    }
 
     @Override
     protected void findViewById() {
@@ -151,22 +146,25 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             } else if (name.equals(getResources().getString(R.string.service))) {
                 url = Constants.getOrderUrl(i,"SVR");
             }
+//            mProgressDialog = ProgressDialog.show(this, null,
+//                    getString(R.string.requesting), true, true);
             HttpManager.getData(this, url, new HttpRequestHandler<String>() {
                 @Override
                 public void onSuccess(String data) {
-                    if(refresh_layout.isRefreshing()) {
+                    if (refresh_layout.isRefreshing()) {
                         refresh_layout.setRefreshing(false);
                     }
-                    if(refresh_layout.isLoading()){
+                    if (refresh_layout.isLoading()) {
                         refresh_layout.setLoading(false);
                     }
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(data);
                         if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                            JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this,getBaseApplication().getUsername());
+                            JsonUtils.parsingOrderArr(jsonObject.getString("result"), OrderListActivity.this, getBaseApplication().getUsername());
                             refreshData();
                         }
+//                        mProgressDialog.dismiss();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -179,15 +177,17 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 @Override
                 public void onFailure(String error) {
                     Toast.makeText(OrderListActivity.this, getResources().getString(R.string.request_fail), Toast.LENGTH_SHORT).show();
-                    if(refresh_layout.isRefreshing()) {
+                    if (refresh_layout.isRefreshing()) {
                         refresh_layout.setRefreshing(false);
                     }
-                    if(refresh_layout.isLoading()){
+                    if (refresh_layout.isLoading()) {
                         refresh_layout.setLoading(false);
                     }
                     refreshData();
+//                    mProgressDialog.dismiss();
                 }
             });
+//            mProgressDialog.dismiss();
         }
     }
 

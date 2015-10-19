@@ -392,9 +392,9 @@ public class ServiceDetailActivity extends BaseActivity {
      * @return
      */
     private String isOK(){
-        if (describe.getText().equals("")||place.equals("")
+        if (describe.getText().equals("")
                 ||place.getText().equals("")
-                ||property.getText().equals("")||worktype.getText().equals("")
+                ||worktype.getText().equals("")
                 ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
                 ||major.getText().equals("")||date.getText().equals("")){
             return "请完善信息";

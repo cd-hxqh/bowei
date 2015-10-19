@@ -248,6 +248,7 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
 //                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
                         JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"), orderMain.getId());
+                        addData(orderMain.getId());
                         mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
@@ -261,9 +262,10 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
 
             @Override
             public void onFailure(String error) {
+                mProgressDialog.dismiss();
+                addData(orderMain.getId());
             }
         });
-        addData(orderMain.getId());
     }
 
     private void addData(int id) {

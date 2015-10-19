@@ -76,7 +76,7 @@ public class WorkerInfoDao {
     public boolean queryByLabtransId(String LabtransId,int id){
         try {
             List<WorkerInfo> workerInfos = WorkerInfoDaoOpe.
-                    queryBuilder().where().eq("LabtransId", LabtransId).and().eq("belongorderid",id).and().query();
+                    queryBuilder().where().eq("LabtransId", LabtransId).and().eq("belongorderid",id).query();
             if (workerInfos.size()>0){
                 return true;
             }else {
@@ -86,6 +86,25 @@ public class WorkerInfoDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * 添加新的员工信息
+     * @param workerInfo
+     */
+    public void add(WorkerInfo workerInfo){
+        try
+        {
+            List<WorkerInfo> workerInfos = WorkerInfoDaoOpe.
+                    queryBuilder().where().eq("LabtransId", workerInfo.getLabtransId()).
+                    and().eq("belongorderid",workerInfo.getBelongorderid()).query();
+            if (workerInfos.size()==0){
+                WorkerInfoDaoOpe.createOrUpdate(workerInfo);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**

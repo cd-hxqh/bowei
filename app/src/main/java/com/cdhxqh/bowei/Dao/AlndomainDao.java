@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class AlndomainDao {
 
     /**
      * 更新实际工作类型信息
-     * @param alndomain
+     * @param list
      */
-    public void update(Alndomain alndomain) {
+    public void update(final List<Alndomain> list) {
         try
         {
-            AlndomainDaoOpe.create(alndomain);
-        } catch (SQLException e)
+            AlndomainDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Alndomain alndomain : list) {
+                        AlndomainDaoOpe.createOrUpdate(alndomain);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -62,8 +71,16 @@ public class AlndomainDao {
      */
     public void deleteall(){
         try {
-            AlndomainDaoOpe.delete(AlndomainDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            AlndomainDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Alndomain alndomain : AlndomainDaoOpe.queryForAll()) {
+                        AlndomainDaoOpe.delete(alndomain);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

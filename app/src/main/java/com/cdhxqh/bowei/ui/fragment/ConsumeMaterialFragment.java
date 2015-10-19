@@ -90,7 +90,6 @@ public class ConsumeMaterialFragment extends Fragment {
         if (this.isVisible()) {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && consumeMaterialAdapter.getItemCount()==0) {
-                Toast.makeText(getActivity(),"计划",Toast.LENGTH_SHORT).show();
                 // async http request here
                 if (orderMain.isNew()) {
                     getlocationData();
@@ -116,8 +115,7 @@ public class ConsumeMaterialFragment extends Fragment {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
                         JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
-
-
+                        addData(id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -130,10 +128,11 @@ public class ConsumeMaterialFragment extends Fragment {
 
             @Override
             public void onFailure(String error) {
+                addData(id);
                 mProgressDialog.dismiss();
             }
         });
-        addData(id);
+
     }
 
     private void getlocationData() {

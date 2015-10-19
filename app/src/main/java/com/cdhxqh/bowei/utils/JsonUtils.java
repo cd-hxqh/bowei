@@ -131,9 +131,13 @@ public class JsonUtils {
                     orderMain.setWorkplan(jsonObject.getString("JPNUM"));
                 }
                 if (jsonObject.has("ONBEHALFOF")) {
-//                orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
-//                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
                     orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                }
+                if (jsonObject.has("ACTSTART")) {
+                    orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
+                }
+                if (jsonObject.has("ACTFINISH")) {
+                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
                 }
                 if (jsonObject.has("BZ")) {
                     orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
@@ -143,6 +147,9 @@ public class JsonUtils {
                 }
                 if (jsonObject.has("PMNUM")) {
                     orderMain.setPm(jsonObject.get("PMNUM").toString());
+                }
+                if (jsonObject.has("ASSETNUMLIST")) {
+                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
                 }
 //                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
 //                    orderMain.setInspect_result(jsonObject.get(""));
@@ -219,15 +226,18 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Locations locations;
-            new LocationsDao(ctx).deleteall();
+            LocationsDao locationsDao = new LocationsDao(ctx);
+            locationsDao.deleteall();
+            List<Locations>locationsList = new ArrayList<Locations>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 locations = new Locations();
                 jsonObject = jsonArray.getJSONObject(i);
                 locations.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 locations.setLOCATION(jsonObject.getString("LOCATION"));
                 locations.setLOCATIONSID(jsonObject.getString("LOCATIONSID"));
-                new LocationsDao(ctx).update(locations);
+                locationsList.add(locations);
             }
+            locationsDao.update(locationsList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -238,7 +248,9 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Asset asset;
-            new AssetDao(ctx).deleteall();
+            AssetDao assetDao = new AssetDao(ctx);
+            assetDao.deleteall();
+            List<Asset>assetList = new ArrayList<Asset>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 asset = new Asset();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -247,8 +259,9 @@ public class JsonUtils {
                 asset.setLOCATION(jsonObject.getString("LOCATION"));
                 asset.setLOCATIONDESC(jsonObject.getString("LOCATIONDESC"));
                 asset.setFAILURECODE(jsonObject.getString("FAILURECODE"));
-                new AssetDao(ctx).update(asset);
+                assetList.add(asset);
             }
+            assetDao.update(assetList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -259,14 +272,17 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Workdw workdw;
-            new WorkdwDao(ctx).deleteall();
+            WorkdwDao workdwDao = new WorkdwDao(ctx);
+            workdwDao.deleteall();
+            List<Workdw>workdwList = new ArrayList<Workdw>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 workdw = new Workdw();
                 jsonObject = jsonArray.getJSONObject(i);
                 workdw.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 workdw.setVALUE(jsonObject.getString("VALUE"));
-                new WorkdwDao(ctx).update(workdw);
+                workdwList.add(workdw);
             }
+            workdwDao.update(workdwList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -277,14 +293,17 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Workzy workzy;
-            new WorkzyDao(ctx).deleteall();
+            WorkzyDao workzyDao = new WorkzyDao(ctx);
+            workzyDao.deleteall();
+            List<Workzy>workzyList = new ArrayList<Workzy>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 workzy = new Workzy();
                 jsonObject = jsonArray.getJSONObject(i);
                 workzy.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 workzy.setVALUE(jsonObject.getString("VALUE"));
-                new WorkzyDao(ctx).update(workzy);
+                workzyList.add(workzy);
             }
+            workzyDao.update(workzyList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -295,14 +314,17 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             WorkType workType;
-            new WorkTypeDao(ctx).deleteall();
+            WorkTypeDao workTypeDao = new WorkTypeDao(ctx);
+            workTypeDao.deleteall();
+            List<WorkType>workTypeList = new ArrayList<WorkType>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 workType = new WorkType();
                 jsonObject = jsonArray.getJSONObject(i);
                 workType.setWORKTYPE(jsonObject.getString("WORKTYPE"));
                 workType.setWTYPEDESC(jsonObject.getString("WTYPEDESC"));
-                new WorkTypeDao(ctx).update(workType);
+                workTypeList.add(workType);
             }
+            workTypeDao.update(workTypeList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -313,14 +335,17 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             AcWorkType acWorkType;
-            new AcWorkTypeDao(ctx).deleteall();
+            AcWorkTypeDao acWorkTypeDao = new AcWorkTypeDao(ctx);
+            acWorkTypeDao.deleteall();
+            List<AcWorkType>acWorkTypeList = new ArrayList<AcWorkType>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 acWorkType = new AcWorkType();
                 jsonObject = jsonArray.getJSONObject(i);
                 acWorkType.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 acWorkType.setVALUE(jsonObject.getString("VALUE"));
-                new AcWorkTypeDao(ctx).update(acWorkType);
+                acWorkTypeList.add(acWorkType);
             }
+            acWorkTypeDao.update(acWorkTypeList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -331,15 +356,18 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Failurecode failurecode;
-            new FailurecodeDao(ctx).deleteall();
+            FailurecodeDao failurecodeDao = new FailurecodeDao(ctx);
+            failurecodeDao.deleteall();
+            List<Failurecode>failurecodeList = new ArrayList<Failurecode>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 failurecode = new Failurecode();
                 jsonObject = jsonArray.getJSONObject(i);
                 failurecode.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 failurecode.setFAILURECODE(jsonObject.getString("FAILURECODE"));
                 failurecode.setFAILURECODEID(jsonObject.getString("FAILURECODEID"));
-                new FailurecodeDao(ctx).update(failurecode);
+                failurecodeList.add(failurecode);
             }
+            failurecodeDao.update(failurecodeList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -350,7 +378,9 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             FailureList1 failureList;
-            new FailureListDao(ctx).deleteall();
+            FailureListDao failureListDao = new FailureListDao(ctx);
+            failureListDao.deleteall();
+            List<FailureList1>failureList1List = new ArrayList<FailureList1>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 failureList = new FailureList1();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -358,8 +388,9 @@ public class JsonUtils {
                 failureList.setFAILURECODE(jsonObject.getString("FAILURECODE"));
                 failureList.setPARENT(jsonObject.getString("PARENT"));
                 failureList.setTYPE(jsonObject.getString("TYPE"));
-                new FailureListDao(ctx).update(failureList);
+                failureList1List.add(failureList);
             }
+            failureListDao.update(failureList1List);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -367,20 +398,22 @@ public class JsonUtils {
 
     public static void parsingJobPlan(Context ctx, String str) {
         try {
-            JSONArray jsonArray = new JSONObject(str).getJSONArray("resultlist");
-//            JSONArray jsonArray = new JSONArray(str);
+//            JSONArray jsonArray = new JSONObject(str).getJSONArray("resultlist");
+            JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Jobplan jobPlan;
             JobPlanDao jobPlanDao = new JobPlanDao(ctx);
             jobPlanDao.deleteall();
+            List<Jobplan>jobplanList = new ArrayList<Jobplan>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new Jobplan();
                 jsonObject = jsonArray.getJSONObject(i);
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
-                jobPlanDao.update(jobPlan);
+                jobplanList.add(jobPlan);
             }
+            jobPlanDao.update(jobplanList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -418,7 +451,9 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Jobmaterial jobPlan;
-            new JobMaterialDao(ctx).deleteall();
+            JobMaterialDao jobMaterialDao = new JobMaterialDao(ctx);
+            jobMaterialDao.deleteall();
+            List<Jobmaterial>jobmaterialList = new ArrayList<Jobmaterial>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 jobPlan = new Jobmaterial();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -429,8 +464,9 @@ public class JsonUtils {
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
                 jobPlan.setWarehouse(jsonObject.getString("LOCATION"));
-                new JobMaterialDao(ctx).update(jobPlan);
+                jobmaterialList.add(jobPlan);
             }
+            jobMaterialDao.update(jobmaterialList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -441,7 +477,9 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Erson erson;
-            new ErsonDao(ctx).deleteall();
+            ErsonDao ersonDao = new ErsonDao(ctx);
+            ersonDao.deleteall();
+            List<Erson>ersonList = new ArrayList<Erson>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 erson = new Erson();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -449,8 +487,9 @@ public class JsonUtils {
                 erson.setPERSONID(jsonObject.getString("PERSONID"));
                 erson.setYWBZ(jsonObject.getString("YWBZ"));
                 erson.setYWFL(jsonObject.getString("YWFL"));
-                new ErsonDao(ctx).update(erson);
+                ersonList.add(erson);
             }
+            ersonDao.update(ersonList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -461,14 +500,17 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             Alndomain alndomain;
-            new AlndomainDao(ctx).deleteall();
+            AlndomainDao alndomainDao = new AlndomainDao(ctx);
+            alndomainDao.deleteall();
+            List<Alndomain>alndomainList = new ArrayList<Alndomain>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 alndomain = new Alndomain();
                 jsonObject = jsonArray.getJSONObject(i);
                 alndomain.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 alndomain.setVALUE(jsonObject.getString("VALUE"));
-                new AlndomainDao(ctx).update(alndomain);
+                alndomainList.add(alndomain);
             }
+            alndomainDao.update(alndomainList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -491,26 +533,29 @@ public class JsonUtils {
             SimpleDateFormat d2=new SimpleDateFormat("HH:mm:ss");
             Date startdate;
             Date stopdate;
+            WorkerInfoDao workerInfoDao = new WorkerInfoDao(ctx);
             for (int i = 0; i < jsonArray.length(); i++) {
                 workerInfo = new WorkerInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-                if (!new WorkerInfoDao(ctx).queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {//
+//                if (!workerInfoDao.queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {//
                     workerInfo.setBelongorderid(id);
                     workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
                     workerInfo.setName(jsonObject.getString("LABORCODE"));
-                    if(!jsonObject.getString("STARTTIME").equals("")){
+                    if(!jsonObject.getString("STARTTIME").equals("")||jsonObject.getString("STARTTIME")!=null){
                         startdate = dd.parse(jsonObject.getString("STARTTIME"));
                         workerInfo.setStartdate(d1.format(startdate));
                         workerInfo.setStarttime(d2.format(startdate));
                     }
-                    if(!jsonObject.getString("FINISHTIME").equals("")){
+                    if(!jsonObject.getString("FINISHTIME").equals("")||jsonObject.getString("FINISHTIME")!=null){
                         stopdate = dd.parse(jsonObject.getString("FINISHTIME"));
                         workerInfo.setStopdate(d1.format(stopdate));
                         workerInfo.setStoptime(d2.format(stopdate));
                     }
                     workerInfo.setWorktime(jsonObject.getString("REGULARHRS"));
-                    new WorkerInfoDao(ctx).update(workerInfo);
+                if(!workerInfoDao.queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {
+                    workerInfoDao.update(workerInfo);
                 }
+//                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

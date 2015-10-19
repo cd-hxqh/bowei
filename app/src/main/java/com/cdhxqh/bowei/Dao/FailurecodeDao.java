@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class FailurecodeDao {
 
     /**
      * 更新故障代码信息
-     * @param failurecode
+     * @param list
      */
-    public void update(Failurecode failurecode) {
+    public void update(final List<Failurecode> list) {
         try
         {
-            FailurecodeDaoOpe.create(failurecode);
-        } catch (SQLException e)
+            FailurecodeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Failurecode failurecode : list) {
+                        FailurecodeDaoOpe.createOrUpdate(failurecode);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -75,8 +84,16 @@ public class FailurecodeDao {
      */
     public void deleteall(){
         try {
-            FailurecodeDaoOpe.delete(FailurecodeDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            FailurecodeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Failurecode failurecode : FailurecodeDaoOpe.queryForAll()) {
+                        FailurecodeDaoOpe.delete(failurecode);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

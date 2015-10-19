@@ -83,6 +83,8 @@ public class RealMaterialConsunmeFragment extends Fragment {
             if (isVisibleToUser && !mHasLoadedOnce && materialConsumeAdapter.getItemCount()==0) {
                 if(!orderMain.getNumber().equals("")){
                     getData();
+                }else {
+                    addData(id);
                 }
                 // async http request here
                 mHasLoadedOnce = true;
@@ -103,6 +105,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
                         JsonUtils.parsingDeptmatusetrans(getActivity(), jsonObject.getString("result"), id);
+                        addData(id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -115,10 +118,11 @@ public class RealMaterialConsunmeFragment extends Fragment {
 
             @Override
             public void onFailure(String error) {
+                addData(id);
                 mProgressDialog.dismiss();
             }
         });
-        addData(id);
+
     }
     private void addData(int id) {
         ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();

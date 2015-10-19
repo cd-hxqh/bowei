@@ -4,11 +4,11 @@ import android.content.Context;
 
 import com.cdhxqh.bowei.OrmLiteOpenHelper.DatabaseHelper;
 import com.cdhxqh.bowei.bean.WorkType;
-import com.cdhxqh.bowei.bean.Workzy;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -33,13 +33,21 @@ public class WorkTypeDao {
 
     /**
      * 更新工作类型信息
-     * @param workType
+     * @param list
      */
-    public void update(WorkType workType) {
+    public void update(final List<WorkType> list) {
         try
         {
-            WorkTypeDaoOpe.create(workType);
-        } catch (SQLException e)
+            WorkTypeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (WorkType workType : list) {
+                        WorkTypeDaoOpe.createOrUpdate(workType);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -63,8 +71,16 @@ public class WorkTypeDao {
      */
     public void deleteall(){
         try {
-            WorkTypeDaoOpe.delete(WorkTypeDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            WorkTypeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (WorkType workType : WorkTypeDaoOpe.queryForAll()) {
+                        WorkTypeDaoOpe.delete(workType);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

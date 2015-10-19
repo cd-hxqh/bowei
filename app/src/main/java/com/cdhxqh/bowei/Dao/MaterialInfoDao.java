@@ -64,7 +64,7 @@ public class MaterialInfoDao {
     public boolean queryByLabtransId(String LabtransId,int id){
         try {
             List<MaterialInfo> workerInfos = MaterialInfoDaoOpe.
-                    queryBuilder().where().eq("ITEMNUM", LabtransId).and().eq("belongorderid",id).and().query();
+                    queryBuilder().where().eq("number", LabtransId).and().eq("belongorderid",id).query();
             if (workerInfos.size()>0){
                 return true;
             }else {

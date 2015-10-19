@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class AcWorkTypeDao {
 
     /**
      * 更新实际工作类型信息
-     * @param acworkType
+     * @param list
      */
-    public void update(AcWorkType acworkType) {
+    public void update(final List<AcWorkType> list) {
         try
         {
-            AcWorkTypeDaoOpe.create(acworkType);
-        } catch (SQLException e)
+            AcWorkTypeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (AcWorkType acworkType : list) {
+                        AcWorkTypeDaoOpe.createOrUpdate(acworkType);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -103,8 +112,16 @@ public class AcWorkTypeDao {
      */
     public void deleteall(){
         try {
-            AcWorkTypeDaoOpe.delete(AcWorkTypeDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            AcWorkTypeDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (AcWorkType acworkType : AcWorkTypeDaoOpe.queryForAll()) {
+                        AcWorkTypeDaoOpe.delete(acworkType);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -77,8 +77,11 @@ public class WorkerFragment extends Fragment {
         if (this.isVisible()) {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && workerInfoAdapter.getItemCount()==0) {
-                Toast.makeText(getActivity(), "员工onStart", Toast.LENGTH_SHORT).show();
-                getData();
+                if(orderMain.getNumber().equals("")){
+                    addData(id);
+                }else {
+                    getData();
+                }
                 // async http request here
                 mHasLoadedOnce = true;
             }
@@ -103,6 +106,7 @@ public class WorkerFragment extends Fragment {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
                         JsonUtils.parsingWorkInfo(getActivity(), jsonObject.getString("result"), id);
+                        addData(id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -115,10 +119,11 @@ public class WorkerFragment extends Fragment {
 
             @Override
             public void onFailure(String error) {
+                addData(id);
                 mProgressDialog.dismiss();
             }
         });
-        addData(id);
+
     }
     private void addData(int id) {
         ArrayList<WorkerInfo> list = new ArrayList<WorkerInfo>();

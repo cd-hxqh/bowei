@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class AssetDao {
 
     /**
      * 更新资产信息
-     * @param asset
+     * @param list
      */
-    public void update(Asset asset) {
+    public void update(final List<Asset> list) {
         try
         {
-            AssetDaoOpe.create(asset);
-        } catch (SQLException e)
+            AssetDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Asset asset : list) {
+                        AssetDaoOpe.createOrUpdate(asset);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -114,8 +123,16 @@ public class AssetDao {
      */
     public void deleteall(){
         try {
-            AssetDaoOpe.delete(AssetDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            AssetDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Asset asset : AssetDaoOpe.queryForAll()) {
+                        AssetDaoOpe.delete(asset);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

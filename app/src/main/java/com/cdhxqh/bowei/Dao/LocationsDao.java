@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -48,12 +49,20 @@ public class LocationsDao {
 
     /**
      * 更新位置信息
-     * @param locations
+     * @param list
      */
-    public void update(Locations locations){
+    public void update(final List<Locations> list){
         try {
-            LocationsDaoOpe.createOrUpdate(locations);
-        } catch (SQLException e) {
+//            LocationsDaoOpe.createOrUpdate(locations);
+            LocationsDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Locations locations1 : list) {
+                        LocationsDaoOpe.createOrUpdate(locations1);
+                    }
+                    return null; 			}
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -102,8 +111,15 @@ public class LocationsDao {
      */
     public void deleteall(){
         try {
-            LocationsDaoOpe.delete(LocationsDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            LocationsDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Locations locations1 : LocationsDaoOpe.queryForAll()) {
+                        LocationsDaoOpe.delete(locations1);
+                    }
+                    return null; 			}
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

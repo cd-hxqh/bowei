@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by think on 2015/9/7.
@@ -32,13 +33,21 @@ public class ErsonDao {
 
     /**
      * 更新实际班组信息
-     * @param erson
+     * @param list
      */
-    public void update(Erson erson) {
+    public void update(final List<Erson> list) {
         try
         {
-            ErsonDaoOpe.create(erson);
-        } catch (SQLException e)
+            ErsonDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Erson erson : list) {
+                        ErsonDaoOpe.createOrUpdate(erson);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -75,8 +84,16 @@ public class ErsonDao {
      */
     public void deleteall(){
         try {
-            ErsonDaoOpe.delete(ErsonDaoOpe.queryForAll());
-        } catch (SQLException e) {
+            ErsonDaoOpe.callBatchTasks(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    for (Erson erson : ErsonDaoOpe.queryForAll()) {
+                        ErsonDaoOpe.delete(erson);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -121,6 +121,7 @@ public class ServeRealInfoActivity extends BaseActivity {
         });
         workerFragment = new WorkerFragment(orderMain);
         realMaterialConsunmeFragment = new RealMaterialConsunmeFragment(orderMain);
+        fragmentlist = new ArrayList<Fragment>();
         fragmentlist.add(workerFragment);
 //        fragmentlist.add(giveMaterialFragment);
 //        fragmentlist.add(consumeMaterialFragment);
