@@ -66,6 +66,18 @@ public class AssetDao {
         return null;
     }
 
+    public boolean isexitByNum(String string){
+        try {
+            if(AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",string).query().size()>0){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     /**
      * 根据描述查询位置
      * @return
@@ -73,6 +85,19 @@ public class AssetDao {
     public List<Asset> queryByDescription(String str){
         try {
             return AssetDaoOpe.queryBuilder().where().like("DESCRIPTION","%"+str+"%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据关键字查询位置
+     * @return
+     */
+    public List<Asset> queryByStr(String str){
+        try {
+            return AssetDaoOpe.queryBuilder().where().like("DESCRIPTION","%"+str+"%").or().like("ASSETNUM","%"+str + "%").query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,13 +123,25 @@ public class AssetDao {
      */
     public String queryClassByAsset(String asset){
         try {
-            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",asset).queryForFirst().getFAILURECODE();
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM", asset).queryForFirst().getFAILURECODE();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * 根据资产查询描述
+     * @return
+     */
+    public String queryFordescriptionBynum(String num){
+        try {
+            return AssetDaoOpe.queryBuilder().where().eq("ASSETNUM",num).queryForFirst().getDESCRIPTION();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 根据资产查询位置
      * @return

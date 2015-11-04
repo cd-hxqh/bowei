@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.R;
 import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.bean.OrderServe;
@@ -58,8 +59,8 @@ public class AddOrderServiceActivity extends BaseActivity {
     private RelativeLayout employee_idlayout;
     private EditText questiontogether;//问题汇总
 
-    private Button inputbtn;
-
+    private Button save;
+    OrderMain orderMain = new OrderMain();
     private DatePickerDialog datePickerDialog;
     private CumTimePickerDialog timePickerDialog;
     StringBuffer sb;
@@ -145,7 +146,7 @@ public class AddOrderServiceActivity extends BaseActivity {
 
         questiontogether = (EditText) findViewById(R.id.questiontogether);
 
-        inputbtn = (Button) findViewById(R.id.order_detail_input);
+        save = (Button) findViewById(R.id.order_detail_save);
     }
 
 
@@ -203,7 +204,7 @@ public class AddOrderServiceActivity extends BaseActivity {
         reality_starttimelayout.setOnClickListener(new MydateListener());
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 
-        inputbtn.setOnClickListener(inputlistener);
+        save.setOnClickListener(savelistener);
 
     }
 
@@ -281,29 +282,13 @@ public class AddOrderServiceActivity extends BaseActivity {
         }
     }
 
-    private View.OnClickListener inputlistener = new View.OnClickListener() {
+    private View.OnClickListener savelistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String isok = isOK();
             if (isok.equals("OK")) {
+                SaveData();
                 Intent intent = new Intent();
-                OrderMain orderMain = new OrderMain();
-                orderMain.setNumber(number.getText().toString());
-                orderMain.setDescribe(describe.getText().toString());
-                orderMain.setPlace(place.getText().toString());
-                orderMain.setProperty(property.getText().toString());
-                orderMain.setWordtype(worktype.getText().toString());
-                orderMain.setReality_worktype(reality_worktype.getText().toString());
-                orderMain.setApplyunity(applyunity.getText().toString());
-                orderMain.setMajor(major.getText().toString());
-                orderMain.setState(state.getText().toString());
-                orderMain.setDate(date.getText().toString());
-                orderMain.setReality_starttime(reality_starttime.getText().toString());
-                orderMain.setReality_stoptime(reality_stoptime.getText().toString());
-                orderMain.setEmployee_id(employee_id.getText().toString());
-                orderMain.setQuestiontogether(questiontogether.getText().toString());
-                orderMain.setIsNew(true);
-                orderMain.setBelong(getBaseApplication().getUsername());
                 intent.putExtra("orderMain", orderMain);
                 AddOrderServiceActivity.this.setResult(1, intent);
                 finish();
@@ -354,14 +339,40 @@ public class AddOrderServiceActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
-                ||place.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")
                 || employee_id.getText().equals("")) {
             return "请完善信息";
+        }else if(place.getText().equals("")&&property.getText().equals("")){
+            return "请完善信息";
         } else {
             return "OK";
         }
+    }
+
+    /**
+     * 保存填写的工单信息
+     */
+    private void SaveData() {
+        orderMain.setNumber(number.getText().toString());
+        orderMain.setDescribe(describe.getText().toString());
+        orderMain.setPlace(place.getText().toString());
+        orderMain.setProperty(property.getText().toString());
+        orderMain.setWordtype(worktype.getText().toString());
+        orderMain.setReality_worktype(reality_worktype.getText().toString());
+        orderMain.setApplyunity(applyunity.getText().toString());
+        orderMain.setMajor(major.getText().toString());
+        orderMain.setState(state.getText().toString());
+        orderMain.setDate(date.getText().toString());
+        orderMain.setReality_starttime(reality_starttime.getText().toString());
+        orderMain.setReality_stoptime(reality_stoptime.getText().toString());
+        orderMain.setEmployee_id(employee_id.getText().toString());
+        orderMain.setQuestiontogether(questiontogether.getText().toString());
+        orderMain.setIsNew(true);
+        orderMain.setBelong(getBaseApplication().getUsername());
+        orderMain.setIsyuzhi(false);
+        new OrderMainDao(this).update(orderMain);
+//        Toast.makeText(this,"保存成功",Toast.LENGTH_SHORT).show();
     }
 }

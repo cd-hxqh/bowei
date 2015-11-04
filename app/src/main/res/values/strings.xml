@@ -7,6 +7,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="log">北京博维航空设施管理有限公司</string>
+    <string name="develope_company">北京恒信启华信息技术股份有限公司</string>
+    <string name="company_info">Copyright © 2006-2020 www.bjhxqh.com</string>
     <string name="please_userid">用户名</string>
     <string name="please_password">密  码</string>
     <string name="remenber_pass">记住密码</string>
@@ -110,7 +112,8 @@
     <string name="order_detail_starttime">开始时间</string>
     <string name="order_detail_input">提交</string>
     <string name="OK">确定</string>
-    <string name="yuzhi">预置</string>
+    <string name="delete">删除</string>
+    <string name="yuzhi">有物料消耗:预置</string>
     <string name="save">保存</string>
     <string name="company_inventory_text">公司库存</string>
     <string name="mrt_text">捷运库存</string>
@@ -152,9 +155,9 @@
     <string name="have_not_data_text">暂无信息</string>
     <string name="loading_text">努力加载中...</string>
     <string name="document_name_text">文件名称:</string>
-    <string name="know_dl">知识大类</string>
-    <string name="know_xl">知识小类</string>
-    <string name="know_bz">备注</string>
+    <string name="know_dl">知识大类:</string>
+    <string name="know_xl">知识小类:</string>
+    <string name="know_bz">备注:</string>
     <string name="title_activity_search">SearchActivity</string>
 
     <!-- 公司库存 -->
@@ -171,6 +174,8 @@
     <string name="results_title_text">查询结果</string>
     <string name="location_text">位置:</string>
     <string name="order_type">工单类型</string>
+    <string name="order_serch_type">类型</string>
+    <string name="order_serch_date">时间</string>
     <string name="about_text">关于我们</string>
     <string name="update_text">版本更新</string>
     <string name="network_text">网络设置</string>
@@ -182,6 +187,6 @@
     <string name="about_us">关于我们</string>
 
     <!--关于我们-->
-    <string name="about_us_text">北京博维航空设施管理有限公司于1999年11月18日成立，隶属于首都机场集团公司，是首都国际机场股份有限公司控股的中外合资企业。公司拥有丰富的运营管理经验，是国内第一家以运行维修维保机场设备、承接机场专业工程为主的专业化公司。涵盖行李、捷运、客桥、机电、信息五大核心运维业务、及特种车辆维修、行李系统安装大修、客桥大修等。拥有一支800余名经验丰富、技术力量雄厚、运行维护经验扎实员工组成的专业化管理队伍。</string>
+    <string name="about_us_text">北京恒信启华信息技术股份有限公司总部位于北京中关村软件园，并在成都、深圳设有分公司，公司成立于2006年，是国内从事资产管理信息化系统、智慧城市信息化系统专业研发、咨询和实施服务的高新技术企业。自创立之始，公司一直秉承以高端技术为起点，以创新为导向，以人才为核心的管理理念，依托于国内著名学府、聘请了高技术专业人才，建立了公司的软件研发中心，致力于自主知识产权的管理信息化系统的研究开发，先后开发了企业资产设备、企业业务流程、基建和工程项目、电厂运行和检修、智能社区服务等二十余种管理信息化软件系统并都已获得了中华人民共和国国家版权局颁发的计算机软件著作权登记证书。</string>
 
 </resources>

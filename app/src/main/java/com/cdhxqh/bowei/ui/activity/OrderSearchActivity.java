@@ -17,6 +17,7 @@ import com.cdhxqh.bowei.bean.Results;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
+import com.cdhxqh.bowei.ui.adapter.OrderMainSerchAdapter;
 import com.cdhxqh.bowei.ui.adapter.OrderMaintenanceAdapter;
 import com.cdhxqh.bowei.ui.widget.SwipeRefreshLayout;
 import com.cdhxqh.bowei.utils.JsonUtils;
@@ -43,7 +44,7 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
     private LinearLayout notdatalayout;
 
     /**工单适配器**/
-    OrderMaintenanceAdapter orderMaintenanceAdapter;
+    OrderMainSerchAdapter orderMainSerchAdapter;
 
     /**资产编号**/
     private String assetNum;
@@ -81,7 +82,7 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
         notdatalayout=(LinearLayout)findViewById(R.id.have_not_data_id);
-        orderMaintenanceAdapter=new OrderMaintenanceAdapter(OrderSearchActivity.this);
+        orderMainSerchAdapter=new OrderMainSerchAdapter(OrderSearchActivity.this);
         getCompanyInfo(assetNum);
 
     }
@@ -98,7 +99,7 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
         layoutManager.scrollToPosition(0);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(orderMaintenanceAdapter);
+        recyclerView.setAdapter(orderMainSerchAdapter);
 
 
 //        mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright,
@@ -128,7 +129,6 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
             @Override
             public void onSuccess(Results data) {
                 Log.i(TAG, "data=" + data);
-
             }
 
             @Override
@@ -145,7 +145,7 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
                 if (list == null || list.isEmpty()) {
                     notdatalayout.setVisibility(View.VISIBLE);
                 } else {
-                    orderMaintenanceAdapter.adddate(list);
+                    orderMainSerchAdapter.adddate(list);
                 }
             }
 
@@ -168,8 +168,11 @@ public class OrderSearchActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onRefresh() {
         page = 1;
-        orderMaintenanceAdapter = new OrderMaintenanceAdapter(this);
-        recyclerView.setAdapter(orderMaintenanceAdapter);
+        orderMainSerchAdapter = new OrderMainSerchAdapter(this);
+        recyclerView.setAdapter(orderMainSerchAdapter);
+        if(notdatalayout.getVisibility()==View.VISIBLE){
+            notdatalayout.setVisibility(View.GONE);
+        }
        getCompanyInfo(assetNum);
     }
 

@@ -60,7 +60,8 @@ public class LocationsDao {
                     for (Locations locations1 : list) {
                         LocationsDaoOpe.createOrUpdate(locations1);
                     }
-                    return null; 			}
+                    return null;
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +88,19 @@ public class LocationsDao {
     public List<Locations> queryByDescription(String str){
         try {
             return LocationsDaoOpe.queryBuilder().where().like("DESCRIPTION", "%" +str+"%").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据关键字查询位置信息
+     * @return
+     */
+    public List<Locations> queryByStr(String str){
+        try {
+            return LocationsDaoOpe.queryBuilder().where().like("DESCRIPTION", "%" +str+"%").or().like("LOCATION","%" +str+"%").query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

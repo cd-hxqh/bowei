@@ -3,6 +3,9 @@ package com.cdhxqh.bowei.ui.activity;
 import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -14,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cdhxqh.bowei.R;
@@ -22,7 +26,11 @@ import com.cdhxqh.bowei.bean.Knowledge;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.manager.HttpManager;
 import com.cdhxqh.bowei.manager.HttpRequestHandler;
+import com.cdhxqh.bowei.ui.adapter.DoclinksAdapter;
 import com.cdhxqh.bowei.utils.JsonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 知识库详情*
@@ -67,13 +75,11 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
      */
     private TextView bzText;
 
-    /**
-     * 文档路径*
-     */
-    private TextView pathText;
-
     private Knowledge knowledge;
 
+    LinearLayoutManager layoutManager;
+    public RecyclerView recyclerView;
+    DoclinksAdapter doclinksAdapter;
 
     private ProgressDialog mProgressDialog;
 
@@ -104,22 +110,29 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
         numberText = (TextView) findViewById(R.id.knowledge_number_id);
         descText = (TextView) findViewById(R.id.knowledge_desc_id);
 
-        nameText = (TextView) findViewById(R.id.knowledge_document_name_id);
         dlText = (TextView) findViewById(R.id.knowledge_document_dl_id);
         xlText = (TextView) findViewById(R.id.knowledge_document_xl_id);
         bzText = (TextView) findViewById(R.id.knowledge_document_bz_id);
-        pathText = (TextView) findViewById(R.id.knowledge_path_id);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
     }
 
     @Override
     protected void initView() {
         backImageView.setOnClickListener(backOnClickListener);
         titleText.setText(getString(R.string.knowkedge_details_text));
-        numberText.setText(knowledge.getKnowledgeid() + "");
+        numberText.setText(knowledge.getKnowbh());
         descText.setText(knowledge.getKnowdesc());
         dlText.setText(knowledge.getKnowdl());
         xlText.setText(knowledge.getKnowxl());
         bzText.setText(knowledge.getKnowbz());
+
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        doclinksAdapter = new DoclinksAdapter(this);
+        recyclerView.setAdapter(doclinksAdapter);
     }
 
     private View.OnClickListener backOnClickListener = new View.OnClickListener() {
@@ -157,15 +170,16 @@ public class KnowKedgeDetailsActivity extends BaseActivity {
             public void onSuccess(String data) {
                 colseProgressDialog();
                 if (!data.equals("")) {
-                    Doclinks doclinks = JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this, data);
-                    nameText.setText(doclinks.getDescription());
+                    ArrayList<Doclinks> doclinksList = JsonUtils.parsingDoclinks(KnowKedgeDetailsActivity.this, data);
+                    doclinksAdapter.update(doclinksList,true);
+//                    if(doclinksList.size()==1){
+//                        nameText.setText(doclinksList.get(0).getDescription());
+//                        String html = "<a href='" + doclinksList.get(0).getUrlname() + "'>" + doclinksList.get(0).getUrlname() + "</a>";//注意这里必须加上协议号，即http://。
+//                        CharSequence path = Html.fromHtml(html);
+//                        pathText.setText(path);
+//                        pathText.setMovementMethod(LinkMovementMethod.getInstance());
+//                    }
 
-
-                    String html = "<a href='" + doclinks.getUrlname() + "'>" + doclinks.getUrlname() + "</a>";//注意这里必须加上协议号，即http://。
-
-                    CharSequence path = Html.fromHtml(html);
-                    pathText.setText(path);
-                    pathText.setMovementMethod(LinkMovementMethod.getInstance());
                 }
             }
 

@@ -46,9 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:maxEms="15"
-            android:singleLine="true"
             android:ellipsize="end"
+            android:ems="14"
+            android:singleLine="true"
             android:textColor="@color/gray"/>
     </LinearLayout>
     </LinearLayout>

@@ -194,7 +194,7 @@ public class ItemChooseListActivity extends BaseActivity {
                 if(loucation!=null){
                     locationsList = new LocationsDao(this).queryForAll();
                 }
-                locationsList  = new LocationsDao(this).queryByDescription(str);
+                locationsList  = new LocationsDao(this).queryByStr(str);
                 for (int i = 0; i < locationsList.size(); i++) {
                     chooseItem = new ChooseItem();
                     chooseItem.setName(locationsList.get(i).getDESCRIPTION());
@@ -204,7 +204,7 @@ public class ItemChooseListActivity extends BaseActivity {
                 break;
             case 2:
                 List<Asset> assetList;
-                assetList = new AssetDao(this).queryByDescription(str);
+                assetList = new AssetDao(this).queryByStr(str);
                 for (int i = 0; i < assetList.size(); i++) {
                     chooseItem = new ChooseItem();
                     chooseItem.setName(assetList.get(i).getDESCRIPTION());
@@ -214,11 +214,12 @@ public class ItemChooseListActivity extends BaseActivity {
                 }
                 break;
             case 9:
-                List<Jobplan> jobplanList = new JobPlanDao(this).queryByDescription(str);
+                List<Jobplan> jobplanList = new JobPlanDao(this).queryByStr(str);
                 for (int i = 0; i < jobplanList.size(); i++) {
                     chooseItem = new ChooseItem();
                     chooseItem.setName(jobplanList.get(i).getDESCRIPTION());
                     chooseItem.setValue(jobplanList.get(i).getJPNUM());
+                    chooseItem.setParent(jobplanList.get(i).getJPDURATION());
                     list.add(i, chooseItem);
                 }
                 break;
@@ -307,8 +308,9 @@ public class ItemChooseListActivity extends BaseActivity {
                 List<Erson> ersonList = new ErsonDao(this).queryForAll();
                 List<String>itemlist = new ArrayList<String>();
                 for (int i = 0; i < ersonList.size(); i++) {
-                    if((itemlist.size()==0||!itemlist.contains(ersonList.get(i).getYWBZ()))&&!ersonList.get(i).getYWBZ().equals("")){
-                        itemlist.add(ersonList.get(i).getYWBZ());
+                    if((itemlist.size()==0||!itemlist.contains(ersonList.get(i).getYWBZ()+"-"+(ersonList.get(i).getYWFL().equals("")?"无":ersonList.get(i).getYWFL())))
+                            &&!ersonList.get(i).getYWBZ().equals("")){
+                        itemlist.add(ersonList.get(i).getYWBZ()+"-"+(ersonList.get(i).getYWFL().equals("")?"无":ersonList.get(i).getYWFL()));
                     }
                     chooseItem = new ChooseItem();
                     chooseItem.setName(ersonList.get(i).getDISPLAYNAME());
@@ -332,6 +334,7 @@ public class ItemChooseListActivity extends BaseActivity {
                     chooseItem = new ChooseItem();
                     chooseItem.setName(jobplanList.get(i).getDESCRIPTION());
                     chooseItem.setValue(jobplanList.get(i).getJPNUM());
+                    chooseItem.setParent(jobplanList.get(i).getJPDURATION());
                     list.add(i, chooseItem);
                 }
                 break;
@@ -359,7 +362,8 @@ public class ItemChooseListActivity extends BaseActivity {
                     List<FailureList1> failureList1List1 = new FailureListDao(this).queryForCode(parent);
                     for (int i = 0; i < failureList1List1.size(); i++) {
                         chooseItem = new ChooseItem();
-                        chooseItem.setName(failureList1List1.get(i).getFAILURELIST());
+                        chooseItem.setName(new FailurecodeDao(this).queryByCode(failureList1List1.get(i).getFAILURECODE()).getDESCRIPTION());
+//                        chooseItem.setName(failureList1List1.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List1.get(i).getFAILURECODE());
                         chooseItem.setParent(failureList1List1.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
@@ -371,7 +375,8 @@ public class ItemChooseListActivity extends BaseActivity {
                     List<FailureList1> failureList1List4 = new FailureListDao(this).queryForProblem(parent);
                     for (int i = 0; i < failureList1List4.size(); i++) {
                         chooseItem = new ChooseItem();
-                        chooseItem.setName(failureList1List4.get(i).getFAILURELIST());
+                        chooseItem.setName(new FailurecodeDao(this).queryByCode(failureList1List4.get(i).getFAILURECODE()).getDESCRIPTION());
+//                        chooseItem.setName(failureList1List4.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List4.get(i).getFAILURECODE());
                         chooseItem.setParent(failureList1List4.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
@@ -383,7 +388,8 @@ public class ItemChooseListActivity extends BaseActivity {
                     List<FailureList1> failureList1List2 = new FailureListDao(this).queryForCauseByParent(parent);
                     for (int i = 0; i < failureList1List2.size(); i++) {
                         chooseItem = new ChooseItem();
-                        chooseItem.setName(failureList1List2.get(i).getFAILURELIST());
+                        chooseItem.setName(new FailurecodeDao(this).queryByCode(failureList1List2.get(i).getFAILURECODE()).getDESCRIPTION());
+//                        chooseItem.setName(failureList1List2.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List2.get(i).getFAILURECODE());
                         chooseItem.setParent(failureList1List2.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
@@ -396,8 +402,10 @@ public class ItemChooseListActivity extends BaseActivity {
 //                    List<FailureList1> failureList1List3 = new FailureListDao(this).queryForRemedy();
                     for (int i = 0; i < failureList1List3.size(); i++) {
                         chooseItem = new ChooseItem();
-                        chooseItem.setName(failureList1List3.get(i).getFAILURELIST());
+                        chooseItem.setName(new FailurecodeDao(this).queryByCode(failureList1List3.get(i).getFAILURECODE()).getDESCRIPTION());
+//                        chooseItem.setName(failureList1List3.get(i).getFAILURELIST());
                         chooseItem.setValue(failureList1List3.get(i).getFAILURECODE());
+                        chooseItem.setParent(failureList1List3.get(i).getFAILURELIST());
                         list.add(i, chooseItem);
                     }
                 }

@@ -68,7 +68,7 @@ public class HttpManager {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("data", data);
-        client.setTimeout(20000);
+        client.setTimeout(600000);
         client.get(Constants.SEARCHURL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

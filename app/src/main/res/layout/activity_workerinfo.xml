@@ -210,8 +210,18 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="25dp"
-            android:background="@color/start_back_color"
+            android:background="@drawable/button_selector2"
             android:text="@string/OK"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/info_delete"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_selector2"
+            android:text="@string/delete"
             android:textSize="18sp" />
     </LinearLayout>
 

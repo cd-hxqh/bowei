@@ -1,8 +1,10 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -80,12 +82,14 @@ public class ServiceDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
-                    Toast.makeText(ServiceDetailActivity.this,"工单"+orderMain.getNumber()+"提交成功",Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(ServiceDetailActivity.this, "工单" + orderMain.getNumber() + "提交成功", Toast.LENGTH_SHORT).show();
                     new OrderMainDao(ServiceDetailActivity.this).deleteById(orderMain.getId());
                     ServiceDetailActivity.this.finish();
                     break;
                 case F:
-                    Toast.makeText(ServiceDetailActivity.this,"提交失败"+result,Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(ServiceDetailActivity.this, "提交失败" + result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -152,34 +156,30 @@ public class ServiceDetailActivity extends BaseActivity {
         getData();
         setview();
         titlename.setText(getResources().getString(R.string.service));
-        backimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServiceDetailActivity.this, getResources().getString(R.string.service),
-                        orderMain.getId());
+                        orderMain);
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
 
         setDataListener();
 
+        if (!orderMain.isByserch()) {
+            placelayout.setOnClickListener(new MylayoutListener(1));
+            propertylayout.setOnClickListener(new MylayoutListener(2));
+            worktypelayout.setOnClickListener(new MylayoutListener(3));
+            reality_worktypelayout.setOnClickListener(new MylayoutListener(8));
+            applyunitylayout.setOnClickListener(new MylayoutListener(5));
+            majorlayout.setOnClickListener(new MylayoutListener(6));
+            employee_idlayout.setOnClickListener(new MylayoutListener(7));
+            datelayout.setOnClickListener(new MydateListener());
+            reality_starttimelayout.setOnClickListener(new MydateListener());
+            reality_stoptimelayout.setOnClickListener(new MydateListener());
+        }
 
-        placelayout.setOnClickListener(new MylayoutListener(1));
-        propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
-        reality_worktypelayout.setOnClickListener(new MylayoutListener(8));
-        applyunitylayout.setOnClickListener(new MylayoutListener(5));
-        majorlayout.setOnClickListener(new MylayoutListener(6));
-        employee_idlayout.setOnClickListener(new MylayoutListener(7));
-        datelayout.setOnClickListener(new MydateListener());
-        reality_starttimelayout.setOnClickListener(new MydateListener());
-        reality_stoptimelayout.setOnClickListener(new MydateListener());
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,6 +188,31 @@ public class ServiceDetailActivity extends BaseActivity {
             }
         });
         inputbtn.setOnClickListener(inputlistener);
+
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!orderMain.isByserch()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ServiceDetailActivity.this);
+                    builder.setMessage("是否保存工单详情?").setTitle("提示")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            save.performClick();
+                        }
+                    }).create().show();
+                } else {
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -210,65 +235,80 @@ public class ServiceDetailActivity extends BaseActivity {
     }
 
 
-
-
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            String isok = isOK();
-            if(isok.equals("OK")){
-                final OrderMain orderMain = SaveData();
-                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServiceDetailActivity.this, orderMain);
-                mProgressDialog = ProgressDialog.show(ServiceDetailActivity.this, null,
-                        getString(R.string.inputing), true, true);
-                mProgressDialog.setCanceledOnTouchOutside(false);
-                new AsyncTask<String, String, String>() {
-                    @Override
-                    protected String doInBackground(String... strings) {
-                        if((orderMain.isNew()&&!orderMain.isyuzhi())||(orderMain.isNew()&&orderMain.getNumber().equals(""))){
-                            result = getBaseApplication().getWsService().InsertWO(data);
-                        }else if (orderMain.isNew()&&orderMain.isyuzhi()){
-                            result = getBaseApplication().getWsService().UpdataWOyz(data);
-                        }else if(!orderMain.isNew()){
-                            result = getBaseApplication().getWsService().UpdataWO(data);
-                        } else {
-                            result = "false";
+            AlertDialog.Builder builder = new AlertDialog.Builder(ServiceDetailActivity.this);
+            builder.setMessage("请确认已填写员工信息").setTitle("提示")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
                         }
-                        return result;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
-                        if(s.equals("false")){
-                            mHandler.sendEmptyMessage(F);
-                            return;
-                        }
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            if(object.getString("errorMsg").equals("成功")){
-                                mHandler.sendEmptyMessage(S);
-                            }else {
-                                mHandler.sendEmptyMessage(F);
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    String isok = isOK();
+                    if (isok.equals("OK")) {
+                        final OrderMain orderMain = SaveData();
+                        final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServiceDetailActivity.this, orderMain);
+                        mProgressDialog = ProgressDialog.show(ServiceDetailActivity.this, null,
+                                getString(R.string.inputing), true, true);
+                        mProgressDialog.setCanceledOnTouchOutside(false);
+                        mProgressDialog.setCancelable(false);
+                        new AsyncTask<String, String, String>() {
+                            @Override
+                            protected String doInBackground(String... strings) {
+                                if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
+                                    result = getBaseApplication().getWsService().InsertWO(data);
+                                } else if (orderMain.isNew() && orderMain.isyuzhi()) {
+                                    result = getBaseApplication().getWsService().UpdataWOyz(data);
+                                } else if (!orderMain.isNew()) {
+                                    result = getBaseApplication().getWsService().UpdataWO(data);
+                                } else {
+                                    result = "false";
+                                }
+                                return result;
                             }
-                            result = object.getString("errorMsg");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
+                            @Override
+                            protected void onPostExecute(String s) {
+                                super.onPostExecute(s);
+                                if (s.equals("false")) {
+                                    mHandler.sendEmptyMessage(F);
+                                    return;
+                                }
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    if (object.getString("errorMsg").equals("成功")) {
+                                        mHandler.sendEmptyMessage(S);
+                                    } else {
+                                        mHandler.sendEmptyMessage(F);
+                                    }
+                                    result = object.getString("errorMsg");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.execute();
+                    } else if (isok.equals("请完善信息")) {
+                        Toast.makeText(ServiceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
                     }
-                }.execute();
-                mProgressDialog.dismiss();
-            }else if(isok.equals("请完善信息")){
-                Toast.makeText(ServiceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
-            }
+                }
+            }).create().show();
         }
     };
 
-    private void getData(){
+    private void getData() {
         orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
-    private void setview(){
+    private void setview() {
+        if (orderMain.isByserch()) {
+            save.setVisibility(View.GONE);
+            inputbtn.setVisibility(View.GONE);
+        }
         number.setText(orderMain.getNumber());
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
@@ -285,7 +325,7 @@ public class ServiceDetailActivity extends BaseActivity {
         questiontogether.setText(orderMain.getQuestiontogether());
     }
 
-    public class MydateListener implements View.OnClickListener{
+    public class MydateListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -295,12 +335,14 @@ public class ServiceDetailActivity extends BaseActivity {
             datePickerDialog.show();
         }
     }
+
     public class MylayoutListener implements View.OnClickListener {
         int requestCode;
 
         public MylayoutListener(int requestcode) {
             this.requestCode = requestcode;
         }
+
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(ServiceDetailActivity.this, ItemChooseListActivity.class);
@@ -357,10 +399,10 @@ public class ServiceDetailActivity extends BaseActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            sb=new StringBuffer();
-            if(dayOfMonth<10){
-                sb.append(year+"-"+(monthOfYear+1)+"-"+"0"+dayOfMonth);
-            }else {
+            sb = new StringBuffer();
+            if (dayOfMonth < 10) {
+                sb.append(year + "-" + (monthOfYear + 1) + "-" + "0" + dayOfMonth);
+            } else {
                 sb.append(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             }
             timePickerDialog.show();
@@ -371,16 +413,16 @@ public class ServiceDetailActivity extends BaseActivity {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             sb.append(" ");
-            if(i1<10){
-                sb.append(i+":"+"0"+i1+":00");
-            }else {
-                sb.append(i+":"+i1+":00");
+            if (i1 < 10) {
+                sb.append(i + ":" + "0" + i1 + ":00");
+            } else {
+                sb.append(i + ":" + i1 + ":00");
             }
-            if(layoutnum == datelayout.getId()){
+            if (layoutnum == datelayout.getId()) {
                 date.setText(sb);
-            }else if(layoutnum == reality_starttimelayout.getId()){
+            } else if (layoutnum == reality_starttimelayout.getId()) {
                 reality_starttime.setText(sb);
-            }else if(layoutnum ==reality_stoptimelayout.getId()){
+            } else if (layoutnum == reality_stoptimelayout.getId()) {
                 reality_stoptime.setText(sb);
             }
 
@@ -389,21 +431,23 @@ public class ServiceDetailActivity extends BaseActivity {
 
     /**
      * 提交时判断填写是否合格
+     *
      * @return
      */
-    private String isOK(){
+    private String isOK() {
         if (describe.getText().equals("")
-                ||place.getText().equals("")
-                ||worktype.getText().equals("")
-                ||reality_worktype.getText().equals("")||applyunity.getText().equals("")
-                ||major.getText().equals("")||date.getText().equals("")){
+                || worktype.getText().equals("")
+                || reality_worktype.getText().equals("") || applyunity.getText().equals("")
+                || major.getText().equals("") || date.getText().equals("")) {
             return "请完善信息";
-        }else{
+        }else if(place.getText().equals("")&&property.getText().equals("")){
+            return "请完善信息";
+        } else {
             return "OK";
         }
     }
 
-    private OrderMain SaveData(){
+    private OrderMain SaveData() {
         OrderMain orderMain = new OrderMain();
         orderMain = this.orderMain;
         orderMain.setNumber(number.getText().toString());

@@ -27,10 +27,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cdhxqh.bowei.Dao.JobPlanDao;
+import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.LocationsDao;
+import com.cdhxqh.bowei.Dao.OrderMainDao;
+import com.cdhxqh.bowei.Dao.OrderTaskDao;
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.JobTask;
 import com.cdhxqh.bowei.bean.Locations;
 import com.cdhxqh.bowei.bean.OrderMain;
+import com.cdhxqh.bowei.bean.OrderTask;
 import com.cdhxqh.bowei.config.Constants;
 import com.cdhxqh.bowei.ui.widget.CumTimePickerDialog;
 import com.cdhxqh.bowei.utils.WebserviceDataUtils;
@@ -39,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -86,7 +93,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     private EditText notinspection_device;//未巡检设备
     private EditText inspect_result;//检查结果
     private Button yuzhi;//预置
-    private Button inputbtn;
+    private Button save;
     OrderMain orderMain = new OrderMain();
 
     private DatePickerDialog datePickerDialog;
@@ -105,7 +112,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 case S:
                     number.setText(result);
                     Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
-                    inputbtn.performClick();
+                    save.performClick();
                     break;
                 case F:
                     Toast.makeText(AddOrderMaintenanceActivity.this, "获取工单编号失败,"+result, Toast.LENGTH_SHORT).show();
@@ -204,7 +211,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         inspect_result = (EditText) findViewById(R.id.inspect_result);
 
         yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
-        inputbtn = (Button) findViewById(R.id.order_detail_input);
+        save = (Button) findViewById(R.id.order_detail_save);
     }
 
     @Override
@@ -249,7 +256,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
 //        inspect_resultlayout.setOnClickListener(new MylayoutListener(13));
 
         yuzhi.setOnClickListener(yuzhilistener);
-        inputbtn.setOnClickListener(inputlistener);
+        save.setOnClickListener(savelistener);
     }
 
     /**
@@ -274,10 +281,12 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             String isok = isOK();
-            SaveData();
             if (isok.equals("OK")) {
+                SaveData();
                 mProgressDialog = ProgressDialog.show(AddOrderMaintenanceActivity.this, null,
                         getString(R.string.requesting), true, true);
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.setCancelable(false);
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
@@ -297,11 +306,12 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 if (object.getString("errorMsg").equals("成功")) {
-                                    mHandler.sendEmptyMessage(S);
                                     result = object.getString("woNum");
+                                    mHandler.sendEmptyMessage(S);
                                 } else {
-                                    mHandler.sendEmptyMessage(F);
                                     result = object.getString("errorMsg");
+                                    mHandler.sendEmptyMessage(F);
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -317,12 +327,13 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             }
         }
     };
-    private View.OnClickListener inputlistener = new View.OnClickListener() {
+    private View.OnClickListener savelistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String isok = isOK();
             if (isok.equals("OK")) {
                 SaveData();
+                buildTask();
                 Intent intent = new Intent();
                 intent.putExtra("orderMain", orderMain);
                 AddOrderMaintenanceActivity.this.setResult(1, intent);
@@ -363,11 +374,11 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String content = null;
-        String loucation = null;
+        String Result = null;
         if (resultCode != 0) {
             content = data.getCharSequenceExtra("result").toString();
             if (data.hasExtra("number")) {
-                loucation = data.getCharSequenceExtra("number").toString();
+                Result = data.getCharSequenceExtra("number").toString();
             }
         }
         switch (resultCode) {
@@ -379,7 +390,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 break;
             case 2:
                 property.setText(content);
-                place.setText(loucation);
+                place.setText(Result);
                 break;
             case 3:
                 worktype.setText(content);
@@ -398,6 +409,7 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
                 break;
             case 9:
                 workplan.setText(content);
+                ratinghours.setText(Result);
                 break;
             default:
                 break;
@@ -448,13 +460,14 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
-                ||place.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")
                 || employee_id.getText().equals("")) {
             return "请完善信息";
-        } else {
+        }else if(place.getText().equals("")&&property.getText().equals("")){
+            return "请完善信息";
+        }else {
             return "OK";
         }
     }
@@ -494,6 +507,27 @@ public class AddOrderMaintenanceActivity extends BaseActivity {
             orderMain.setIsyuzhi(true);
         } else {
             orderMain.setIsyuzhi(false);
+        }
+        new OrderMainDao(this).update(orderMain);
+//        Toast.makeText(this,"保存成功",Toast.LENGTH_SHORT).show();
+    }
+
+    private void buildTask(){
+        if (orderMain.getWorkplan() != null&&!orderMain.getWorkplan().equals("")&&!orderMain.getNumber().equals("")) {
+            ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+            OrderTask orderTask;
+            List<String> jpnumList = new JobPlanDao(this).queryForparent(orderMain.getWorkplan());
+            List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan(),jpnumList);
+            for (int i = 0; i < task.size(); i++) {
+                orderTask = new OrderTask();
+                orderTask.setBelongordermain(orderMain.getId());
+                orderTask.setNum(orderMain.getNumber());
+                orderTask.setDigest(task.get(i).getDESCRIPTION());
+                orderTask.setOrdermainid(String.valueOf(task.get(i).getJOBTASKID()));
+                orderTask.setTask(String.valueOf(task.get(i).getJPTASK()));
+//            orderTask.setWosequence();
+                new OrderTaskDao(AddOrderMaintenanceActivity.this).update(orderTask);
+            }
         }
     }
 }

@@ -26,7 +26,11 @@ import com.cdhxqh.bowei.utils.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -70,7 +74,9 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void onRestart() {
         super.onRestart();
-        initView();
+//        initView();
+        refreshData();
+        getOwnerId();
     }
 
     @Override
@@ -86,7 +92,6 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     protected void initView() {
-
         titlename.setText(name);
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -120,7 +125,37 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         refresh_layout.setOnLoadListener(this);
         getData();
     }
+    private void getOwnerId() {
+        mProgressDialog = ProgressDialog.show(this, null,
+                getString(R.string.requesting), true, true);
+        HttpManager.getData(this, Constants.getOwnerId(getBaseApplication().getUsername()), new HttpRequestHandler<String>() {
+            @Override
+            public void onSuccess(String data) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(data);
+                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
+                        JsonUtils.parsingWenerId(jsonObject.getString("result"));
+                        mProgressDialog.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onSuccess(String data, int totalPages, int currentPage) {
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(OrderListActivity.this, "获取最新工单失败", Toast.LENGTH_SHORT).show();
+//                startIntent();
+                mProgressDialog.dismiss();
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         OrderMain orderMain;
@@ -139,12 +174,18 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             refreshData();
         } else {
             String url = null;
+            GregorianCalendar gc=new GregorianCalendar();
+            SimpleDateFormat sf  =new SimpleDateFormat("yyyy-MM-dd");
+            gc.setTime(new Date());
+            gc.add(Calendar.MONTH, -3);
+            gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
+            String reportdate= sf.format(gc.getTime());
             if (name.equals(getResources().getString(R.string.maintenance))) {
-                url = Constants.getOrderUrl(i,"PM,CM");
+                url = Constants.getOrderUrl(i,"PM,CM",reportdate);
             } else if (name.equals(getResources().getString(R.string.serve))) {
-                url = Constants.getOrderUrl(i,"EM");
+                url = Constants.getOrderUrl(i,"EM",reportdate);
             } else if (name.equals(getResources().getString(R.string.service))) {
-                url = Constants.getOrderUrl(i,"SVR");
+                url = Constants.getOrderUrl(i,"SVR",reportdate);
             }
 //            mProgressDialog = ProgressDialog.show(this, null,
 //                    getString(R.string.requesting), true, true);
@@ -225,7 +266,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void additem(OrderMain orderMain) {
-        new OrderMainDao(this).update(orderMain);
+//        new OrderMainDao(this).update(orderMain);
         ArrayList<OrderMain> list = new ArrayList<OrderMain>();
         list.add(0, orderMain);
         orderMainAdapter.update(list, true);
@@ -234,12 +275,17 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     //下拉刷新触发事件
     @Override
     public void onRefresh() {
+        if(nodatalayout.getVisibility()==View.VISIBLE){
+            nodatalayout.setVisibility(View.GONE);
+        }
+        getOwnerId();
         getData();
     }
 
     @Override
     public void onLoad(){
         i++;
+        getOwnerId();
         getData();
     }
 }

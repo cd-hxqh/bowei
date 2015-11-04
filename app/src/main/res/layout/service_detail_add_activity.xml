@@ -61,7 +61,8 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:text="@string/order_detail_state"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:visibility="gone"/>
             <EditText
                 android:id="@+id/order_detail_state"
                 android:layout_width="match_parent"
@@ -72,7 +73,8 @@
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
-                android:background="@drawable/content_bg01"/>
+                android:background="@drawable/content_bg01"
+                android:visibility="gone"/>
             <include layout="@layout/order_detail_three_layout"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -107,14 +109,14 @@
                 <!--android:textColor="@color/gray"-->
                 <!--android:background="@drawable/content_bg01"/>-->
             <Button
-                android:id="@+id/order_detail_input"
+                android:id="@+id/order_detail_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="@string/OK"
-                android:background="@color/start_back_color"/>
+                android:text="@string/save"
+                android:background="@drawable/button_selector2"/>
         </LinearLayout>
 
     </ScrollView>

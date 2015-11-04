@@ -116,7 +116,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void login() {
         mProgressDialog = ProgressDialog.show(LoginActivity.this, null,
                 getString(R.string.login_loging), true, true);
-
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
         HttpManager.login(LoginActivity.this,
                 mUsername.getText().toString(),
                 mPassword.getText().toString(),

@@ -29,6 +29,8 @@ public class Knowledge implements Serializable {
     /**备注**/
     @DatabaseField(columnName = "KNOWBZ")
     private String knowbz;
+    @DatabaseField(columnName = "KNOWBH")
+    private String knowbh;
 
 
     public int getId() {
@@ -77,5 +79,13 @@ public class Knowledge implements Serializable {
 
     public void setKnowbz(String knowbz) {
         this.knowbz = knowbz;
+    }
+
+    public String getKnowbh() {
+        return knowbh;
+    }
+
+    public void setKnowbh(String knowbh) {
+        this.knowbh = knowbh;
     }
 }

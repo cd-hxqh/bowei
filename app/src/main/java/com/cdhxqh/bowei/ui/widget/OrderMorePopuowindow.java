@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.cdhxqh.bowei.R;
+import com.cdhxqh.bowei.bean.OrderMain;
 import com.cdhxqh.bowei.ui.activity.MaintenanceDetailActivity;
 import com.cdhxqh.bowei.ui.activity.OrderTaskActivity;
 import com.cdhxqh.bowei.ui.activity.MaintenanceRealInfoActivity;
@@ -24,7 +25,7 @@ import com.cdhxqh.bowei.ui.activity.ServiceRealInfoActivity;
 public class OrderMorePopuowindow extends PopupWindow {
     private View conentView;
 
-    public OrderMorePopuowindow(final Activity context, final String fromname, final int id) {
+    public OrderMorePopuowindow(final Activity context, final String fromname, final OrderMain orderMain) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         conentView = inflater.inflate(R.layout.popup_order_more, null);
@@ -59,7 +60,7 @@ public class OrderMorePopuowindow extends PopupWindow {
                 OrderMorePopuowindow.this.dismiss();
                 Intent intent = new Intent(context, OrderTaskActivity.class);
                 intent.putExtra("fromname", fromname);
-                intent.putExtra("orderid", id);
+                intent.putExtra("orderMain", orderMain);
                 context.startActivity(intent);
 
             }
@@ -72,15 +73,15 @@ public class OrderMorePopuowindow extends PopupWindow {
                 OrderMorePopuowindow.this.dismiss();
                 if (fromname.equals(context.getResources().getString(R.string.maintenance))) {
                     Intent intent = new Intent(context, MaintenanceRealInfoActivity.class);
-                    intent.putExtra("orderid", id);
+                    intent.putExtra("orderMain", orderMain);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.serve))){
                     Intent intent = new Intent(context, ServeRealInfoActivity.class);
-                    intent.putExtra("orderid", id);
+                    intent.putExtra("orderMain", orderMain);
                     context.startActivity(intent);
                 }else if(fromname.equals(context.getResources().getString(R.string.service))){
                     Intent intent = new Intent(context, ServiceRealInfoActivity.class);
-                    intent.putExtra("orderid", id);
+                    intent.putExtra("orderMain", orderMain);
                     context.startActivity(intent);
                 }
             }

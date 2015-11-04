@@ -40,8 +40,8 @@ public class KnowKedgeAdapter extends RecyclerView.Adapter<KnowKedgeAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Knowledge knowledge=list.get(position);
-        holder.number.setText(knowledge.getKnowledgeid() + "");
-        holder.desc.setText(knowledge.getKnowdesc());
+        holder.number.setText(knowledge.getKnowbh());
+        holder.xl.setText(knowledge.getKnowxl());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,15 +70,15 @@ public class KnowKedgeAdapter extends RecyclerView.Adapter<KnowKedgeAdapter.View
          */
         public TextView number;
         /**
-         * 描述*
+         * 小类*
          */
-        public TextView desc;
+        public TextView xl;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.content_id);
             number = (TextView) itemView.findViewById(R.id.number_id);
-            desc = (TextView) itemView.findViewById(R.id.desc_id);
+            xl = (TextView) itemView.findViewById(R.id.desc_id);
         }
     }
 

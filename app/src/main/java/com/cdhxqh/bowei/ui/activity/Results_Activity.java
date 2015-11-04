@@ -68,7 +68,7 @@ public class Results_Activity extends BaseActivity {
      * 新建工单*
      */
     private Button addBtn;
-
+    AlertDialog mAlertDialog;
     String[] itemList = null;
 
 
@@ -174,7 +174,7 @@ public class Results_Activity extends BaseActivity {
         listview.setOnItemClickListener(listener);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Results_Activity.this);
-        AlertDialog mAlertDialog = builder.create();
+        mAlertDialog = builder.create();
         mAlertDialog.show();
         mAlertDialog.getWindow().setContentView(view);
 //        mAlertDialog.getWindow().setLayout(150, 320);
@@ -187,6 +187,7 @@ public class Results_Activity extends BaseActivity {
             Intent intent=new Intent();
             switch (position) {
                 case 0: //维保
+                    mAlertDialog.dismiss();
                     intent.setClass(Results_Activity.this,AddOrderMaintenanceActivity.class);
                     intent.putExtra("assetnum", asset.getASSETNUM());
                     intent.putExtra("location",asset.getLOCATION());
@@ -194,6 +195,7 @@ public class Results_Activity extends BaseActivity {
                     startActivityForResult(intent, 0);
                     break;
                 case 1: //维修
+                    mAlertDialog.dismiss();
                     intent.setClass(Results_Activity.this,AddOrderServeActivity.class);
                     intent.putExtra("assetnum", asset.getASSETNUM());
                     intent.putExtra("location",asset.getLOCATION());
@@ -201,6 +203,7 @@ public class Results_Activity extends BaseActivity {
                     startActivityForResult(intent,0);
                     break;
                 case 2: //服务
+                    mAlertDialog.dismiss();
                     intent.setClass(Results_Activity.this,AddOrderServiceActivity.class);
                     intent.putExtra("assetnum",asset.getASSETNUM());
                     intent.putExtra("location",asset.getLOCATION());

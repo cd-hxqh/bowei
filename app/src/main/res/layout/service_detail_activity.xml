@@ -68,7 +68,11 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
                 android:paddingLeft="3dp"
-                android:textSize="14dp"
+                android:editable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textSize="14sp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
@@ -114,7 +118,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/save"
-                android:background="@color/start_back_color"/>
+                android:background="@drawable/button_selector2"/>
             <Button
                 android:id="@+id/order_detail_input"
                 android:layout_width="match_parent"
@@ -123,7 +127,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/order_detail_input"
-                android:background="@color/start_back_color"/>
+                android:background="@drawable/button_selector2"/>
         </LinearLayout>
 
     </ScrollView>

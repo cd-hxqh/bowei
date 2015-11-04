@@ -19,7 +19,7 @@ public class JobTask {
     @DatabaseField(columnName = "JPNUM")
     private String JPNUM;
     @DatabaseField(columnName = "JPTASK")
-    private String JPTASK;
+    private int JPTASK;
 
     public int getId() {
         return id;
@@ -61,11 +61,11 @@ public class JobTask {
         this.JPNUM = JPNUM;
     }
 
-    public String getJPTASK() {
+    public int getJPTASK() {
         return JPTASK;
     }
 
-    public void setJPTASK(String JPTASK) {
+    public void setJPTASK(int JPTASK) {
         this.JPTASK = JPTASK;
     }
 }

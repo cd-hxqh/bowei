@@ -81,11 +81,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
         if (this.isVisible()) {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && materialConsumeAdapter.getItemCount()==0) {
-                if(!orderMain.getNumber().equals("")){
                     getData();
-                }else {
-                    addData(id);
-                }
                 // async http request here
                 mHasLoadedOnce = true;
             }
@@ -104,8 +100,9 @@ public class RealMaterialConsunmeFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        JsonUtils.parsingDeptmatusetrans(getActivity(), jsonObject.getString("result"), id);
-                        addData(id);
+                        List<MaterialInfo> materialInfoList = JsonUtils.parsingDeptmatusetrans(getActivity(), jsonObject.getString("result"));
+                        addMaterialList(materialInfoList);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -118,7 +115,7 @@ public class RealMaterialConsunmeFragment extends Fragment {
 
             @Override
             public void onFailure(String error) {
-                addData(id);
+                addMaterialList(new ArrayList<MaterialInfo>());
                 mProgressDialog.dismiss();
             }
         });
@@ -137,9 +134,18 @@ public class RealMaterialConsunmeFragment extends Fragment {
         }
         materialConsumeAdapter.update(list, true);
     }
-//    public void adddata(MaterialInfo materialInfo){
-//        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
-//        list.add(0,materialInfo);
-//        materialConsumeAdapter.update(list, true);
-//    }
+
+    private void addMaterialList(List<MaterialInfo> materialInfoList){
+        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
+        if (materialInfoList.size() == 0||materialInfoList==null) {
+            nodatalayout.setVisibility(View.VISIBLE);
+        } else {
+            nodatalayout.setVisibility(View.GONE);
+            for (int i = 0; i < materialInfoList.size(); i++) {
+                list.add(i, materialInfoList.get(i));
+            }
+            materialConsumeAdapter.update(list, true);
+        }
+
+    }
 }

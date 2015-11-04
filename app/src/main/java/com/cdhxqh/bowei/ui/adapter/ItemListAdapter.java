@@ -41,8 +41,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 if(activity.requestCode==2){
                     activity.responseData(list.get(position).getValue(),list.get(position).getParent());
                 }
-                if(activity.requestCode==12||activity.requestCode==13||activity.requestCode==14||activity.requestCode==16){
-                    activity.responseData(list.get(position).getValue(),list.get(position).getName());
+                if(activity.requestCode==9||activity.requestCode==12||activity.requestCode==13
+                        ||activity.requestCode==14||activity.requestCode==16){
+                    activity.responseData(list.get(position).getValue(),list.get(position).getParent());
                 }else {
                     activity.responseData(list.get(position).getValue());
                 }

@@ -83,6 +83,7 @@ public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.O
      * 搜索标识*
      */
     private int searchMark;
+    private String searchtype;
 
     private int page = 1;
     String str;
@@ -101,6 +102,9 @@ public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.O
      */
     private void getInitData() {
         searchMark = getIntent().getExtras().getInt("search_mark");
+        if (searchMark == Constants.KNOWKEDGE_SEARCH) {
+            searchtype = getIntent().getExtras().getString("search_type");
+        }
     }
 
     @Override
@@ -211,8 +215,8 @@ public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.O
      * 获取知识库信息*
      */
 
-    private void getKnowKegeInfo(int page,String knowdesc) {
-        HttpManager.getDataInfo(SearchActivity.this, Constants.search_Knowledge(1, 20, knowdesc), new HttpRequestHandler<String>() {
+    private void getKnowKegeInfo(int page,String knowxl) {
+        HttpManager.getDataInfo(SearchActivity.this, Constants.search_Knowledge(page, 20,searchtype, knowxl), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 Log.i(TAG, "data=" + data);

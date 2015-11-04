@@ -97,64 +97,84 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.has("WONUM")) {
+                if (jsonObject.has("WONUM")) {//工单号
                     orderMain.setNumber(jsonObject.get("WONUM").toString());
                 }
-                if (jsonObject.has("DESCRIPTION")) {
+                if (jsonObject.has("DESCRIPTION")) {//描述
                     orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
                 }
-                if (jsonObject.has("LOCATION")) {
+                if (jsonObject.has("LOCATION")) {//位置
                     orderMain.setPlace(jsonObject.get("LOCATION").toString());
                 }
-                if (jsonObject.has("ASSETNUM")) {
+                if (jsonObject.has("ASSETNUM")) {//资产
                     orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
                 }
-                if (jsonObject.has("WORKTYPE")) {
+                if (jsonObject.has("WORKTYPE")) {//工单类型
                     orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
                 }
-                if (jsonObject.has("ACWORKTYPE")) {
+                if (jsonObject.has("ACWORKTYPE")) {//实际工单类型
                     orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
                 }
-                if (jsonObject.has("WORKDW")) {
+                if (jsonObject.has("WORKDW")) {//单位
                     orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
                 }
-                if (jsonObject.has("WORKZY")) {
+                if (jsonObject.has("WORKZY")) {//专业
                     orderMain.setMajor(jsonObject.get("WORKZY").toString());
                 }
-                if (jsonObject.has("WOSTATUS")) {
-                    orderMain.setState(jsonObject.get("WOSTATUS").toString());
+                if (jsonObject.has("STATUS")) {//状态
+                    orderMain.setState(jsonObject.get("STATUS").toString());
                 }
-                if (jsonObject.has("STATUSDATE")) {
+                if (jsonObject.has("STATUSDATE")) {//状态日期
                     orderMain.setDate(jsonObject.get("STATUSDATE").toString());
                 }
-                if (jsonObject.has("JPNUM")) {
+                if (jsonObject.has("JPNUM")) {//作业计划
                     orderMain.setWorkplan(jsonObject.getString("JPNUM"));
                 }
-                if (jsonObject.has("ONBEHALFOF")) {
+                if (jsonObject.has("ONBEHALFOF")) {//录入人
                     orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
                 }
-                if (jsonObject.has("ACTSTART")) {
+                if (jsonObject.has("ACTSTART")) {//实际开始时间
                     orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
                 }
-                if (jsonObject.has("ACTFINISH")) {
+                if (jsonObject.has("ACTFINISH")) {//实际结束时间
                     orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
                 }
-                if (jsonObject.has("BZ")) {
+                if (jsonObject.has("BZ")) {//备注
                     orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
                 }
-                if (jsonObject.has("ESTDUR")) {
+                if (jsonObject.has("ESTDUR")) {//额定工时
                     orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
                 }
-                if (jsonObject.has("PMNUM")) {
+                if (jsonObject.has("PMNUM")) {//PM值
                     orderMain.setPm(jsonObject.get("PMNUM").toString());
                 }
-                if (jsonObject.has("ASSETNUMLIST")) {
+                if (jsonObject.has("ASSETNUMLIST")) {//未巡检列表
                     orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
                 }
-//                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
-//                    orderMain.setInspect_result(jsonObject.get(""));
+                if (jsonObject.has("JCJG")) {//检查结果
+                    orderMain.setInspect_result(jsonObject.get("JCJG").toString());
+                }
+                if (jsonObject.has("FAILURECODE")) {//故障类
+                    orderMain.setFaultclass(jsonObject.get("FAILURECODE").toString());
+                }
+                if (jsonObject.has("PROBLEMCODE")) {//问题代码
+                    orderMain.setError_coding(jsonObject.get("PROBLEMCODE").toString());
+                }
+                if (jsonObject.has("GZDJ")) {//工作等级
+                    orderMain.setFault_rank(jsonObject.get("GZDJ").toString());
+                }
+                if (jsonObject.has("PROBLEM")) {//现象
+                    orderMain.setPhenomena(jsonObject.get("PROBLEM").toString());
+                }
+                if (jsonObject.has("CAUSE")) {//原因
+                    orderMain.setCause(jsonObject.get("CAUSE").toString());
+                }
+                if (jsonObject.has("REMEDY")) {//措施
+                    orderMain.setRemedy(jsonObject.get("REMEDY").toString());
+                }
                 orderMain.setIsNew(false);
                 orderMain.setBelong(username);
+                orderMain.setIsByserch(false);
                 if (!new OrderMainDao(ctx).isexitByNum(orderMain.getNumber(),username)) {//如果本地不存在此工单则添加
                     new OrderMainDao(ctx).update(orderMain);
                 }
@@ -165,7 +185,7 @@ public class JsonUtils {
         }
     }
 
-    public static void parsingOrderTask(Context cxt, String data, int num) {
+    public static List<OrderTask> parsingOrderTask(Context cxt, String data) {
         try {
             JSONArray jsonArray = new JSONArray(data);
             OrderTask orderTask;
@@ -181,14 +201,13 @@ public class JsonUtils {
                 orderTask.setWosequence(jsonObject.get("WOSEQUENCE").toString());
                 orderTask.setZxr(jsonObject.get("ZXR").toString());
                 orderTask.setWorkorderid(jsonObject.get("WORKORDERID").toString());
-                orderTask.setBelongordermain(num);
-                if(!new OrderTaskDao(cxt).isexit(orderTask)){//如果本地不存在此工单则添加
-                    new OrderTaskDao(cxt).update(orderTask);
-                }
+                list.add(orderTask);
             }
+            return list;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void parsingWenerId(String str) {
@@ -411,6 +430,8 @@ public class JsonUtils {
                 jobPlan.setDESCRIPTION(jsonObject.getString("DESCRIPTION"));
                 jobPlan.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobPlan.setJPNUM(jsonObject.getString("JPNUM"));
+                jobPlan.setJPDURATION(jsonObject.getString("JPDURATION"));
+                jobPlan.setPARENT(jsonObject.getString("PARENT"));
                 jobplanList.add(jobPlan);
             }
             jobPlanDao.update(jobplanList);
@@ -435,7 +456,7 @@ public class JsonUtils {
                 jobTask.setJOBPLANID(jsonObject.getString("JOBPLANID"));
                 jobTask.setJOBTASKID(jsonObject.getInt("JOBTASKID"));
                 jobTask.setJPNUM(jsonObject.getString("JPNUM"));
-                jobTask.setJPTASK(jsonObject.getString("JPTASK"));
+                jobTask.setJPTASK(jsonObject.getInt("JPTASK"));//序号
                 list.add(jobTask);
 //                jobTaskDao.update(jobTask);
 //                List<JobTask>list = jobTaskDao.queryForAll();
@@ -533,24 +554,32 @@ public class JsonUtils {
             SimpleDateFormat d2=new SimpleDateFormat("HH:mm:ss");
             Date startdate;
             Date stopdate;
+            Date starttime;
+            Date stoptime;
+            List<WorkerInfo>workerInfos = new ArrayList<>();
             WorkerInfoDao workerInfoDao = new WorkerInfoDao(ctx);
             for (int i = 0; i < jsonArray.length(); i++) {
                 workerInfo = new WorkerInfo();
                 jsonObject = jsonArray.getJSONObject(i);
-//                if (!workerInfoDao.queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {//
-                    workerInfo.setBelongorderid(id);
-                    workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
-                    workerInfo.setName(jsonObject.getString("LABORCODE"));
-                    if(!jsonObject.getString("STARTTIME").equals("")||jsonObject.getString("STARTTIME")!=null){
-                        startdate = dd.parse(jsonObject.getString("STARTTIME"));
-                        workerInfo.setStartdate(d1.format(startdate));
-                        workerInfo.setStarttime(d2.format(startdate));
-                    }
-                    if(!jsonObject.getString("FINISHTIME").equals("")||jsonObject.getString("FINISHTIME")!=null){
-                        stopdate = dd.parse(jsonObject.getString("FINISHTIME"));
-                        workerInfo.setStopdate(d1.format(stopdate));
-                        workerInfo.setStoptime(d2.format(stopdate));
-                    }
+                workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
+                workerInfo.setNumber(jsonObject.getString("LABORCODE"));
+                workerInfo.setBelongorderid(id);
+                if(!jsonObject.getString("STARTDATE").equals("")||jsonObject.getString("STARTDATE")!=null){
+                    startdate = dd.parse(jsonObject.getString("STARTDATE"));
+                    workerInfo.setStartdate(d1.format(startdate));
+                }
+                if(!jsonObject.getString("FINISHDATE").equals("")||jsonObject.getString("FINISHDATE")!=null){
+                    stopdate = dd.parse(jsonObject.getString("FINISHDATE"));
+                    workerInfo.setStopdate(d1.format(stopdate));
+                }
+                if(!jsonObject.getString("STARTTIME").equals("")||jsonObject.getString("STARTTIME")!=null){
+                    starttime = dd.parse(jsonObject.getString("STARTTIME"));
+                    workerInfo.setStarttime(d2.format(starttime));
+                }
+                if(!jsonObject.getString("FINISHTIME").equals("")||jsonObject.getString("FINISHTIME")!=null){
+                    stoptime = dd.parse(jsonObject.getString("FINISHTIME"));
+                    workerInfo.setStoptime(d2.format(stoptime));
+                }
                     workerInfo.setWorktime(jsonObject.getString("REGULARHRS"));
                 if(!workerInfoDao.queryByLabtransId(jsonObject.getString("LABTRANSID"), id)) {
                     workerInfoDao.update(workerInfo);
@@ -600,7 +629,6 @@ public class JsonUtils {
             JSONArray jsonArray = new JSONArray(str);
             JSONObject jsonObject;
             MaterialInfo materialInfo;
-            new MaterialInfoDao(ctx).deleteall();
             for (int i = 0; i < jsonArray.length(); i++) {
                 materialInfo = new MaterialInfo();
                 jsonObject = jsonArray.getJSONObject(i);
@@ -637,6 +665,7 @@ public class JsonUtils {
                 knowledge.setKnowdl(jsonObject.getString("KNOWDL")); //大类
                 knowledge.setKnowxl(jsonObject.getString("KNOWXL")); //小类
                 knowledge.setKnowbz(jsonObject.getString("KNOWBZ")); //备注
+                knowledge.setKnowbh(jsonObject.getString("KNOWBH"));
                 list.add(knowledge);
             }
 
@@ -652,7 +681,7 @@ public class JsonUtils {
     /**
      * 解析知识库附件*
      */
-    public static Doclinks parsingDoclinks(Context ctx, String data) {
+    public static ArrayList<Doclinks> parsingDoclinks(Context ctx, String data) {
         ArrayList<Doclinks> list = null;
         Doclinks doclinks = null;
         try {
@@ -662,12 +691,13 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 doclinks = new Doclinks();
                 jsonObject = jsonArray.getJSONObject(i);
-                doclinks.setDocument(Integer.valueOf(jsonObject.getString("DOCUMENT"))); //编号
+                doclinks.setDocument(jsonObject.getString("DOCUMENT")); //编号
                 doclinks.setDescription(jsonObject.getString("DESCRIPTION")); //名称
                 doclinks.setUrlname(Constants.SERVER_URL + replace(jsonObject.getString("URLNAME"))); //路径
+                list.add(doclinks);
             }
 
-            return doclinks;
+            return list;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -817,22 +847,16 @@ public class JsonUtils {
 
     public static Asset parsingAssets(Context ctx, String data) {
         Log.i(TAG, "data=" + data);
-        Asset asset = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data);
+        boolean isexit = new AssetDao(ctx).isexitByNum(data);
+        if(isexit) {
+            Asset asset = null;
             asset = new Asset();
-            asset.setASSETNUM(jsonObject.getString("ASSETNUM")); //编号
-            asset.setDESCRIPTION(jsonObject.getString("DESCRIPTION")); //名称
-//            asset.setLOCATION(jsonObject.getString("LOCATION")); //位置
-            asset.setLOCATION(new AssetDao(ctx).queryForLoucationBynum(jsonObject.getString("ASSETNUM")));
+            asset.setASSETNUM(data); //编号
+            asset.setDESCRIPTION(new AssetDao(ctx).queryFordescriptionBynum(data)); //名称
+            asset.setLOCATION(new AssetDao(ctx).queryForLoucationBynum(data));//位置
             return asset;
-
-        } catch (JSONException e)
-
-        {
-            e.printStackTrace();
+        }else {
             return null;
-
         }
     }
 
@@ -851,23 +875,83 @@ public class JsonUtils {
             for (int i = 0; i < jsonArray.length(); i++) {
                 orderMain = new OrderMain();
                 jsonObject = jsonArray.getJSONObject(i);
-
-
-                orderMain.setNumber(jsonObject.get("WONUM").toString());
-                orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
-                orderMain.setPlace(jsonObject.get("LOCATION").toString());
-                orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
-                orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
-                orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
-                orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
-                orderMain.setMajor(jsonObject.get("WORKZY").toString());
-                orderMain.setState(jsonObject.get("WOSTATUS").toString());
-                orderMain.setDate(jsonObject.get("STATUSDATE").toString());
-                orderMain.setWorkplan(jsonObject.getString("JPNUM"));
-                orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
-                orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
-                orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
-                orderMain.setPm(jsonObject.get("PMNUM").toString());
+                if (jsonObject.has("WONUM")) {
+                    orderMain.setNumber(jsonObject.get("WONUM").toString());
+                }
+                if (jsonObject.has("DESCRIPTION")) {
+                    orderMain.setDescribe(jsonObject.get("DESCRIPTION").toString());
+                }
+                if (jsonObject.has("LOCATION")) {
+                    orderMain.setPlace(jsonObject.get("LOCATION").toString());
+                }
+                if (jsonObject.has("ASSETNUM")) {
+                    orderMain.setProperty(jsonObject.get("ASSETNUM").toString());
+                }
+                if (jsonObject.has("WORKTYPE")) {
+                    orderMain.setWordtype(jsonObject.get("WORKTYPE").toString());
+                }
+                if (jsonObject.has("ACWORKTYPE")) {
+                    orderMain.setReality_worktype(jsonObject.get("ACWORKTYPE").toString());
+                }
+                if (jsonObject.has("WORKDW")) {
+                    orderMain.setApplyunity(jsonObject.get("WORKDW").toString());
+                }
+                if (jsonObject.has("WORKZY")) {
+                    orderMain.setMajor(jsonObject.get("WORKZY").toString());
+                }
+                if (jsonObject.has("STATUS")) {
+                    orderMain.setState(jsonObject.get("STATUS").toString());
+                }
+                if (jsonObject.has("STATUSDATE")) {
+                    orderMain.setDate(jsonObject.get("STATUSDATE").toString());
+                }
+                if (jsonObject.has("JPNUM")) {
+                    orderMain.setWorkplan(jsonObject.getString("JPNUM"));
+                }
+                if (jsonObject.has("ONBEHALFOF")) {
+                    orderMain.setEmployee_id(jsonObject.get("ONBEHALFOF").toString());
+                }
+                if (jsonObject.has("ACTSTART")) {
+                    orderMain.setReality_starttime(jsonObject.get("ACTSTART").toString());
+                }
+                if (jsonObject.has("ACTFINISH")) {
+                    orderMain.setReality_stoptime(jsonObject.get("ACTFINISH").toString());
+                }
+                if (jsonObject.has("BZ")) {
+                    orderMain.setQuestiontogether(jsonObject.get("BZ").toString());
+                }
+                if (jsonObject.has("ESTDUR")) {
+                    orderMain.setRatinghours(jsonObject.get("ESTDUR").toString());
+                }
+                if (jsonObject.has("PMNUM")) {
+                    orderMain.setPm(jsonObject.get("PMNUM").toString());
+                }
+                if (jsonObject.has("ASSETNUMLIST")) {
+                    orderMain.setNotinspection_device(jsonObject.get("ASSETNUMLIST").toString());
+                }
+                if (jsonObject.has("JCJG")) {//检查结果
+                    orderMain.setInspect_result(jsonObject.get("JCJG").toString());
+                }
+                if (jsonObject.has("FAILURECODE")) {//故障类
+                    orderMain.setFaultclass(jsonObject.get("FAILURECODE").toString());
+                }
+                if (jsonObject.has("PROBLEMCODE")) {//问题代码
+                    orderMain.setError_coding(jsonObject.get("PROBLEMCODE").toString());
+                }
+                if (jsonObject.has("GZDJ")) {//工作等级
+                    orderMain.setFault_rank(jsonObject.get("GZDJ").toString());
+                }
+                if (jsonObject.has("PROBLEM")) {//现象
+                    orderMain.setPhenomena(jsonObject.get("PROBLEM").toString());
+                }
+                if (jsonObject.has("CAUSE")) {//措施
+                    orderMain.setCause(jsonObject.get("CAUSE").toString());
+                }
+                if (jsonObject.has("REMEDY")) {//原因
+                    orderMain.setRemedy(jsonObject.get("REMEDY").toString());
+                }
+                orderMain.setIsNew(false);
+                orderMain.setIsByserch(true);
                 list.add(orderMain);
             }
 
@@ -879,5 +963,110 @@ public class JsonUtils {
         }
     }
 
+    /**
+     * 解析员工信息数据
+     *
+     * @param ctx
+     * @param str
+     */
+    public static List<WorkerInfo> parsingWorkInfo(Context ctx, String str) {
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            WorkerInfo workerInfo;
+            SimpleDateFormat dd=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat d1=new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat d2=new SimpleDateFormat("HH:mm:ss");
+            Date startdate;
+            Date stopdate;
+            Date starttime;
+            Date stoptime;
+            List<WorkerInfo>workerInfos = new ArrayList<>();
+            WorkerInfoDao workerInfoDao = new WorkerInfoDao(ctx);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                workerInfo = new WorkerInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                workerInfo.setLabtransId(jsonObject.getString("LABTRANSID"));
+                workerInfo.setNumber(jsonObject.getString("LABORCODE"));
+                if(!jsonObject.getString("STARTDATE").equals("")||jsonObject.getString("STARTDATE")!=null){
+                    startdate = dd.parse(jsonObject.getString("STARTDATE"));
+                    workerInfo.setStartdate(d1.format(startdate));
+                }
+                if(!jsonObject.getString("FINISHDATE").equals("")||jsonObject.getString("FINISHDATE")!=null){
+                    stopdate = dd.parse(jsonObject.getString("FINISHDATE"));
+                    workerInfo.setStopdate(d1.format(stopdate));
+                }
+                if(!jsonObject.getString("STARTTIME").equals("")||jsonObject.getString("STARTTIME")!=null){
+                    starttime = dd.parse(jsonObject.getString("STARTTIME"));
+                    workerInfo.setStarttime(d2.format(starttime));
+                }
+                if(!jsonObject.getString("FINISHTIME").equals("")||jsonObject.getString("FINISHTIME")!=null){
+                    stoptime = dd.parse(jsonObject.getString("FINISHTIME"));
+                    workerInfo.setStoptime(d2.format(stoptime));
+                }
+                workerInfo.setWorktime(jsonObject.getString("REGULARHRS"));
+                workerInfos.add(workerInfo);
+//                }
+            }
+            return workerInfos;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    /**
+     * 解析计划物料消耗数据
+     *
+     * @param ctx
+     * @param str
+     */
+    public static List<MaterialInfo> parsingWpMaterial(Context ctx, String str) {
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            MaterialInfo materialInfo;
+            List<MaterialInfo>materialInfoList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                materialInfo = new MaterialInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                    materialInfo.setName(jsonObject.getString("DESCRIPTION"));
+                    materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
+                    materialInfo.setSize(jsonObject.getInt("ITEMQTY"));
+                    materialInfo.setWarehouse(jsonObject.getString("LOCATION"));
+                    materialInfo.setIsPlan(true);
+                    materialInfoList.add(materialInfo);
+            }
+            return materialInfoList;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //    DEPTMATUSETRANS
+    public static List<MaterialInfo> parsingDeptmatusetrans(Context ctx, String str) {
+        try {
+            JSONArray jsonArray = new JSONArray(str);
+            JSONObject jsonObject;
+            MaterialInfo materialInfo;
+            List<MaterialInfo>materialInfoList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                materialInfo = new MaterialInfo();
+                jsonObject = jsonArray.getJSONObject(i);
+                materialInfo.setName(jsonObject.getString("BJMC"));
+                materialInfo.setNumber(jsonObject.getString("ITEMNUM"));
+                materialInfo.setSize(jsonObject.getInt("COUNT"));
+                materialInfo.setWarehouse(jsonObject.getString("LOCATION"));
+                materialInfo.setIsPlan(false);
+                materialInfoList.add(materialInfo);
+            }
+            return materialInfoList;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<MaterialInfo>();
+    }
 }

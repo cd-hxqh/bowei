@@ -23,7 +23,7 @@ public class AndroidClientService {
     private static final String TAG = "AndroidClientService";
     public String NAMESPACE = "http://webservice.hxqh";
     public String url = "http://182.92.8.94:7001/meaweb/services/CUWO";
-    public int timeOut = 60000;
+    public int timeOut = 1200000;
 
     public AndroidClientService() {
     }
@@ -82,7 +82,7 @@ public class AndroidClientService {
         soapReq.addProperty("in0", string);
         soapReq.addProperty("in1",1);
         soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try {
             httpTransport.call("", soapEnvelope);
         } catch (IOException e) {
@@ -112,7 +112,7 @@ public class AndroidClientService {
         soapReq.addProperty("in0", string);
         soapReq.addProperty("in1", 0);
         soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try {
             httpTransport.call("", soapEnvelope);
         } catch (IOException e) {
@@ -142,7 +142,7 @@ public class AndroidClientService {
         soapReq.addProperty("in0", string);
         soapReq.addProperty("in1", 1);
         soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try {
             httpTransport.call("", soapEnvelope);
         } catch (IOException e) {
@@ -172,7 +172,7 @@ public class AndroidClientService {
         soapReq.addProperty("in0", string);
         soapReq.addProperty("in1", 0);
         soapEnvelope.setOutputSoapObject(soapReq);
-        HttpTransportSE httpTransport = new HttpTransportSE(url);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try {
             httpTransport.call("", soapEnvelope);
         } catch (IOException e) {

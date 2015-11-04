@@ -1,5 +1,6 @@
 package com.cdhxqh.bowei.ui.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,7 +11,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.R;
@@ -30,6 +36,8 @@ import java.util.ArrayList;
 public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,SwipeRefreshLayout.OnLoadListener {
 
     private static final String TAG="KnowKedge_Fragment";
+
+    public String type = "";
     /**适配器**/
     KnowKedgeAdapter knowKedgeAdapter;
 
@@ -42,6 +50,8 @@ public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.O
     LinearLayoutManager layoutManager;
     public RecyclerView recyclerView;
 
+    AlertDialog mAlertDialog;
+    String[] itemList = null;
     private int page = 1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,17 +109,54 @@ public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.O
 
 
 //        knowKedgeAdapter.update(addKnow(),true);
-
-        getKnowKegeInfo();
+        showdioalog();
     }
 
 
+    private void showdioalog(){
+        itemList = new String[]{"技术资料", "应急预案",};
+        ListAdapter mAdapter = new ArrayAdapter(getActivity(), R.layout.dialog_item, itemList);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.dialog_title, null);
+
+        TextView titleview = (TextView) view.findViewById(R.id.titleView);
+        titleview.setText(getResources().getString(R.string.know_dl));
+        ListView listview = (ListView) view.findViewById(android.R.id.list);
+        listview.setAdapter(mAdapter);
+        listview.setOnItemClickListener(listener);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        mAlertDialog = builder.create();
+        mAlertDialog.show();
+        mAlertDialog.getWindow().setContentView(view);
+        mAlertDialog.setCancelable(false);
+//        mAlertDialog.getWindow().setLayout(150, 320);
+    }
+
+
+    private AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position) {
+                case 0: //技术资料
+                    mAlertDialog.dismiss();
+                    type = itemList[0];
+                    getKnowKegeInfo();
+                    break;
+                case 1: //应急预案
+                    mAlertDialog.dismiss();
+                    type = itemList[1];
+                    getKnowKegeInfo();
+                    break;
+            }
+        }
+    };
     /**添加测试数据**/
     private ArrayList<Knowledge> addKnow(){
         ArrayList<Knowledge> arrayList=new ArrayList<Knowledge>();
         for (int i=0;i<10;i++){
             Knowledge knowledge=new Knowledge();
-            knowledge.setKnowledgeid(i);
+//            knowledge.setKnowledgeid(i);
             knowledge.setKnowdesc("关于螺丝刀刀片的使用情况");
             arrayList.add(knowledge);
         }
@@ -120,7 +167,7 @@ public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.O
 
     /**获取知识库信息**/
     private void getKnowKegeInfo(){
-        HttpManager.getDataInfo(getActivity(), Constants.KNOW_LEDGE_LIST, new HttpRequestHandler<String>() {
+        HttpManager.getDataInfo(getActivity(), Constants.getKnow_ledge_list(1,type), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 Log.i(TAG, "data=" + data);
@@ -149,7 +196,7 @@ public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.O
     /**刷新知识库信息**/
     private void refreshKnowKegeInfo(){
         page=1;
-        HttpManager.getDataInfo(getActivity(), Constants.KNOW_LEDGE_LIST, new HttpRequestHandler<String>() {
+        HttpManager.getDataInfo(getActivity(), Constants.getKnow_ledge_list(1,type), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 Log.i(TAG, "data=" + data);
@@ -179,7 +226,7 @@ public class KnowKedge_Fragment extends Fragment implements SwipeRefreshLayout.O
 
     /**加载更多知识库信息**/
     private void addmoreKnowKegeInfo(int page){
-        HttpManager.getDataInfo(getActivity(), Constants.getKnow_ledge_list(page), new HttpRequestHandler<String>() {
+        HttpManager.getDataInfo(getActivity(), Constants.getKnow_ledge_list(page,type), new HttpRequestHandler<String>() {
             @Override
             public void onSuccess(String data) {
                 Log.i(TAG, "data=" + data);

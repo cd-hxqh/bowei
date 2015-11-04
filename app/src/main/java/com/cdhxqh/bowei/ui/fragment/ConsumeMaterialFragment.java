@@ -91,7 +91,7 @@ public class ConsumeMaterialFragment extends Fragment {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && consumeMaterialAdapter.getItemCount()==0) {
                 // async http request here
-                if (orderMain.isNew()) {
+                if (orderMain.isNew()&&!orderMain.isByserch()) {
                     getlocationData();
                 } else {
                     getData();
@@ -114,8 +114,13 @@ public class ConsumeMaterialFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
-                        addData(id);
+                        if (!orderMain.isByserch()) {
+                            JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
+                            addData(id);
+                        } else {
+                            List<MaterialInfo> materialInfoList = JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"));
+                            addMaterialList(materialInfoList);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,7 +141,7 @@ public class ConsumeMaterialFragment extends Fragment {
     }
 
     private void getlocationData() {
-        if (new MaterialInfoDao(getActivity()).queryByLabtransId(id, true).size() == 0) {
+        if (new MaterialInfoDao(getActivity()).queryByLabtransId(id, true).size() == 0&&!orderMain.getWorkplan().equals("")) {
             Jobplan jobplan = new JobPlanDao(getActivity()).queryByJobNum(orderMain.getWorkplan());
             List<Jobmaterial> jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
             MaterialInfo materialInfo;
@@ -168,5 +173,20 @@ public class ConsumeMaterialFragment extends Fragment {
             nodatalayout.setVisibility(View.GONE);
         }
         consumeMaterialAdapter.update(list, true);
+    }
+
+    private void addMaterialList(List<MaterialInfo> materialInfoList){
+        ArrayList<MaterialInfo> list = new ArrayList<MaterialInfo>();
+
+        if (materialInfoList.size() == 0||materialInfoList==null) {
+            nodatalayout.setVisibility(View.VISIBLE);
+        } else {
+            nodatalayout.setVisibility(View.GONE);
+            for (int i = 0; i < materialInfoList.size(); i++) {
+                list.add(i, materialInfoList.get(i));
+            }
+            consumeMaterialAdapter.update(list, true);
+        }
+
     }
 }

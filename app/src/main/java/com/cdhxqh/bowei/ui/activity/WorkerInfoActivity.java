@@ -41,7 +41,9 @@ public class WorkerInfoActivity extends BaseActivity{
     private RelativeLayout stoptime_layout;
     private TextView worktime;
     private Button ok;
+    private Button delete;
     private WorkerInfo workerInfo;
+    private boolean isBySerch;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private int layoutnum = 0;
@@ -74,11 +76,16 @@ public class WorkerInfoActivity extends BaseActivity{
         starttime_layout = (RelativeLayout) findViewById(R.id.worker_info_start_time_layout);
         stoptime_layout = (RelativeLayout) findViewById(R.id.worker_info_stop_time_layout);
         ok = (Button) findViewById(R.id.info_ok);
+        delete = (Button) findViewById(R.id.info_delete);
     }
 
     @Override
     protected void initView() {
         workerInfo = (WorkerInfo) getIntent().getExtras().getSerializable("workinfo");
+        isBySerch = getIntent().getExtras().getBoolean("isBySerch");
+        if(isBySerch){
+            ok.setVisibility(View.GONE);
+        }
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +107,13 @@ public class WorkerInfoActivity extends BaseActivity{
                     new WorkerInfoDao(WorkerInfoActivity.this).update(workerInfo);
                     finish();
                 }
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new WorkerInfoDao(WorkerInfoActivity.this).deleteById(workerInfo.getId());
+                finish();
             }
         });
         titlename.setText(getResources().getString(R.string.worker_info));

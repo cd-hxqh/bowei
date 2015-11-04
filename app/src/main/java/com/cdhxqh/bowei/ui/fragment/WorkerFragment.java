@@ -64,7 +64,7 @@ public class WorkerFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.worker_list);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        workerInfoAdapter = new WorkerInfoAdapter(getActivity());
+        workerInfoAdapter = new WorkerInfoAdapter(getActivity(),orderMain.isByserch());
         recyclerView.setAdapter(workerInfoAdapter);
         id = orderMain.getId();
         num = orderMain.getNumber();
@@ -77,10 +77,14 @@ public class WorkerFragment extends Fragment {
         if (this.isVisible()) {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && workerInfoAdapter.getItemCount()==0) {
-                if(orderMain.getNumber().equals("")){
-                    addData(id);
+                if(!orderMain.isByserch()) {
+                    if (orderMain.getNumber().equals("")) {
+                        addData(id);
+                    } else {
+                        getData();
+                    }
                 }else {
-                    getData();
+                        getData();
                 }
                 // async http request here
                 mHasLoadedOnce = true;
@@ -105,8 +109,13 @@ public class WorkerFragment extends Fragment {
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        JsonUtils.parsingWorkInfo(getActivity(), jsonObject.getString("result"), id);
-                        addData(id);
+                        if (!orderMain.isByserch()) {
+                            JsonUtils.parsingWorkInfo(getActivity(), jsonObject.getString("result"), id);
+                            addData(id);
+                        } else {
+                            List<WorkerInfo> workerInfoList = JsonUtils.parsingWorkInfo(getActivity(), jsonObject.getString("result"));
+                            addWorkerList(workerInfoList);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -148,5 +157,18 @@ public class WorkerFragment extends Fragment {
         }else {
             nodatalayout.setVisibility(View.GONE);
         }
+    }
+
+    private void addWorkerList(List<WorkerInfo> workerInfoList){
+        ArrayList<WorkerInfo> list = new ArrayList<WorkerInfo>();
+        for (int i = 0; i < workerInfoList.size(); i++) {
+            list.add(i,workerInfoList.get(i));
+        }
+        if(workerInfoList.size()==0){
+            nodatalayout.setVisibility(View.VISIBLE);
+        }else {
+            nodatalayout.setVisibility(View.GONE);
+        }
+        workerInfoAdapter.update(list, true);
     }
 }

@@ -1,8 +1,10 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,6 +73,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private EditText notinspection_device;//未巡检设备
     private TextView inspect_result;//检查结果
     private Button save;
+    private Button yuzhi;
     private Button inputbtn;
 
     private DatePickerDialog datePickerDialog;
@@ -80,18 +83,35 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private ProgressDialog mProgressDialog;
     protected static final int S = 0;
     protected static final int F = 1;
+    protected static final int YUZHI_S = 2;
+    protected static final int YUZHI_F = 3;
     private String result;
+    private String yuzhi_result;
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
+                    mProgressDialog.dismiss();
                     Toast.makeText(MaintenanceDetailActivity.this, "工单" + orderMain.getNumber() + "提交成功", Toast.LENGTH_SHORT).show();
                     new OrderMainDao(MaintenanceDetailActivity.this).deleteById(orderMain.getId());
                     MaintenanceDetailActivity.this.finish();
                     break;
                 case F:
+                    mProgressDialog.dismiss();
                     Toast.makeText(MaintenanceDetailActivity.this, "提交失败" + result, Toast.LENGTH_SHORT).show();
+                    break;
+                case YUZHI_S:
+                    mProgressDialog.dismiss();
+                    number.setText(yuzhi_result);
+                    yuzhi.setVisibility(View.GONE);
+                    orderMain.setIsyuzhi(true);
+                    new OrderMainDao(MaintenanceDetailActivity.this).update(SaveData());
+                    Toast.makeText(MaintenanceDetailActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case YUZHI_F:
+                    mProgressDialog.dismiss();
+                    Toast.makeText(MaintenanceDetailActivity.this, "获取工单编号失败," + yuzhi_result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -157,6 +177,7 @@ public class MaintenanceDetailActivity extends BaseActivity {
         notinspection_device = (EditText) findViewById(R.id.notinspection_device);
         inspect_result = (TextView) findViewById(R.id.inspect_result);
         save = (Button) findViewById(R.id.order_detail_save);
+        yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -164,36 +185,34 @@ public class MaintenanceDetailActivity extends BaseActivity {
     protected void initView() {
         getData();
         setview();
+        if (orderMain.getNumber().equals("") || orderMain.getNumber() == null) {
+            yuzhi.setVisibility(View.VISIBLE);
+        }
         workimg.setVisibility(View.INVISIBLE);
         titlename.setText(getResources().getString(R.string.maintenance));
-        backimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(MaintenanceDetailActivity.this, getResources().getString(R.string.maintenance),
-                        orderMain.getId());
+                        orderMain);
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
 
         setDataListener();
-        placelayout.setOnClickListener(new MylayoutListener(1));
-        propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
-        reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
-        applyunitylayout.setOnClickListener(new MylayoutListener(5));
-        majorlayout.setOnClickListener(new MylayoutListener(6));
-        employee_idlayout.setOnClickListener(new MylayoutListener(7));
-        datelayout.setOnClickListener(new MydateListener());
-//        workplanlayout.setOnClickListener(new MylayoutListener(9));
-        reality_starttimelayout.setOnClickListener(new MydateListener());
-        reality_stoptimelayout.setOnClickListener(new MydateListener());
+        if (!orderMain.isByserch()) {
+            placelayout.setOnClickListener(new MylayoutListener(1));
+            propertylayout.setOnClickListener(new MylayoutListener(2));
 
+            worktypelayout.setOnClickListener(new MylayoutListener(3));
+            reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
+            applyunitylayout.setOnClickListener(new MylayoutListener(5));
+            majorlayout.setOnClickListener(new MylayoutListener(6));
+            employee_idlayout.setOnClickListener(new MylayoutListener(7));
+            datelayout.setOnClickListener(new MydateListener());
+            reality_starttimelayout.setOnClickListener(new MydateListener());
+            reality_stoptimelayout.setOnClickListener(new MydateListener());
+        }
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +220,34 @@ public class MaintenanceDetailActivity extends BaseActivity {
                 finish();
             }
         });
+
+        yuzhi.setOnClickListener(yuzhilistener);
         inputbtn.setOnClickListener(inputlistener);
+
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!orderMain.isByserch()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MaintenanceDetailActivity.this);
+                    builder.setMessage("是否保存工单详情?").setTitle("提示")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            save.performClick();
+                        }
+                    }).create().show();
+                }else {
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -229,6 +275,11 @@ public class MaintenanceDetailActivity extends BaseActivity {
     }
 
     private void setview() {
+        if(orderMain.isByserch()){
+            save.setVisibility(View.GONE);
+            yuzhi.setVisibility(View.GONE);
+            inputbtn.setVisibility(View.GONE);
+        }
         number.setText(orderMain.getNumber() + "");
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
@@ -253,51 +304,114 @@ public class MaintenanceDetailActivity extends BaseActivity {
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MaintenanceDetailActivity.this);
+            builder.setMessage("请确认已填写员工信息及任务执行人，检查人").setTitle("提示")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    String isok = isOK();
+                    if (isok.equals("OK")) {
+                        final OrderMain orderMain = SaveData();
+                        final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), MaintenanceDetailActivity.this, orderMain);
+                        mProgressDialog = ProgressDialog.show(MaintenanceDetailActivity.this, null,
+                                getString(R.string.inputing), true, true);
+                        mProgressDialog.setCanceledOnTouchOutside(false);
+                        mProgressDialog.setCancelable(false);
+                        new AsyncTask<String, String, String>() {
+                            @Override
+                            protected String doInBackground(String... strings) {
+                                if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
+                                    result = getBaseApplication().getWsService().InsertWO(data);
+                                } else if (orderMain.isNew() && orderMain.isyuzhi()) {
+                                    result = getBaseApplication().getWsService().UpdataWOyz(data);
+                                } else if (!orderMain.isNew()) {
+                                    result = getBaseApplication().getWsService().UpdataWO(data);
+                                } else {
+                                    result = "false";
+                                }
+                                return result;
+                            }
+
+                            @Override
+                            protected void onPostExecute(String s) {
+                                super.onPostExecute(s);
+                                if (s.equals("false")) {
+                                    mHandler.sendEmptyMessage(F);
+                                    return;
+                                }
+                                if (s != null) {
+                                    try {
+                                        JSONObject object = new JSONObject(s);
+                                        if (object.getString("errorMsg").equals("成功")) {
+                                            mHandler.sendEmptyMessage(S);
+                                        } else {
+                                            mHandler.sendEmptyMessage(F);
+                                        }
+                                        result = object.getString("errorMsg");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }.execute();
+                    } else if (isok.equals("请完善信息")) {
+                        Toast.makeText(MaintenanceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).create().show();
+        }
+    };
+
+    private View.OnClickListener yuzhilistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
             String isok = isOK();
             if (isok.equals("OK")) {
-                final OrderMain orderMain = SaveData();
-                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), MaintenanceDetailActivity.this, orderMain);
+                SaveData();
                 mProgressDialog = ProgressDialog.show(MaintenanceDetailActivity.this, null,
-                        getString(R.string.inputing), true, true);
+                        getString(R.string.requesting), true, true);
                 mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.setCancelable(false);
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
-                        if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
-                            result = getBaseApplication().getWsService().InsertWO(data);
-                        } else if (orderMain.isNew() && orderMain.isyuzhi()) {
-                            result = getBaseApplication().getWsService().UpdataWOyz(data);
-                        } else if (!orderMain.isNew()) {
-                            result = getBaseApplication().getWsService().UpdataWO(data);
+                        String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), MaintenanceDetailActivity.this, orderMain);
+                        String S = getBaseApplication().getWsService().InsertWOyz(data);
+                        if (S == null) {
+                            return "false";
                         } else {
-                            result = "false";
+                            return S;
                         }
-                        return result;
                     }
 
                     @Override
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
-                        if (s.equals("false")) {
-                            mHandler.sendEmptyMessage(F);
-                            return;
-                        }
-                        if (s != null) {
+                        if (!s.equals("false")) {
                             try {
                                 JSONObject object = new JSONObject(s);
                                 if (object.getString("errorMsg").equals("成功")) {
-                                    mHandler.sendEmptyMessage(S);
+                                    mHandler.sendEmptyMessage(YUZHI_S);
+                                    yuzhi_result = object.getString("woNum");
                                 } else {
-                                    mHandler.sendEmptyMessage(F);
+                                    mHandler.sendEmptyMessage(YUZHI_F);
+                                    yuzhi_result = object.getString("errorMsg");
                                 }
-                                result = object.getString("errorMsg");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        } else {
+                            mHandler.sendEmptyMessage(YUZHI_F);
                         }
+                        mProgressDialog.dismiss();
                     }
                 }.execute();
-                mProgressDialog.dismiss();
             } else if (isok.equals("请完善信息")) {
                 Toast.makeText(MaintenanceDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
@@ -416,11 +530,12 @@ public class MaintenanceDetailActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
-                ||place.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")
                 || employee_id.getText().equals("")) {
+            return "请完善信息";
+        }else if(place.getText().equals("")&&property.getText().equals("")){
             return "请完善信息";
         } else {
             return "OK";
@@ -428,8 +543,6 @@ public class MaintenanceDetailActivity extends BaseActivity {
     }
 
     private OrderMain SaveData() {
-        OrderMain orderMain = this.orderMain;
-        orderMain.setId(this.orderMain.getId());
         if (number.getText().toString() != null) {
             orderMain.setNumber(number.getText().toString());
         }

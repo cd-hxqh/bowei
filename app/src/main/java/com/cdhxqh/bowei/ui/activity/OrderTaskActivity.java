@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cdhxqh.bowei.Dao.ErsonDao;
+import com.cdhxqh.bowei.Dao.JobPlanDao;
 import com.cdhxqh.bowei.Dao.JobTaskDao;
 import com.cdhxqh.bowei.Dao.OrderMainDao;
 import com.cdhxqh.bowei.Dao.OrderTaskDao;
@@ -47,7 +48,7 @@ import java.util.Map;
 /**
  * Created by think on 2015/8/20.
  */
-public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,SwipeRefreshLayout.OnLoadListener{
+public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.OnLoadListener {
     private ImageView backimg;
     private TextView titlename;
     private ImageView addimg;
@@ -61,13 +62,15 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
     private LinearLayout nodatalayout;
     String name;
     int id;
-    OrderMain orderMain;
+    public OrderMain orderMain;
     public boolean isMultiple = false;
     AlertDialog.Builder builder1;
     AlertDialog.Builder builder2;
     private String[] mItems1 = {"执行人", "检查人"};
-    private String[] mItems2;
+    private String[] mItems2;//人员列表
+    private String[] mItems3;//班组列表
     ArrayList<String> MultiChoiceID = new ArrayList<String>();
+    ArrayList<String> MultiChoiceID2 = new ArrayList<String>();
     private int chooseitem;
 
     @Override
@@ -101,8 +104,7 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void initView() {
         name = (String) getIntent().getExtras().get("fromname");
-        id = getIntent().getExtras().getInt("orderid");
-        orderMain = new OrderMainDao(this).SearchByNum(id);
+        orderMain = (OrderMain) getIntent().getSerializableExtra("orderMain");
         addimg.setVisibility(View.GONE);
         titlename.setText(getResources().getString(R.string.task_list));
         layoutManager = new LinearLayoutManager(this);
@@ -114,12 +116,12 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
         recyclerView.setAdapter(orderTaskAdapter);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadListener(this);
-//        refreshLayout.setRefreshing(true);
-        if (orderMain.isNew()) {//本地新建工单
+        if(!orderMain.isByserch()&&!orderMain.getWorkplan().equals("")) {
             addLocationTask(orderMain.getId());
-        } else {//接收的工单
+        }else if(orderMain.isByserch()){
             getData();
         }
+
 
 
         backimg.setOnClickListener(new View.OnClickListener() {
@@ -141,16 +143,17 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
     private View.OnClickListener chooselistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(orderTaskAdapter.checkedlist.size()==0){
+            if (orderTaskAdapter.checkedlist.size() == 0) {
                 Toast.makeText(OrderTaskActivity.this,
-                        getResources().getString(R.string.please_choose_task),Toast.LENGTH_SHORT).show();
-            }else {
+                        getResources().getString(R.string.please_choose_task), Toast.LENGTH_SHORT).show();
+            } else {
                 builder1 = new AlertDialog.Builder(OrderTaskActivity.this);
                 builder1.setTitle("工作选择");
                 builder1.setItems(mItems1, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         chooseitem = which;
-                        showdialog();
+                        showItemdialog();
+//                        showErsondialog();
                     }
                 });
                 builder1.create().show();
@@ -158,16 +161,71 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
         }
     };
 
-    private void showdialog() {
+    /**
+     * 班组选择复选对话框
+     */
+    private void showItemdialog() {
         List<Erson> ersonList = new ErsonDao(this).queryForAll();
+        final List<String> itemlist = new ArrayList<String>();//选项列表
+        for (int i = 0; i < ersonList.size(); i++) {
+            if (!itemlist.contains(ersonList.get(i).getYWBZ()+"-"+(ersonList.get(i).getYWFL().equals("")?"无":ersonList.get(i).getYWFL()))) {
+                itemlist.add(ersonList.get(i).getYWBZ()+"-"+(ersonList.get(i).getYWFL().equals("")?"无":ersonList.get(i).getYWFL()));
+            }
+        }
+        boolean[] mItems4 = new boolean[itemlist.size()];
+        for(int j = 0;j < itemlist.size();j ++){
+            mItems4[j] =false;
+        }
+        mItems3 = (String[]) itemlist.toArray(new String[itemlist.size()]);
+        MultiChoiceID2.clear();
+        new AlertDialog.Builder(this).setTitle("班组选择").setMultiChoiceItems(
+                mItems3, mItems4, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int whichButton,
+                                        boolean isChecked) {
+                        if (isChecked) {
+                            MultiChoiceID2.add(whichButton + "");
+                        } else {
+                            if (MultiChoiceID2.contains(whichButton + "")) {
+                                MultiChoiceID2.remove(whichButton + "");
+                            }
+                        }
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (MultiChoiceID2.size() > 0) {
+                            List<String> list = new ArrayList<String>();
+                            for (int m = 0; m < MultiChoiceID2.size(); m++) {
+                                list.add(m, itemlist.get(Integer.parseInt(MultiChoiceID2.get(m))));
+                            }
+                            showErsondialog(list);
+                        } else {
+                            Toast.makeText(OrderTaskActivity.this,"请选择班组",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null).show();
+    }
+
+    /**
+     * 显示员工列表
+     */
+    private void showErsondialog(List<String> list) {
+        List<Erson> ersonList = new ArrayList<>();
+        for(int i = 0;i < list.size();i ++){
+            ersonList.addAll(new ErsonDao(this).queryByItem(list.get(i)));
+        }
+//        List<Erson> ersonList = new ErsonDao(this).queryBylist(list);
         List<String> itemlist = new ArrayList<String>();//选项列表
         final List<String> itemlist1 = new ArrayList<String>();//对应员工列表
         boolean[] mItems3 = new boolean[ersonList.size()];
         for (int i = 0; i < ersonList.size(); i++) {
-            itemlist.add(i, ersonList.get(i).getPERSONID()+"       "+
-                    getResources().getString(R.string.item)+":"+(ersonList.get(i).getYWBZ().equals("")?"无":ersonList.get(i).getYWBZ()));
+            itemlist.add(i, ersonList.get(i).getDISPLAYNAME() + "       " +
+                    getResources().getString(R.string.item) + ":" + (ersonList.get(i).getYWBZ().equals("") ? "无" : ersonList.get(i).getYWBZ()));
             mItems3[i] = false;
-            itemlist1.add(i,ersonList.get(i).getPERSONID());
+            itemlist1.add(i, ersonList.get(i).getDISPLAYNAME());
         }
         mItems2 = (String[]) itemlist.toArray(new String[itemlist.size()]);
 //        Boolean[] mItems4 = (Boolean[]) initlist.toArray(new Boolean[initlist.size()]);
@@ -180,10 +238,10 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
                     public void onClick(DialogInterface dialog, int whichButton,
                                         boolean isChecked) {
                         if (isChecked) {
-                            MultiChoiceID.add(whichButton+"");
+                            MultiChoiceID.add(whichButton + "");
                         } else {
-                            if(MultiChoiceID.contains(whichButton+"")){
-                                MultiChoiceID.remove(whichButton+"");
+                            if (MultiChoiceID.contains(whichButton + "")) {
+                                MultiChoiceID.remove(whichButton + "");
                             }
                         }
 
@@ -193,7 +251,7 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
             public void onClick(DialogInterface dialog, int whichButton) {
                 String str = "";
                 int size = MultiChoiceID.size();
-                if(size>0) {
+                if (size > 0) {
                     for (int i = 0; i < size; i++) {
                         if (i == 0) {
 //                            str = mItems2[Integer.parseInt(MultiChoiceID.get(i))];
@@ -246,9 +304,8 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
                 try {
                     jsonObject = new JSONObject(data);
                     if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-//                        ((BaseApplication)getActivity().getApplication()).setOrderResult(jsonObject.getString("result"));
-                        JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"), orderMain.getId());
-                        addData(orderMain.getId());
+                        List<OrderTask> orderTaskList = JsonUtils.parsingOrderTask(OrderTaskActivity.this, jsonObject.getString("result"));
+                        addOrderTaskList(orderTaskList);
                         mProgressDialog.dismiss();
                     }
                 } catch (JSONException e) {
@@ -263,7 +320,7 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onFailure(String error) {
                 mProgressDialog.dismiss();
-                addData(orderMain.getId());
+                Toast.makeText(OrderTaskActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -278,30 +335,55 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
         if (orderTaskList.size() == 0) {
             nodatalayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+        }else if(nodatalayout.getVisibility()==View.VISIBLE){
+            nodatalayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        refreshLayout.setRefreshing(false);
+    }
+
+    private void addOrderTaskList(List<OrderTask> orderTaskList){
+        orderTaskAdapter = new OrderTaskAdapter(this, this);
+        recyclerView.setAdapter(orderTaskAdapter);
+        ArrayList<OrderTask> list = new ArrayList<OrderTask>();
+        for (int i = 0; i < orderTaskList.size(); i++) {
+            list.add(i, orderTaskList.get(i));
+        }
+        orderTaskAdapter.update(list, true);
+        if (orderTaskList.size() == 0) {
+            nodatalayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }else if(nodatalayout.getVisibility()==View.VISIBLE){
+            nodatalayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
         refreshLayout.setRefreshing(false);
     }
 
     private void addLocationTask(int id) {
-        if (new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size() > 0) {
+        List<OrderTask>orderTaskList = new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id);
+        if (new OrderTaskDao(OrderTaskActivity.this).queryByOrderId(id).size() > 0&&!orderMain.isByserch()) {
             addData(id);
         } else {
-            if (orderMain.getWorkplan()!=null) {
+            if (orderMain.getWorkplan() != null&&!orderMain.getWorkplan().equals("")) {
                 ArrayList<OrderTask> list = new ArrayList<OrderTask>();
                 OrderTask orderTask;
-                List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan());
+                List<String> jpnumList = new JobPlanDao(this).queryForparent(orderMain.getWorkplan());
+                List<JobTask> task = new JobTaskDao(this).QueryByJobTaskId(orderMain.getWorkplan(),jpnumList);
                 for (int i = 0; i < task.size(); i++) {
                     orderTask = new OrderTask();
                     orderTask.setBelongordermain(id);
                     orderTask.setNum(orderMain.getNumber());
                     orderTask.setDigest(task.get(i).getDESCRIPTION());
                     orderTask.setOrdermainid(String.valueOf(task.get(i).getJOBTASKID()));
-                    orderTask.setTask(task.get(i).getJPTASK());
+                    orderTask.setTask(String.valueOf(task.get(i).getJPTASK()));
 //            orderTask.setWosequence();
                     new OrderTaskDao(OrderTaskActivity.this).update(orderTask);
                     list.add(i, orderTask);
                 }
                 orderTaskAdapter.update(list, true);
+            }else {
+                nodatalayout.setVisibility(View.VISIBLE);
             }
         }
         refreshLayout.setRefreshing(false);
@@ -311,37 +393,34 @@ public class OrderTaskActivity extends BaseActivity implements SwipeRefreshLayou
         isMultiple = true;
         Multiplelayout.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(orderTaskAdapter);
-//        for (int i = 0; i < orderTaskAdapter.getItemCount()-1; i++) {
-//            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.GONE);
-//            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.VISIBLE);
-//        }
     }
 
     public void changeitenback() {
         isMultiple = false;
         Multiplelayout.setVisibility(View.GONE);
         recyclerView.setAdapter(orderTaskAdapter);
-//        for (int i = 0; i < orderTaskAdapter.getItemCount()-1; i++) {
-//            layoutManager.findViewByPosition(i).findViewById(R.id.task_main_in).setVisibility(View.VISIBLE);
-//            layoutManager.findViewByPosition(i).findViewById(R.id.task_checkbox).setVisibility(View.GONE);
-//        }
     }
 
 
     //下拉刷新触发事件
     @Override
     public void onRefresh() {
-        if (orderMain.isNew()) {//本地新建工单
+        orderTaskAdapter = new OrderTaskAdapter(this, this);
+        recyclerView.setAdapter(orderTaskAdapter);
+        if(!orderMain.isByserch()&&!orderMain.getWorkplan().equals("")) {
             addLocationTask(orderMain.getId());
-        } else {//接收的工单
+        }else if(orderMain.isByserch()){
             getData();
         }
+        refreshLayout.setRefreshing(false);
     }
+
     //上拉加载更多触发事件
     @Override
-    public void onLoad(){
+    public void onLoad() {
         refreshLayout.setLoading(false);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

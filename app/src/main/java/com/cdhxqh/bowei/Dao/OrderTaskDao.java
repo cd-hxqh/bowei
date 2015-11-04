@@ -97,6 +97,17 @@ public class OrderTaskDao {
         }
     }
 
+    /**
+     * 根据工单id删除任务
+     */
+    public void deleteById(int id){
+        try {
+            OrderTaskDaoOpe.delete(OrderTaskDaoOpe.queryBuilder().where().eq("belongordermain",id).query());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<OrderTask> queryByNum(String num){
         try {
             return OrderTaskDaoOpe.queryBuilder().where().eq("num",num).query();

@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/button_selector2"
             android:text="查询对应工单" />
 
         <Button
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimens_10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/button_selector2"
             android:text="新建工单" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,8 +1,10 @@
 package com.cdhxqh.bowei.ui.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -92,22 +94,40 @@ public class ServeDetailActivity extends BaseActivity {
     private ProgressDialog mProgressDialog;
 
     private Button save;
+    private Button yuzhi;
     private Button inputbtn;
 
     protected static final int S = 0;
     protected static final int F = 1;
+    protected static final int YUZHI_S = 2;
+    protected static final int YUZHI_F = 3;
     private String result;
+    private String yuzhi_result;
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case S:
+                    mProgressDialog.dismiss();
                     Toast.makeText(ServeDetailActivity.this, "工单" + orderMain.getNumber() + "提交成功", Toast.LENGTH_SHORT).show();
                     new OrderMainDao(ServeDetailActivity.this).deleteById(orderMain.getId());
                     ServeDetailActivity.this.finish();
                     break;
                 case F:
+                    mProgressDialog.dismiss();
                     Toast.makeText(ServeDetailActivity.this, "提交失败" + result, Toast.LENGTH_SHORT).show();
+                    break;
+                case YUZHI_S:
+                    mProgressDialog.dismiss();
+                    number.setText(yuzhi_result);
+                    yuzhi.setVisibility(View.GONE);
+                    orderMain.setIsyuzhi(true);
+                    new OrderMainDao(ServeDetailActivity.this).update(SaveData());
+                    Toast.makeText(ServeDetailActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case YUZHI_F:
+                    mProgressDialog.dismiss();
+                    Toast.makeText(ServeDetailActivity.this, "获取工单编号失败," + yuzhi_result, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -190,6 +210,7 @@ public class ServeDetailActivity extends BaseActivity {
 //        reporttime = (TextView) findViewById(R.id.order_detail_reporttime);
 //        reporttimelayout = (RelativeLayout) findViewById(R.id.order_detail_reporttime_layout);
         save = (Button) findViewById(R.id.order_detail_save);
+        yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
         inputbtn = (Button) findViewById(R.id.order_detail_input);
     }
 
@@ -197,41 +218,40 @@ public class ServeDetailActivity extends BaseActivity {
     protected void initView() {
         getData();
         setview();
+        if(orderMain.getNumber().equals("")||orderMain.getNumber()==null){
+            yuzhi.setVisibility(View.VISIBLE);
+        }
         titlename.setText(getResources().getString(R.string.serve));
-        backimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         moreimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OrderMorePopuowindow orderMorePopuowindow = new OrderMorePopuowindow(ServeDetailActivity.this, getResources().getString(R.string.serve),
-                        orderMain.getId());
+                        orderMain);
                 orderMorePopuowindow.showPopupWindow(moreimg);
             }
         });
 
         setDataListener();
 
-        placelayout.setOnClickListener(new MylayoutListener(1));
-        propertylayout.setOnClickListener(new MylayoutListener(2));
-        worktypelayout.setOnClickListener(new MylayoutListener(3));
-        reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
-        applyunitylayout.setOnClickListener(new MylayoutListener(5));
-        majorlayout.setOnClickListener(new MylayoutListener(6));
-        employee_idlayout.setOnClickListener(new MylayoutListener(7));
-        datelayout.setOnClickListener(new MydateListener());
+        if(!orderMain.isByserch()){
+            placelayout.setOnClickListener(new MylayoutListener(1));
+            propertylayout.setOnClickListener(new MylayoutListener(2));
+            worktypelayout.setOnClickListener(new MylayoutListener(3));
+            reality_worktypelayout.setOnClickListener(new MylayoutListener(4));
+            applyunitylayout.setOnClickListener(new MylayoutListener(5));
+            majorlayout.setOnClickListener(new MylayoutListener(6));
+            employee_idlayout.setOnClickListener(new MylayoutListener(7));
+            datelayout.setOnClickListener(new MydateListener());
 //        workplanlayout.setOnClickListener(new MylayoutListener(9));
-        faultclasslayout.setOnClickListener(new MylayoutListener(11));
-        error_codinglayout.setOnClickListener(new MylayoutListener(12));
-        phenomenalayout.setOnClickListener(new MylayoutListener(16));
-        causelayout.setOnClickListener(new MylayoutListener(13));
-        remedylayout.setOnClickListener(new MylayoutListener(14));
-        fault_ranklayout.setOnClickListener(new MylayoutListener(15));
-        reality_starttimelayout.setOnClickListener(new MydateListener());
-        reality_stoptimelayout.setOnClickListener(new MydateListener());
+            faultclasslayout.setOnClickListener(new MylayoutListener(11));
+            error_codinglayout.setOnClickListener(new MylayoutListener(12));
+            phenomenalayout.setOnClickListener(new MylayoutListener(16));
+            causelayout.setOnClickListener(new MylayoutListener(13));
+            remedylayout.setOnClickListener(new MylayoutListener(14));
+            fault_ranklayout.setOnClickListener(new MylayoutListener(15));
+            reality_starttimelayout.setOnClickListener(new MydateListener());
+            reality_stoptimelayout.setOnClickListener(new MydateListener());
+        }
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,6 +260,33 @@ public class ServeDetailActivity extends BaseActivity {
             }
         });
         inputbtn.setOnClickListener(inputlistener);
+
+        yuzhi.setOnClickListener(yuzhilistener);
+
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!orderMain.isByserch()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ServeDetailActivity.this);
+                    builder.setMessage("是否保存工单详情?").setTitle("提示")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            save.performClick();
+                        }
+                    }).create().show();
+                }else {
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -265,60 +312,126 @@ public class ServeDetailActivity extends BaseActivity {
     private View.OnClickListener inputlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ServeDetailActivity.this);
+            builder.setMessage("请确认已填写员工信息").setTitle("提示")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    String isok = isOK();
+                    if (isok.equals("OK")) {
+                        final OrderMain orderMain = SaveData();
+                        final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServeDetailActivity.this, orderMain);
+                        mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
+                                getString(R.string.inputing), true, true);
+                        mProgressDialog.setCanceledOnTouchOutside(false);
+                        mProgressDialog.setCancelable(false);
+                        new AsyncTask<String, String, String>() {
+                            @Override
+                            protected String doInBackground(String... strings) {
+                                if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
+                                    result = getBaseApplication().getWsService().InsertWO(data);
+                                } else if (orderMain.isNew() && orderMain.isyuzhi()) {
+                                    result = getBaseApplication().getWsService().UpdataWOyz(data);
+                                } else if (!orderMain.isNew()) {
+                                    result = getBaseApplication().getWsService().UpdataWO(data);
+                                } else {
+                                    result = "false";
+                                }
+                                return result;
+                            }
+
+                            @Override
+                            protected void onPostExecute(String s) {
+                                super.onPostExecute(s);
+                                if (s.equals("false")) {
+                                    mHandler.sendEmptyMessage(F);
+                                    return;
+                                }
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    if (object.getString("errorMsg").equals("成功")) {
+                                        mHandler.sendEmptyMessage(S);
+                                    } else {
+                                        mHandler.sendEmptyMessage(F);
+                                    }
+                                    result = object.getString("errorMsg");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.execute();
+                    } else if (isok.equals("请完善信息")) {
+                        Toast.makeText(ServeDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).create().show();
+        }
+    };
+    private View.OnClickListener yuzhilistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
             String isok = isOK();
             if (isok.equals("OK")) {
-                final OrderMain orderMain = SaveData();
-                final String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServeDetailActivity.this, orderMain);
+                SaveData();
                 mProgressDialog = ProgressDialog.show(ServeDetailActivity.this, null,
-                        getString(R.string.inputing), true, true);
+                        getString(R.string.requesting), true, true);
                 mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.setCancelable(false);
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
-                        if ((orderMain.isNew() && !orderMain.isyuzhi()) || (orderMain.isNew() && orderMain.getNumber().equals(""))) {
-                            result = getBaseApplication().getWsService().InsertWO(data);
-                        } else if (orderMain.isNew() && orderMain.isyuzhi()) {
-                            result = getBaseApplication().getWsService().UpdataWOyz(data);
-                        } else if (!orderMain.isNew()) {
-                            result = getBaseApplication().getWsService().UpdataWO(data);
+                        String data = WebserviceDataUtils.updateData(getBaseApplication().getUsername(), ServeDetailActivity.this, orderMain);
+                        String S = getBaseApplication().getWsService().InsertWOyz(data);
+                        if (S == null) {
+                            return "false";
                         } else {
-                            result = "false";
+                            return S;
                         }
-                        return result;
                     }
 
                     @Override
                     protected void onPostExecute(String s) {
                         super.onPostExecute(s);
-                        if (s.equals("false")) {
-                            mHandler.sendEmptyMessage(F);
-                            return;
-                        }
-                        try {
-                            JSONObject object = new JSONObject(s);
-                            if (object.getString("errorMsg").equals("成功")) {
-                                mHandler.sendEmptyMessage(S);
-                            } else {
-                                mHandler.sendEmptyMessage(F);
+                        if (!s.equals("false")) {
+                            try {
+                                JSONObject object = new JSONObject(s);
+                                if (object.getString("errorMsg").equals("成功")) {
+                                    mHandler.sendEmptyMessage(YUZHI_S);
+                                    yuzhi_result = object.getString("woNum");
+                                } else {
+                                    mHandler.sendEmptyMessage(YUZHI_F);
+                                    yuzhi_result = object.getString("errorMsg");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            result = object.getString("errorMsg");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            mHandler.sendEmptyMessage(YUZHI_F);
                         }
+                        mProgressDialog.dismiss();
                     }
                 }.execute();
-                mProgressDialog.dismiss();
             } else if (isok.equals("请完善信息")) {
                 Toast.makeText(ServeDetailActivity.this, isok, Toast.LENGTH_SHORT).show();
             }
         }
     };
-
     private void getData() {
         orderMain = (OrderMain) getIntent().getSerializableExtra("ordermain");
     }
 
     private void setview() {
+        if(orderMain.isByserch()){
+            save.setVisibility(View.GONE);
+            yuzhi.setVisibility(View.GONE);
+            inputbtn.setVisibility(View.GONE);
+        }
         number.setText(orderMain.getNumber());
         describe.setText(orderMain.getDescribe());
         place.setText(orderMain.getPlace());
@@ -528,6 +641,7 @@ public class ServeDetailActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
+                ||property.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")

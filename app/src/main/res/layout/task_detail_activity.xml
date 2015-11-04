@@ -28,6 +28,7 @@
             android:id="@+id/task_num"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:paddingLeft="5dp"
             android:background="@drawable/content_bg01"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -46,6 +47,7 @@
             android:id="@+id/task_digest"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingLeft="5dp"
             android:background="@drawable/content_bg01"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -129,7 +131,7 @@
                     android:id="@+id/order_jcr_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:padding="3dp"
+                    android:padding="5dp"
                     android:orientation="horizontal">
 
                 </LinearLayout>
@@ -143,7 +145,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="35dp"
-            android:background="@color/start_back_color"
+            android:background="@drawable/button_selector2"
             android:text="@string/OK"
             android:textSize="18sp" />
     </LinearLayout>

@@ -77,6 +77,7 @@ public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.View
                     Intent intent = new Intent();
                     intent.setClass(mContext, TaskDetailActivity.class);
                     intent.putExtra("orderTask", list.get(position));
+                    intent.putExtra("isByserch",activity.orderMain.isByserch());
                     mContext.startActivity(intent);
                 } else {
                     holder.checkBox.performClick();
@@ -86,8 +87,11 @@ public class OrderTaskAdapter extends RecyclerView.Adapter<OrderTaskAdapter.View
         holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                activity.changeitem();
-                return true;
+                if(activity.orderMain.getId()!=0) {
+                    activity.changeitem();
+                    return true;
+                }
+                return false;
             }
         });
 

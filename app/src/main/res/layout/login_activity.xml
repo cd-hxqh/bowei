@@ -11,7 +11,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/picture_ico"
         />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_color">
@@ -98,10 +98,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@color/blue_dark"
+            android:background="@drawable/button_selector"
             android:text="@string/login"
             android:textSize="18sp"
             android:textColor="@color/white"/>
     </LinearLayout>
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dimens_10dp"
+            android:orientation="vertical"
+            android:layout_marginTop="70dp">
+            <TextView
+                android:id="@+id/company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/develope_company"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/company_name"
+                android:layout_centerHorizontal="true"
+                android:text="@string/company_info"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

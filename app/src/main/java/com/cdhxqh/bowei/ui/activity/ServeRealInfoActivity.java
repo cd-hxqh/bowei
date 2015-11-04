@@ -89,20 +89,22 @@ public class ServeRealInfoActivity extends BaseActivity {
     protected void initView() {
         mViewPager.setCurrentItem(currentIndex);
         titlename.setText(getResources().getString(R.string.real_info));
-        id = getIntent().getExtras().getInt("orderid");
-        orderMain = new OrderMainDao(this).SearchByNum(id);
+        orderMain = (OrderMain) getIntent().getSerializableExtra("orderMain");
         backimg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        if(orderMain.isByserch()){
+            addimg.setVisibility(View.GONE);
+        }
         addimg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestCode = 1;
                 intent = new Intent(ServeRealInfoActivity.this,AddWorkerInfoActivity.class);
-                intent.putExtra("orderid",id);
+                intent.putExtra("orderid",orderMain.getId());
 //                startActivityForResult(intent, requestCode);
                 startActivity(intent);
             }

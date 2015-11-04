@@ -20,9 +20,11 @@ import java.util.ArrayList;
  */
 public class WorkerInfoAdapter extends RecyclerView.Adapter<WorkerInfoAdapter.ViewHolder> {
     Context mContext;
+    boolean isBySerch;
     ArrayList<WorkerInfo> list=new ArrayList<WorkerInfo>();
-    public WorkerInfoAdapter(Context context){
+    public WorkerInfoAdapter(Context context,boolean isBySerch){
         this.mContext = context;
+        this.isBySerch = isBySerch;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,6 +40,7 @@ public class WorkerInfoAdapter extends RecyclerView.Adapter<WorkerInfoAdapter.Vi
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("workinfo",list.get(position));
+                intent.putExtra("isBySerch",isBySerch);
                 intent.setClass(mContext,WorkerInfoActivity.class);
                 mContext.startActivity(intent);
             }

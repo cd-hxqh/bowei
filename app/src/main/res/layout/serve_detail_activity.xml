@@ -68,7 +68,11 @@
                 android:layout_height="30dp"
                 android:layout_marginBottom="20dp"
                 android:paddingLeft="3dp"
-                android:textSize="14dp"
+                android:editable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textSize="14sp"
                 android:textCursorDrawable="@null"
                 android:gravity="center_vertical"
                 android:textColor="@color/gray"
@@ -153,25 +157,25 @@
                 <!--android:gravity="center_vertical"-->
                 <!--android:textColor="@color/gray"-->
                 <!--android:background="@drawable/content_bg01"/>-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/content_bg02">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_centerVertical="true"
-                    android:text="@string/order_detail_reporttime"
-                    android:textColor="@color/black"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/gray"/>
-            </RelativeLayout>
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="@drawable/content_bg02">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:text="@string/order_detail_reporttime"-->
+                    <!--android:textColor="@color/black"/>-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:textColor="@color/gray"/>-->
+            <!--</RelativeLayout>-->
             <Button
                 android:id="@+id/order_detail_save"
                 android:layout_width="match_parent"
@@ -180,7 +184,17 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/save"
-                android:background="@color/start_back_color"/>
+                android:background="@drawable/button_selector2"/>
+            <Button
+                android:id="@+id/order_detail_yuzhi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/yuzhi"
+                android:background="@drawable/button_selector2"
+                android:visibility="gone"/>
             <Button
                 android:id="@+id/order_detail_input"
                 android:layout_width="match_parent"
@@ -189,7 +203,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:text="@string/order_detail_input"
-                android:background="@color/start_back_color"/>
+                android:background="@drawable/button_selector2"/>
         </LinearLayout>
 
     </ScrollView>

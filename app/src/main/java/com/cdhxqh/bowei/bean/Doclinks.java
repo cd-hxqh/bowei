@@ -16,7 +16,7 @@ public class Doclinks implements Serializable {
     private int id;
     /**附件编号**/
     @DatabaseField(columnName = "DOCUMENT")
-    private int document;
+    private String document;
     /**附件名称**/
     @DatabaseField(columnName = "DESCRIPTION")
     private String description;
@@ -33,11 +33,11 @@ public class Doclinks implements Serializable {
         this.id = id;
     }
 
-    public int getDocument() {
+    public String getDocument() {
         return document;
     }
 
-    public void setDocument(int document) {
+    public void setDocument(String document) {
         this.document = document;
     }
 

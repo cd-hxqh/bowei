@@ -16,6 +16,10 @@ public class Jobplan {
     private String JOBPLANID;
     @DatabaseField(columnName = "JPNUM")
     private String JPNUM;
+    @DatabaseField(columnName = "JPDURATION")
+    private String JPDURATION;
+    @DatabaseField(columnName = "PARENT")
+    private String PARENT;
 
     public int getId() {
         return id;
@@ -47,5 +51,21 @@ public class Jobplan {
 
     public void setJPNUM(String JPNUM) {
         this.JPNUM = JPNUM;
+    }
+
+    public String getJPDURATION() {
+        return JPDURATION;
+    }
+
+    public void setJPDURATION(String JPDURATION) {
+        this.JPDURATION = JPDURATION;
+    }
+
+    public String getPARENT() {
+        return PARENT;
+    }
+
+    public void setPARENT(String PARENT) {
+        this.PARENT = PARENT;
     }
 }

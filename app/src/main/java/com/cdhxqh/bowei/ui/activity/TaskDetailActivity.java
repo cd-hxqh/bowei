@@ -41,6 +41,7 @@ public class TaskDetailActivity extends BaseActivity{
 //    private EditText taskjcr;
     private LinearLayout jcrlayout;
     OrderTask orderTask;
+    boolean isByserch;
     private Button okbtn;
     private Button button3;
     private Button lastitem;
@@ -73,6 +74,10 @@ public class TaskDetailActivity extends BaseActivity{
     @Override
     protected void initView() {
         orderTask = (OrderTask) getIntent().getSerializableExtra("orderTask");
+        isByserch = getIntent().getBooleanExtra("isByserch",false);
+        if(isByserch){
+            okbtn.setVisibility(View.GONE);
+        }
         titlename.setText(getResources().getString(R.string.task_title));
         backimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +85,7 @@ public class TaskDetailActivity extends BaseActivity{
                 finish();
             }
         });
-        tasknum.setText(orderTask.getNum());
+        tasknum.setText(orderTask.getTask());
         taskdigest.setText(orderTask.getDigest());
 //        taskzxr.setText(orderTask.getZxr());
         String zxr = orderTask.getZxr();

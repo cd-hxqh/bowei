@@ -84,6 +84,9 @@ public class OrderMain implements Serializable {
     @DatabaseField(columnName = "belong")
     private String belong;//所属账号
 
+    @DatabaseField(columnName = "isByserch")
+    private boolean isByserch;//是否是查询得到的非本人工单
+
     public boolean isNew() {
         return isNew;
     }
@@ -362,5 +365,13 @@ public class OrderMain implements Serializable {
 
     public void setPhenomena_list(String phenomena_list) {
         this.phenomena_list = phenomena_list;
+    }
+
+    public boolean isByserch() {
+        return isByserch;
+    }
+
+    public void setIsByserch(boolean isByserch) {
+        this.isByserch = isByserch;
     }
 }

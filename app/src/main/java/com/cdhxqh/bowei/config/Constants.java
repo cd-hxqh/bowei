@@ -6,27 +6,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Constants {
-    //10.40.8.47:7013 测试 WOSUB-PM
-    //182.92.8.94:7001 开发  APPWFWO
-    public static String webserviceURL = "http://10.40.8.47:7013/maximo/services/WOService";//webservice接口地址
+    //http://10.40.8.47:7013 测试 WOSUB-PM
+//    http://182.92.8.94:7001 开发  APPWFWO
+//    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
+    public static String SERVER_URL = "http://182.92.8.94:7001";//测试服务器地址
 
-    public static String loginURL = "http://10.40.8.47:7013/maximo/mobile/system/login";//登录接口地址
+    public static String webserviceURL = SERVER_URL+"/maximo/services/WOService";//webservice接口地址
 
-    public static String SEARCHURL = "http://10.40.8.47:7013/maximo/mobile/common/api";//通用查询接口地址
+    public static String loginURL = SERVER_URL+"/maximo/mobile/system/login";//登录接口地址
 
-    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
+    public static String SEARCHURL = SERVER_URL+"/maximo/mobile/common/api";//通用查询接口地址
+
+
 
     /**工单测试接口**/
     public static String ORDER_GETDATA_TEST = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{WORKTYPE:'PM'}}";
     /**工单接口**/
     public static String ORDER_GETDATA = "";
     /**根据工单类型得到工单接口**/
-    public static String getOrderUrl(int page,String type){
+    public static String getOrderUrl(int page,String type,String reportdate){
         if(!ORDER_GETDATA.equals("")){
             try {
                 JSONObject object = new JSONObject(ORDER_GETDATA);
                 object.put("curpage",page);
-                object.getJSONObject("condition").put("WORKTYPE",type);
+                object.getJSONObject("condition").put("WORKTYPE", type);
+                object.getJSONObject("condition").put("reportdate",">"+reportdate);
                 return object.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -36,14 +40,14 @@ public class Constants {
     }
     /**设置工单接口**/
     public static void setOrderUrl(String num){
-        ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',orderby:'reportdate desc',curpage:1,showcount:20,option:'read',condition:{workorderid:'"+num+"',status:'=APPR'}}";
+        ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',orderby:'STATUSDATE desc',curpage:1,showcount:20,option:'read',condition:{workorderid:'"+num+"',status:'=APPR'}}";
 //        ORDER_GETDATA = "{appid:'WO',objectname:'WORKORDER',curpage:1,showcount:20,option:'read',condition:{workorderid:'"+num+"'}}";
     }
 
     /**根据资产编号查询工单数据**/
 
     public static String getNumByOrder(String assetnum,int curpage,int showcount ){
-        return "{'appid':'WO','objectname':'WORKORDER','option':'read','condition':{'assetnum':'"+assetnum+"'},'curpage':'"+curpage+"','showcount':'"+showcount+"'}";
+        return "{'appid':'WO','objectname':'WORKORDER',orderby:'STATUSDATE desc','option':'read','condition':{'assetnum':'="+assetnum+"','istask':'=0'},'curpage':'"+curpage+"','showcount':'"+showcount+"'}";
     }
 
 
@@ -69,13 +73,13 @@ public class Constants {
             "condition:{origperson:'maxadmin',PROCESSNAME:'WOSUB-PM',ASSIGNSTATUS:'=ACTIVE'}}";
     public static String getOwnerId(String name){
         return "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
-                "condition:{origperson:'="+name+"',PROCESSNAME:'=WOSUB-PM',ASSIGNSTATUS:'=ACTIVE'}}";
+                "condition:{origperson:'="+name+"',PROCESSNAME:'=APPWFWO',ASSIGNSTATUS:'=ACTIVE'}}";
     }
 
     //知识库列表信息
     public static String KNOW_LEDGE_LIST = "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:1,showcount:20,option:'read'}";
-    public static String getKnow_ledge_list(int page){
-        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+page+",showcount:20,option:'read'}";
+    public static String getKnow_ledge_list(int page,String type){
+        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+page+",showcount:20,option:'read',condition:{KNOWDL:'"+type+"'}}";
     }
 
     //知识库文件
@@ -85,8 +89,9 @@ public class Constants {
     }
 
     //知识库搜索
-    public static String search_Knowledge(int curpage,int showcount,String knowdesc){
-        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+curpage+",showcount:"+showcount+",option:'read',condition:{knowdesc:'"+knowdesc+"'}}";
+    public static String search_Knowledge(int curpage,int showcount,String knowdl,String knowxl){
+        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',curpage:"+curpage+"," +
+                "showcount:"+showcount+",option:'read',condition:{knowdl:'"+knowdl+"',knowxl:'"+knowxl+"'}}";
 //        return "{appid:'KNOWLEDGE',objectname:'KNOWLEDGE',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"',condition:{knowdesc:'"+knowdesc+"'}}";
     }
 
@@ -144,7 +149,7 @@ public class Constants {
     //所有工作计划物料
     public static String JOBMATERIAL = "{appid:'JOBMATERIAL',objectname:'JOBMATERIAL',option:'read'}";
     //工作班组
-    public static String PERSON = "{appid:'PERSON',objectname:'PERSON',option:'read'}";
+    public static String PERSON = "{appid:'PERSON',objectname:'PERSON',option:'read',condition:{department:'62%'}}";
 
     public static final String USER_INFO = "userinfo";
     public static final String NAME_KEY = "name_key";
@@ -182,6 +187,7 @@ public class Constants {
 
 
     /**跳转标识**/
+    public static final int ORDER_LIST_MARK=10002;//工单列表跳转
     public static final int ORDER_MARK=10000; //工单新建
     public static final int RESULTS_MARK=10001; //资产扫描结果
 

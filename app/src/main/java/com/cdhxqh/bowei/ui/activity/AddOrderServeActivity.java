@@ -92,7 +92,7 @@ public class AddOrderServeActivity extends BaseActivity {
     private String parent;
 
     private Button yuzhi;
-    private Button inputbtn;
+    private Button save;
 
     private EditText showingedit;
     private TextView showingtext;
@@ -115,7 +115,7 @@ public class AddOrderServeActivity extends BaseActivity {
                     number.setText(result);
                     Toast.makeText(AddOrderServeActivity.this, "获取工单编号成功", Toast.LENGTH_SHORT).show();
                     orderMain.setIsyuzhi(true);
-                    inputbtn.performClick();
+                    save.performClick();
                     break;
                 case F:
                     Toast.makeText(AddOrderServeActivity.this, "获取工单编号失败," + result, Toast.LENGTH_SHORT).show();
@@ -158,6 +158,7 @@ public class AddOrderServeActivity extends BaseActivity {
         if (JUMP_MARK == Constants.RESULTS_MARK) {
             assetNum = getIntent().getExtras().getString("assetnum");
             loucations = getIntent().getExtras().getString("location");
+
         }
     }
 
@@ -230,7 +231,7 @@ public class AddOrderServeActivity extends BaseActivity {
 //        reporttimeedit = (EditText) findViewById(R.id.order_detail_reporttime_edit);
 
         yuzhi = (Button) findViewById(R.id.order_detail_yuzhi);
-        inputbtn = (Button) findViewById(R.id.order_detail_input);
+        save = (Button) findViewById(R.id.order_detail_save);
     }
 
     @Override
@@ -251,6 +252,7 @@ public class AddOrderServeActivity extends BaseActivity {
 
         if (!assetNum.equals("")) {
             property.setText(assetNum);
+            faultclass.setText(new AssetDao(AddOrderServeActivity.this).queryClassByAsset(assetNum));
         }
         if(!loucations.equals("")){
             place.setText(loucations);
@@ -276,7 +278,7 @@ public class AddOrderServeActivity extends BaseActivity {
         reality_stoptimelayout.setOnClickListener(new MydateListener());
 
         yuzhi.setOnClickListener(yuzhilistener);
-        inputbtn.setOnClickListener(inputlistener);
+        save.setOnClickListener(savelistener);
 
     }
 
@@ -303,11 +305,12 @@ public class AddOrderServeActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             String isok = isOK();
-            SaveData();
             if (isok.equals("OK")) {
+                SaveData();
                 mProgressDialog = ProgressDialog.show(AddOrderServeActivity.this, null,
                         getString(R.string.requesting), true, true);
                 mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.setCancelable(false);
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
@@ -496,7 +499,7 @@ public class AddOrderServeActivity extends BaseActivity {
         }
     }
 
-    private View.OnClickListener inputlistener = new View.OnClickListener() {
+    private View.OnClickListener savelistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String isok = isOK();
@@ -555,6 +558,7 @@ public class AddOrderServeActivity extends BaseActivity {
      */
     private String isOK() {
         if (describe.getText().equals("")
+                ||property.getText().equals("")
                 || worktype.getText().equals("")
                 || reality_worktype.getText().equals("") || applyunity.getText().equals("")
                 || major.getText().equals("") || date.getText().equals("")
@@ -595,5 +599,7 @@ public class AddOrderServeActivity extends BaseActivity {
         } else {
             orderMain.setIsyuzhi(false);
         }
+        new OrderMainDao(this).update(orderMain);
+//        Toast.makeText(this,"保存成功",Toast.LENGTH_SHORT).show();
     }
 }

@@ -108,6 +108,17 @@ public class WorkerInfoDao {
     }
 
     /**
+     * 根据id删除员工信息
+     */
+    public void deleteById(int id){
+        try {
+            WorkerInfoDaoOpe.delete(WorkerInfoDaoOpe.queryForId(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 删除所有员工信息
      */
     public void deleteall(){

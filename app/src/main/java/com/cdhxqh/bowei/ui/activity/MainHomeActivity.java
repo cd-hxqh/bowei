@@ -328,6 +328,7 @@ public class MainHomeActivity extends BaseActivity {
             Intent intent = new Intent();
             intent.setClass(MainHomeActivity.this, SearchActivity.class);
             intent.putExtra("search_mark", Constants.KNOWKEDGE_SEARCH);
+            intent.putExtra("search_type",knowKedge_Fragment.type);
             startActivityForResult(intent, 0);
         }
     };

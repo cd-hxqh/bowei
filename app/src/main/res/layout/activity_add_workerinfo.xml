@@ -242,7 +242,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="25dp"
-            android:background="@color/start_back_color"
+            android:background="@drawable/button_selector2"
             android:text="@string/order_detail_input"
             android:textSize="18sp" />
     </LinearLayout>
