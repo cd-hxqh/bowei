@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <string name="app_name">博维航空测试版</string>
+    <string name="app_name">博维手持终端测试版</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="log">北京博维航空设施管理有限公司</string>

@@ -4,11 +4,23 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.cdhxqh.bowei.ui.activity.In_Company_Activity">
 
     <include layout="@layout/maintenance_title" />
-
-
+    <EditText
+        android:id="@+id/search_edit_text_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/content_bg"
+        android:drawableLeft="@drawable/ic_search_left"
+        android:hint="请输入描述关键字"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray" />
     <include layout="@layout/activity_order_list"></include>
 
 </LinearLayout>

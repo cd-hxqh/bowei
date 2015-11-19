@@ -1,13 +1,18 @@
 package com.cdhxqh.bowei.ui.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +49,8 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private ImageView backimg;
     private ImageView addimg;
     private TextView titlename;
-    private Button chooseitembtn;
+    private EditText searchedit;
+    private String searchText = "";
     private SwipeRefreshLayout refresh_layout = null;
     LinearLayoutManager layoutManager;
     public RecyclerView recyclerView;
@@ -84,7 +90,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         backimg = (ImageView) findViewById(R.id.maintenance_title_back);
         addimg = (ImageView) findViewById(R.id.maintenance_title_add);
         titlename = (TextView) findViewById(R.id.title_name);
-        chooseitembtn = (Button) findViewById(R.id.activity_chooser_view_content);
+        searchedit = (EditText) findViewById(R.id.search_edit_text_id);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
         refresh_layout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
         nodatalayout = (LinearLayout) findViewById(R.id.have_not_data_id);
@@ -123,6 +129,24 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         });
         refresh_layout.setOnRefreshListener(this);
         refresh_layout.setOnLoadListener(this);
+        searchedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    // 先隐藏键盘
+                    ((InputMethodManager) searchedit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(
+                                    OrderListActivity.this.getCurrentFocus()
+                                            .getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    searchText = searchedit.getText().toString();
+                    refreshData();
+                    return true;
+                }
+                return false;
+            }
+        });
         getData();
     }
     private void getOwnerId() {
@@ -241,11 +265,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private void addData() {
         List<OrderMain> list = null;
         if (name.equals(getResources().getString(R.string.maintenance))) { //维保
-            list = new OrderMainDao(this).queryForPMAndCM(getBaseApplication().getUsername());
+            list = new OrderMainDao(this).queryForPMAndCM(getBaseApplication().getUsername(),searchText);
         } else if (name.equals(getResources().getString(R.string.serve))) { //维修
-            list = new OrderMainDao(this).queryForEM(getBaseApplication().getUsername());
+            list = new OrderMainDao(this).queryForEM(getBaseApplication().getUsername(),searchText);
         } else if (name.equals(getResources().getString(R.string.service))) { //服务
-            list = new OrderMainDao(this).queryForSVR(getBaseApplication().getUsername());
+            list = new OrderMainDao(this).queryForSVR(getBaseApplication().getUsername(),searchText);
         } else {
             list = new OrderMainDao(this).queryForAll();
         }

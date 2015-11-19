@@ -63,12 +63,19 @@ public class OrderMainDao {
      * 查询维保工单
      * @return
      */
-    public List<OrderMain> queryForPMAndCM(String username){
+    public List<OrderMain> queryForPMAndCM(String username,String desc){
         try {
-            return OrderMainDaoOpe.queryBuilder().orderBy("date",false)
-                    .where().eq("wordtype","PM").and().eq("belong",username)
-                    .and().eq("state","APPR").or().eq("wordtype","CM")
-                    .and().eq("belong",username).query();
+            if(desc.equals("")) {
+                return OrderMainDaoOpe.queryBuilder().orderBy("date", false)
+                        .where().eq("wordtype", "PM").and().eq("belong", username)
+                        .and().eq("state", "APPR").or().eq("wordtype", "CM")
+                        .and().eq("belong", username).query();
+            }else {
+                return OrderMainDaoOpe.queryBuilder().orderBy("date", false)
+                        .where().eq("wordtype", "PM").and().eq("belong", username)
+                        .and().eq("state", "APPR").and().like("describe","%" +desc+"%").or().eq("wordtype", "CM")
+                        .and().eq("belong", username).and().like("describe","%" +desc+"%").query();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,11 +86,15 @@ public class OrderMainDao {
      * 查询维修工单
      * @return
      */
-    public List<OrderMain> queryForEM(String username){
+    public List<OrderMain> queryForEM(String username,String desc){
         try {
-
-            return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
-                    .where().eq("wordtype", "EM").and().eq("belong",username).query();
+            if(desc.equals("")){
+                return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                        .where().eq("wordtype", "EM").and().eq("belong",username).query();
+            }else {
+                return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                        .where().eq("wordtype", "EM").and().eq("belong", username).and().like("describe", "%" + desc + "%").query();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,11 +104,15 @@ public class OrderMainDao {
      * 查询服务工单
      * @return
      */
-    public List<OrderMain> queryForSVR(String username){
+    public List<OrderMain> queryForSVR(String username,String desc){
         try {
-
-            return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
-                    .where().eq("wordtype","SVR").and().eq("belong",username).query();
+            if(desc.equals("")) {
+                return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                        .where().eq("wordtype", "SVR").and().eq("belong", username).query();
+            }else {
+                return OrderMainDaoOpe.queryBuilder().orderBy("number", true)
+                        .where().eq("wordtype", "SVR").and().eq("belong", username).and().like("describe", "%" + desc + "%").query();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

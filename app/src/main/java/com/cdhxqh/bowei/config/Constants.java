@@ -8,8 +8,8 @@ import org.json.JSONObject;
 public class Constants {
     //http://10.40.8.47:7013 测试 WOSUB-PM
 //    http://182.92.8.94:7001 开发  APPWFWO
-//    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
-    public static String SERVER_URL = "http://182.92.8.94:7001";//测试服务器地址
+    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
+//    public static String SERVER_URL = "http://182.92.8.94:7001";//测试服务器地址
 
     public static String webserviceURL = SERVER_URL+"/maximo/services/WOService";//webservice接口地址
 
@@ -73,7 +73,7 @@ public class Constants {
             "condition:{origperson:'maxadmin',PROCESSNAME:'WOSUB-PM',ASSIGNSTATUS:'=ACTIVE'}}";
     public static String getOwnerId(String name){
         return "{appid:'WFASSIGNMENT',objectname:'WFASSIGNMENT',option:'read'," +
-                "condition:{origperson:'="+name+"',PROCESSNAME:'=APPWFWO',ASSIGNSTATUS:'=ACTIVE'}}";
+                "condition:{origperson:'="+name+"',PROCESSNAME:'=WOSUB-PM',ASSIGNSTATUS:'=ACTIVE'}}";
     }
 
     //知识库列表信息
@@ -99,7 +99,6 @@ public class Constants {
     /**公司库存列表**/
     public static String get_commany_inv(int curpage,int showcount){
         return "{appid:'INV',objectname:'INVENTORY',option:'read',curpage:'"+curpage+"',showcount:'"+showcount+"'}";
-
     }
 
     /**公司库存搜索**/

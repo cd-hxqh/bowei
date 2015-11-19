@@ -80,10 +80,12 @@ public class RealMaterialConsunmeFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (this.isVisible()) {
             // we check that the fragment is becoming visible
-            if (isVisibleToUser && !mHasLoadedOnce && materialConsumeAdapter.getItemCount()==0) {
+            if (isVisibleToUser && !mHasLoadedOnce && materialConsumeAdapter.getItemCount()==0&&!orderMain.getNumber().equals("")) {
                     getData();
                 // async http request here
                 mHasLoadedOnce = true;
+            }else if(orderMain.getNumber().equals("")){
+                nodatalayout.setVisibility(View.VISIBLE);
             }
         }
         super.setUserVisibleHint(isVisibleToUser);
