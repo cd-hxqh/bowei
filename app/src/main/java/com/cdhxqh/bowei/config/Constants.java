@@ -7,8 +7,10 @@ import org.json.JSONObject;
 
 public class Constants {
     //http://10.40.8.47:7013 测试 WOSUB-PM
+    //http://10.40.8.39:9080 正式
 //    http://182.92.8.94:7001 开发  APPWFWO
-    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
+//    public static String SERVER_URL = "http://10.40.8.47:7013";//服务器地址
+    public static String SERVER_URL = "http://10.40.8.39:9080";//正式服务器地址
 //    public static String SERVER_URL = "http://182.92.8.94:7001";//测试服务器地址
 
     public static String webserviceURL = SERVER_URL+"/maximo/services/WOService";//webservice接口地址

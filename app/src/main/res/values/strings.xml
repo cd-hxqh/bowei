@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <string name="app_name">博维手持终端测试版</string>
+    <string name="app_name">博维手持终端</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="log">北京博维航空设施管理有限公司</string>
@@ -45,6 +45,7 @@
     <string name="choose_all">全部员工</string>
     <string name="order_number">编号</string>
     <string name="order_describe">描述</string>
+    <string name="order_date">日期</string>
     <string name="order_task">工单任务</string>
     <string name="task_list">任务列表</string>
     <string name="task">任务</string>

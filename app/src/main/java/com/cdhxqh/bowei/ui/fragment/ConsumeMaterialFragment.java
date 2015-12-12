@@ -91,11 +91,11 @@ public class ConsumeMaterialFragment extends Fragment {
             // we check that the fragment is becoming visible
             if (isVisibleToUser && !mHasLoadedOnce && consumeMaterialAdapter.getItemCount()==0) {
                 // async http request here
-                if (orderMain.isNew()&&!orderMain.isByserch()) {
+//                if (orderMain.isNew()&&!orderMain.isByserch()) {
                     getlocationData();
-                } else {
-                    getData();
-                }
+//                } else {
+//                    getData();
+//                }
                 mHasLoadedOnce = true;
             }
         }
@@ -103,47 +103,49 @@ public class ConsumeMaterialFragment extends Fragment {
     }
 
 
-    private void getData() {
-        mProgressDialog = ProgressDialog.show(getActivity(), null,
-                getString(R.string.requesting), true, true);
-        HttpManager.getData(getActivity(), Constants.getMeterialConsumePlanUrl(num), new HttpRequestHandler<String>() {
-            @Override
-            public void onSuccess(String data) {
-                mProgressDialog.dismiss();
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(data);
-                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
-                        if (!orderMain.isByserch()) {
-                            JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
-                            addData(id);
-                        } else {
-                            List<MaterialInfo> materialInfoList = JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"));
-                            addMaterialList(materialInfoList);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onSuccess(String data, int totalPages, int currentPage) {
-            }
-
-            @Override
-            public void onFailure(String error) {
-                addData(id);
-                mProgressDialog.dismiss();
-            }
-        });
-
-    }
+//    private void getData() {
+//        mProgressDialog = ProgressDialog.show(getActivity(), null,
+//                getString(R.string.requesting), true, true);
+//        HttpManager.getData(getActivity(), Constants.getMeterialConsumePlanUrl(num), new HttpRequestHandler<String>() {
+//            @Override
+//            public void onSuccess(String data) {
+//                mProgressDialog.dismiss();
+//                JSONObject jsonObject = null;
+//                try {
+//                    jsonObject = new JSONObject(data);
+//                    if (jsonObject.getString("errmsg").equals(getResources().getString(R.string.request_ok))) {
+//                        if (!orderMain.isByserch()) {
+//                            JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"), id);
+//                            addData(id);
+//                        } else {
+//                            List<MaterialInfo> materialInfoList = JsonUtils.parsingWpMaterial(getActivity(), jsonObject.getString("result"));
+//                            addMaterialList(materialInfoList);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(String data, int totalPages, int currentPage) {
+//            }
+//
+//            @Override
+//            public void onFailure(String error) {
+//                addData(id);
+//                mProgressDialog.dismiss();
+//            }
+//        });
+//
+//    }
 
     private void getlocationData() {
         if (new MaterialInfoDao(getActivity()).queryByLabtransId(id, true).size() == 0&&!orderMain.getWorkplan().equals("")) {
             Jobplan jobplan = new JobPlanDao(getActivity()).queryByJobNum(orderMain.getWorkplan());
-            List<Jobmaterial> jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
+            List<String> jpnumList = new JobPlanDao(getActivity()).queryForparent(orderMain.getWorkplan());
+            List<Jobmaterial> jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID(),jpnumList);
+//            List<Jobmaterial> jobmaterialList = new JobMaterialDao(getActivity()).queryByJobPlanId(jobplan.getJOBPLANID());
             MaterialInfo materialInfo;
             for (int i = 0; i < jobmaterialList.size(); i++) {
                 materialInfo = new MaterialInfo();

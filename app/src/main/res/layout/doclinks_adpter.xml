@@ -21,11 +21,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order_number"
+            android:text="@string/document_name_text"
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/order_main_number"
+            android:id="@+id/document_name_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -34,53 +34,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/order_describe"
+            android:text="@string/document_path_text"
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/order_main_describe"
+            android:id="@+id/document_path_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:textColor="@color/gray"/>
     </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_date"
-                android:textSize="16sp"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/order_main_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/gray"/>
-        </LinearLayout>
     </LinearLayout>
-    <ImageView
-        android:id="@+id/order_main_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/in_ico"
-        android:visibility="visible"/>
-    <CheckBox
-        android:id="@+id/order_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:button="@drawable/checkbox"
-        android:visibility="gone"/>
 </RelativeLayout>
